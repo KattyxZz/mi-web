@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Test Audio</title></head>
+<body style="background:#000;color:#fff;text-align:center;padding:50px;font-family:sans-serif;">
+
+<h1>🔊 Test de Audio</h1>
+<button onclick="playSound()" style="padding:20px 40px;font-size:20px;cursor:pointer;margin:10px;">
+    ▶️ Probar Audio
+</button>
+
+<p id="status" style="margin-top:20px;color:yellow;"></p>
+
+<script>
+function playSound() {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.frequency.value = 440;
+    gain.gain.value = 0.3;
+
+    osc.start();
+    osc.stop(ctx.currentTime + 2);
+
+    document.getElementById('status').textContent = '✅ ¡Audio funcionando! (Tono de 2 segundos)';
+}
+</script>
+</body>
+</html>
