@@ -95,7 +95,7 @@ nav{position:fixed;top:0;left:0;width:100%;padding:1rem 2rem;display:flex;justif
 .pl{display:flex;justify-content:space-between;font-size:.78rem;color:#b09090;margin-top:.4rem}
 .cta{text-align:center;padding:5rem 2rem}
 .cta h2{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,2.5rem);color:#e8d5d5;margin-bottom:1.2rem}
-.cta > p{color:#b09090;font-size:1.1rem;max-width:600px;margin:0 auto 2rem;line-height:1.8}
+.cta>p{color:#b09090;font-size:1.1rem;max-width:600px;margin:0 auto 2rem;line-height:1.8}
 .ctg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.8rem;margin-top:3rem;max-width:850px;margin-left:auto;margin-right:auto}
 .ct2{background:linear-gradient(135deg,rgba(20,10,15,.9),rgba(35,15,25,.9));border:1px solid rgba(200,50,75,.15);border-radius:16px;padding:2.2rem 1.4rem;text-align:center;transition:.4s;position:relative;overflow:hidden}
 .ct2:hover{transform:translateY(-6px);border-color:rgba(200,50,75,.3)}
@@ -116,15 +116,78 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 ::-webkit-scrollbar-thumb{background:#8b0020;border-radius:4px}
 .fi2{opacity:0;transform:translateY(25px);transition:opacity .8s,transform .8s}
 .fi2.vis{opacity:1;transform:translateY(0)}
-.wo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,25,.9);z-index:2000;flex-direction:column;justify-content:center;align-items:center;text-align:center;backdrop-filter:blur(12px);padding:2rem}
+
+/* ===== WHITE QUEEN OVERLAY ===== */
+.wo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,25,.95);z-index:2000;flex-direction:column;align-items:center;backdrop-filter:blur(15px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding:2rem 1.5rem}
 .wo.vis{display:flex;animation:ap .8s ease}
 @keyframes ap{from{opacity:0}to{opacity:1}}
-.wo h2{font-family:'Cinzel',serif;font-size:clamp(2.2rem,5vw,4.5rem);color:#e0e0ff;letter-spacing:10px;text-shadow:0 0 40px rgba(180,180,255,.5);animation:gw 2s ease-in-out infinite}
+.wo-inner{width:100%;max-width:800px;margin:0 auto;text-align:center}
+.wo h2{font-family:'Cinzel',serif;font-size:clamp(2rem,5vw,3.5rem);color:#e0e0ff;letter-spacing:8px;text-shadow:0 0 40px rgba(180,180,255,.5);animation:gw 2s ease-in-out infinite;margin-bottom:.5rem}
 @keyframes gw{0%,100%{text-shadow:0 0 40px rgba(180,180,255,.5)}50%{text-shadow:0 0 80px rgba(180,180,255,.8)}}
-.wo .wi{font-size:5rem;margin-bottom:1.5rem;filter:drop-shadow(0 0 30px rgba(180,180,255,.5))}
-.wo p{color:#b0b0d0;font-size:1.15rem;margin-top:1.2rem;letter-spacing:2px;max-width:500px}
-.wb{margin-top:2.5rem;padding:.9rem 2.2rem;background:transparent;border:1px solid rgba(180,180,255,.3);color:#c0c0e0;font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:3px;cursor:pointer;border-radius:4px;transition:.3s}
-.wb:hover{background:rgba(180,180,255,.15)}
+.wo .wi{font-size:4rem;margin-bottom:1rem;filter:drop-shadow(0 0 30px rgba(180,180,255,.5));animation:pwq 3s ease-in-out infinite}
+@keyframes pwq{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.wo .wq-sub{color:#9090c0;font-size:1rem;letter-spacing:4px;margin-bottom:2rem;text-transform:uppercase}
+.wo-seccion{width:100%;margin:2.5rem 0;text-align:left}
+.wo-seccion h3{font-family:'Cinzel',serif;font-size:1.3rem;color:#c0c0e8;text-align:center;letter-spacing:3px;margin-bottom:1.2rem;text-shadow:0 0 15px rgba(180,180,255,.3)}
+
+/* ===== RELOJ ZAFKIEL BLANCO (versión White Queen) ===== */
+.wq-clock-wrap{display:flex;flex-direction:column;align-items:center;margin:1.5rem 0 2rem}
+.wq-clock{width:260px;height:260px;border-radius:50%;position:relative;background:radial-gradient(circle,rgba(25,25,55,.95),rgba(12,12,32,.98));border:3px solid #c0c0e8;box-shadow:0 0 30px rgba(180,180,255,.35),0 0 60px rgba(180,180,255,.12),inset 0 0 40px rgba(80,80,140,.15);transition:.5s;overflow:hidden}
+.wq-clock:hover{box-shadow:0 0 50px rgba(180,180,255,.5),0 0 100px rgba(180,180,255,.25);transform:scale(1.03)}
+.wq-ring1{position:absolute;top:8px;left:8px;right:8px;bottom:8px;border-radius:50%;border:1px solid rgba(180,180,255,.2);border-top-color:#c0c0e8;border-right-color:transparent;animation:gi 20s linear infinite reverse}
+.wq-ring2{position:absolute;top:18px;left:18px;right:18px;bottom:18px;border-radius:50%;border:1px dashed rgba(180,180,255,.12);animation:gi 35s linear infinite}
+.wq-rn{position:absolute;font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:#c0c0e8;width:28px;height:28px;display:flex;align-items:center;justify-content:center;text-shadow:0 0 10px rgba(180,180,255,.4)}
+.wq-hand{position:absolute;bottom:50%;left:50%;transform-origin:bottom center;border-radius:4px}
+.wq-h{width:5px;height:58px;margin-left:-2.5px;background:linear-gradient(to top,#8888cc,#b0b0e0);box-shadow:0 0 10px rgba(136,136,204,.5)}
+.wq-m{width:3px;height:85px;margin-left:-1.5px;background:linear-gradient(to top,#c0c0e8,#e0e0f5);box-shadow:0 0 10px rgba(192,192,232,.5)}
+.wq-s{width:1.5px;height:98px;margin-left:-.75px;background:linear-gradient(to top,transparent 20%,#e0e0f5)}
+.wq-ctr{position:absolute;width:14px;height:14px;background:radial-gradient(circle,#c0c0e8,#8888cc);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px rgba(180,180,255,.5);z-index:10}
+.wq-glow{position:absolute;width:60px;height:30px;background:radial-gradient(ellipse,rgba(255,255,255,.06),transparent);border-radius:50%;top:25%;left:28%;transform:rotate(-30deg);pointer-events:none;z-index:5}
+.wq-clock-label{text-align:center;font-family:'Cinzel',serif;font-size:.82rem;letter-spacing:6px;color:#c0c0e8;margin-top:1rem;text-shadow:0 0 15px rgba(180,180,255,.4);opacity:.7}
+.wq-clock-time{text-align:center;font-family:'Cinzel',serif;font-size:1.35rem;color:#e0e0ff;letter-spacing:4px;margin-top:.4rem;text-shadow:0 0 20px rgba(180,180,255,.3)}
+
+/* ===== WQ SECCIONES ===== */
+.wq-carta{background:linear-gradient(135deg,rgba(20,20,50,.8),rgba(30,30,65,.8));border:1px solid rgba(128,128,200,.2);border-radius:16px;padding:2.5rem 2rem;text-align:center;max-width:550px;margin:0 auto}
+.wq-carta .corazon{font-size:2rem;margin-bottom:1rem}
+.wq-carta p{color:#b0b0d0;line-height:2;font-size:1.02rem;font-style:italic}
+.wq-carta .firma{font-family:'Cinzel',serif;color:#c0c0e8;margin-top:1.5rem;letter-spacing:3px;font-size:.95rem}
+.wq-countdown{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin:1.5rem auto;max-width:500px}
+.wq-cd-box{background:rgba(20,20,50,.8);border:1px solid rgba(128,128,200,.2);border-radius:12px;padding:1.2rem 1.5rem;min-width:80px;text-align:center;flex:1}
+.wq-cd-num{font-family:'Cinzel',serif;font-size:2.2rem;font-weight:900;color:#e0e0ff;display:block;line-height:1}
+.wq-cd-label{font-size:.75rem;color:#9090c0;letter-spacing:2px;text-transform:uppercase;margin-top:.4rem}
+.wq-countdown-bar{width:100%;max-width:400px;margin:1rem auto;height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.wq-countdown-fill{height:100%;background:linear-gradient(90deg,#8888cc,#c0c0e8);border-radius:3px}
+.wq-tabla{width:100%;max-width:550px;margin:0 auto;border-collapse:collapse;background:rgba(20,20,50,.6);border-radius:12px;overflow:hidden}
+.wq-tabla th,.wq-tabla td{padding:1rem;text-align:center;font-size:.92rem;border-bottom:1px solid rgba(128,128,200,.15)}
+.wq-tabla th{background:rgba(40,40,80,.5);color:#c0c0e8;font-family:'Cinzel',serif;letter-spacing:2px;font-size:.95rem}
+.wq-tabla td{color:#b0b0d0}
+.wq-tabla .col-k{color:#e87090}
+.wq-tabla .col-w{color:#c0c0e8}
+.wq-spoiler{background:linear-gradient(135deg,rgba(20,20,50,.8),rgba(35,35,70,.8));border:1px solid rgba(128,128,200,.2);border-radius:12px;padding:1.2rem 1.5rem;margin:.8rem auto;max-width:500px;transition:.3s}
+.wq-spoiler:hover{border-color:rgba(180,180,255,.4);transform:translateY(-3px)}
+.wq-spoiler .cmd{font-family:'Cinzel',serif;font-size:1.1rem;color:#c0c0e8;letter-spacing:1px;margin-bottom:.4rem}
+.wq-spoiler .desc{color:#9090c0;font-size:.9rem}
+.wq-spoiler .tag-secret{display:inline-block;margin-top:.5rem;padding:.25rem .8rem;border-radius:15px;font-size:.72rem;background:rgba(128,128,200,.15);color:#c0c0e8;border:1px solid rgba(128,128,200,.25)}
+.wq-quiz{max-width:500px;margin:0 auto;background:rgba(20,20,50,.8);border:1px solid rgba(128,128,200,.2);border-radius:16px;padding:2rem}
+.wq-quiz .pregunta{font-family:'Cinzel',serif;font-size:1.15rem;color:#c0c0e8;margin-bottom:1.2rem;letter-spacing:1px}
+.wq-quiz .opciones{display:flex;flex-direction:column;gap:.7rem}
+.wq-quiz .opcion{padding:.85rem 1.2rem;border:1px solid rgba(128,128,200,.2);border-radius:10px;background:rgba(30,30,65,.5);color:#b0b0d0;cursor:pointer;transition:.3s;font-size:.95rem;text-align:center}
+.wq-quiz .opcion:hover{border-color:rgba(180,180,255,.5);background:rgba(40,40,80,.6)}
+.wq-quiz .opcion.correcta{border-color:#8888cc;background:rgba(100,100,180,.3);color:#e0e0ff}
+.wq-quiz .opcion.incorrecta{border-color:rgba(200,80,80,.4);background:rgba(100,30,30,.2);color:#c08080}
+.wq-quiz .resultado{margin-top:1.2rem;padding:1rem;border-radius:10px;font-family:'Cinzel',serif;letter-spacing:1px;display:none}
+.wq-quiz .resultado.kurumi{background:rgba(180,50,50,.15);border:1px solid rgba(180,50,50,.3);color:#e88090}
+.wq-quiz .resultado.queen{background:rgba(128,128,200,.15);border:1px solid rgba(128,128,200,.3);color:#c0c0e8}
+.wq-secreto{background:linear-gradient(135deg,rgba(25,25,55,.9),rgba(35,35,75,.9));border:1px solid rgba(128,128,200,.2);border-radius:16px;padding:2.5rem 2rem;text-align:center;max-width:500px;margin:0 auto}
+.wq-secreto .icono-secreto{font-size:3rem;margin-bottom:1rem}
+.wq-secreto p{color:#b0b0d0;line-height:1.9;font-size:.98rem}
+.wq-secreto .codigo{display:inline-block;margin-top:1.2rem;padding:.8rem 2rem;background:rgba(128,128,200,.15);border:1px dashed rgba(180,180,255,.4);border-radius:10px;font-family:'Cinzel',serif;font-size:1.3rem;color:#e0e0ff;letter-spacing:6px}
+.copo{position:fixed;font-size:10px;color:rgba(200,200,240,.4);pointer-events:none;animation:caer linear infinite;z-index:1}
+@keyframes caer{0%{transform:translateY(-10vh) rotate(0deg);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(105vh) rotate(360deg);opacity:0}}
+.wq-volver{margin:3rem auto 2rem;padding:1rem 2.5rem;background:transparent;border:1px solid rgba(180,180,255,.3);color:#c0c0e0;font-family:'Cinzel',serif;font-size:1rem;letter-spacing:3px;cursor:pointer;border-radius:6px;transition:.3s;display:block}
+.wq-volver:hover{background:rgba(180,180,255,.15);border-color:rgba(180,180,255,.6);transform:translateY(-2px)}
+
+/* ===== REPRODUCTOR ===== */
 .rep{position:fixed;bottom:25px;right:25px;z-index:999;display:flex;align-items:center;gap:10px}
 .bm{width:52px;height:52px;border-radius:50%;border:2px solid #d4a853;background:rgba(10,6,8,.9);color:#d4a853;font-size:1.3rem;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,168,83,.4)}
 .bm:hover{transform:scale(1.1)}
@@ -139,17 +202,137 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 .eq .ba:nth-child(4){height:80%;animation-delay:.1s}
 .eq .ba:nth-child(5){height:55%;animation-delay:.25s}
 @keyframes eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
-@media(max-width:768px){nav{padding:.8rem 1.2rem}.nl{display:none}.ag{grid-template-columns:1fr;gap:2.5rem;text-align:center}.km{width:220px;height:220px}.zr{width:220px;height:220px}.sec{padding:3.5rem 1.2rem}.sn{font-size:2.2rem}.rep{bottom:15px;right:15px}.hero{padding:6rem 1.5rem 2.5rem}}
+
+@media(max-width:768px){
+nav{padding:.8rem 1.2rem}
+.nl{display:none}
+.ag{grid-template-columns:1fr;gap:2.5rem;text-align:center}
+.km{width:220px;height:220px}
+.zr{width:220px;height:220px}
+.sec{padding:3.5rem 1.2rem}
+.sn{font-size:2.2rem}
+.rep{bottom:15px;right:15px}
+.hero{padding:6rem 1.5rem 2.5rem}
+.wo{padding:1.5rem 1rem}
+.wo h2{letter-spacing:5px}
+.wq-carta{padding:1.8rem 1.2rem}
+.wq-cd-box{min-width:70px;padding:.8rem}
+.wq-cd-num{font-size:1.8rem}
+.wq-tabla th,.wq-tabla td{padding:.7rem .5rem;font-size:.82rem}
+.wq-quiz{padding:1.5rem 1.2rem}
+.wq-secreto{padding:1.8rem 1.2rem}
+.wq-clock{width:220px;height:220px}
+}
 </style>
 </head>
 <body>
 
-<!-- WHITE QUEEN -->
+<!-- ===== WHITE QUEEN OVERLAY COMPLETO ===== -->
 <div class="wo" id="wo">
+<div class="wo-inner">
+
 <div class="wi">👑</div>
 <h2>WHITE QUEEN</h2>
-<p>"Yo también soy Kurumi Tokisaki. Así que, ¿qué pasa con eso?"</p>
-<button class="wb" id="cb">✦ VOLVER ✦</button>
+<div class="wq-sub">✦ Inocente Estrella ✦</div>
+
+<!-- RELOJ ZAFKIEL BLANCO -->
+<div class="wq-clock-wrap">
+<div class="wq-clock" id="wqClock">
+<div class="wq-ring1"></div>
+<div class="wq-ring2"></div>
+<div class="wq-glow"></div>
+<div id="wqNums"></div>
+<div class="wq-hand wq-h" id="wqh"></div>
+<div class="wq-hand wq-m" id="wqm"></div>
+<div class="wq-hand wq-s" id="wqs"></div>
+<div class="wq-ctr"></div>
+</div>
+<div class="wq-clock-label">✦ L U C I F U G U S ✦</div>
+<div class="wq-clock-time" id="wqTime">00:00:00</div>
+</div>
+
+<!-- 📜 CARTA -->
+<div class="wo-seccion">
+<h3>📜 Carta de White Queen</h3>
+<div class="wq-carta">
+<div class="corazon">🤍</div>
+<p>
+"Querido visitante...<br><br>
+Has encontrado el lado oculto de Kurumi.<br>
+Aquí no hay sombras, solo luz.<br><br>
+Yo también soy Kurumi Tokisaki.<br>
+Pero soy diferente. Soy la reina blanca.<br><br>
+¿Crees que puedes detenerme?<br><br>
+Pronto, el tiempo se detendrá<br>
+y mi bot despertará."
+</p>
+<div class="firma">✦ White Queen ✦</div>
+</div>
+</div>
+
+<!-- ⏳ CUENTA REGRESIVA -->
+<div class="wo-seccion">
+<h3>⏳ Lanzamiento Oficial</h3>
+<div class="wq-countdown">
+<div class="wq-cd-box"><span class="wq-cd-num" id="cdD">--</span><div class="wq-cd-label">Días</div></div>
+<div class="wq-cd-box"><span class="wq-cd-num" id="cdH">--</span><div class="wq-cd-label">Horas</div></div>
+<div class="wq-cd-box"><span class="wq-cd-num" id="cdM">--</span><div class="wq-cd-label">Min</div></div>
+<div class="wq-cd-box"><span class="wq-cd-num" id="cdS">--</span><div class="wq-cd-label">Seg</div></div>
+</div>
+<div class="wq-countdown-bar"><div class="wq-countdown-fill" id="cdFill" style="width:85%"></div></div>
+</div>
+
+<!-- ⚔️ COMPARACIÓN -->
+<div class="wo-seccion">
+<h3>⚔️ Kurumi and White Queen</h3>
+<div style="overflow-x:auto">
+<table class="wq-tabla">
+<tr><th></th><th class="col-k">🖤 Kurumi</th><th class="col-w">🤍 White Queen</th></tr>
+<tr><td><strong>Esencia</strong></td><td class="col-k">Sombra y caos</td><td class="col-w">Luz y calma</td></tr>
+<tr><td><strong>Ángel</strong></td><td class="col-k">Zafkiel ⏰</td><td class="col-w">Lucifugus ✦</td></tr>
+<tr><td><strong>Estilo</strong></td><td class="col-k">Oscura y tenebrosa</td><td class="col-w">Pura y etérea</td></tr>
+<tr><td><strong>Color</strong></td><td class="col-k">Rojo carmesí</td><td class="col-w">Azul plateado</td></tr>
+<tr><td><strong>Poder</strong></td><td class="col-k">Control del tiempo</td><td class="col-w">Inversión absoluta</td></tr>
+<tr><td><strong>Frase</strong></td><td class="col-k">"Ara ara"</td><td class="col-w">"¿Crees que puedes detenerme?"</td></tr>
+</table>
+</div>
+</div>
+
+<!-- 🔮 SPOILERS -->
+<div class="wo-seccion">
+<h3>🔮 Spoilers Exclusivos del Bot</h3>
+<div class="wq-spoiler"><div class="cmd">✦ .timewarp</div><div class="desc">Congela el chat del grupo por 30 segundos.</div><span class="tag-secret">🔒 SECRETO</span></div>
+<div class="wq-spoiler"><div class="cmd">✦ .queen</div><div class="desc">Activa el modo White Queen en WhatsApp.</div><span class="tag-secret">🔒 SECRETO</span></div>
+<div class="wq-spoiler"><div class="cmd">✦ .???</div><div class="desc">Un comando que cambiará todo...</div><span class="tag-secret">🔒 CLASSIFIED</span></div>
+</div>
+
+<!-- 🎮 QUIZ -->
+<div class="wo-seccion">
+<h3>🎮 ¿Eres Kurumi o White Queen?</h3>
+<div class="wq-quiz" id="quiz">
+<div class="pregunta">¿Qué harías si pudieras controlar el tiempo?</div>
+<div class="opciones" id="quizOps">
+<div class="opcion" onclick="respQuiz(1)" data-c="k">🖤 Cambiar el pasado a mi favor</div>
+<div class="opcion" onclick="respQuiz(2)" data-c="w">🤍 Proteger a quienes quiero</div>
+<div class="opcion" onclick="respQuiz(3)" data-c="k">🖤 Jugar con las vidas de todos</div>
+<div class="opcion" onclick="respQuiz(4)" data-c="w">🤍 Buscar la paz eterna</div>
+</div>
+<div class="resultado" id="quizRes"></div>
+</div>
+</div>
+
+<!-- 💬 MENSAJE SECRETO -->
+<div class="wo-seccion">
+<h3>💬 Mensaje Secreto</h3>
+<div class="wq-secreto">
+<div class="icono-secreto">🕐</div>
+<p>Este proyecto nació de mi amor por Kurumi Tokisaki.<br>Cada detalle fue hecho con dedicación.<br><br>Gracias por descubrir este secreto.<br>El tiempo está de tu lado.</p>
+<div class="codigo">KURUMI-2026</div>
+</div>
+</div>
+
+<button class="wq-volver" id="cb">✦ VOLVER AL MUNDO DE KURUMI ✦</button>
+</div>
 </div>
 
 <!-- NAV -->
@@ -169,13 +352,9 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 <section class="hero" id="inicio">
 <div class="zw">
 <div class="zr" id="zc">
-<div class="r1"></div>
-<div class="r2"></div>
-<div class="rb"></div>
+<div class="r1"></div><div class="r2"></div><div class="rb"></div>
 <div id="rn"></div>
-<div class="rh mh" id="mh"></div>
-<div class="rh mm" id="mm"></div>
-<div class="rh ms" id="ms"></div>
+<div class="rh mh" id="mh"></div><div class="rh mm" id="mm"></div><div class="rh ms" id="ms"></div>
 <div class="rc"></div>
 </div>
 <div class="zt">✦ Z A F K I E L ✦</div>
@@ -184,7 +363,7 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 <h1 class="gl">KURUMI BOT</h1>
 <div class="ld"></div>
 <p class="st">Tu bot de WhatsApp con estilo gótico y elegante. Automatiza, interactúa y sorprende.</p>
-<p class="st" style="font-size:.88rem;opacity:.6;margin-top:.5rem">💡 Toca el reloj 3 veces para un secreto...</p>
+<p class="st" style="font-size:.88rem;opacity:.6;margin-top:.5rem">💡 El Reloj Sera Tu Destino...</p>
 <div class="bh">
 <a href="#sobre" class="btn b1">🕐 Descubrir más</a>
 <a href="#contacto" class="btn b2">💬 Contactar</a>
@@ -205,9 +384,8 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 </div>
 <div class="ki">
 <div class="km">
-<div class="ma"></div>
-<div class="mg"></div>
-<img src="kurumi.png" alt="Kurumi" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+<div class="ma"></div><div class="mg"></div>
+<img src="https://raw.githubusercontent.com/KattyxZz/mi-web/main/kurumi.png" alt="Kurumi" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
 <div class="kp" style="display:none">⏰</div>
 </div>
 </div>
@@ -249,48 +427,18 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 <div class="nl2">
 <div class="ni" style="border-left-color:#d4a853">
 <div class="nf">🚀 Lanzamiento Oficial</div>
-<h3>✦ Kurumi Bot v1.0</h3>
+<h3>✦ Kurumi Bot v2.0</h3>
 <p>¡Estamos finalizando los últimos detalles! Incluye respuestas automáticas, juegos, moderación y más.</p>
 <div class="pb"><div class="pf" style="width:85%"></div></div>
 <div class="pl"><span>Progreso</span><span>85%</span></div>
 <span class="tg tl">🚀 PRÓXIMAMENTE</span>
 </div>
-<div class="ni">
-<div class="nf">🕐 Enero 2025</div>
-<h3>✦ Respuestas inteligentes</h3>
-<p>El bot entiende mejor los mensajes.</p>
-<span class="tg tn">✦ NUEVO</span>
-</div>
-<div class="ni">
-<div class="nf">🕐 Diciembre 2024</div>
-<h3>✦ Rediseño de interfaz</h3>
-<p>Menús más elegantes con estilo Kurumi.</p>
-<span class="tg tm">↑ MEJORA</span>
-</div>
-<div class="ni">
-<div class="nf">🕐 Noviembre 2024</div>
-<h3>✦ Juegos y trivia</h3>
-<p>Nuevos juegos interactivos.</p>
-<span class="tg tn">✦ NUEVO</span>
-</div>
-<div class="ni">
-<div class="nf">⏳ Próximamente</div>
-<h3>✦ Modo IA conversacional</h3>
-<p>Conversaciones más avanzadas con IA.</p>
-<span class="tg tp">⏳ PRÓXIMAMENTE</span>
-</div>
-<div class="ni">
-<div class="nf">⏳ Próximamente</div>
-<h3>✦ Comandos de voz</h3>
-<p>Controla el bot con tu voz.</p>
-<span class="tg tp">⏳ PRÓXIMAMENTE</span>
-</div>
-<div class="ni">
-<div class="nf">🤍 Misterio</div>
-<h3>✦ Modo White Queen</h3>
-<p>Un modo secreto. Pista: el reloj tiene un secreto...</p>
-<span class="tg tp">🤍 MISTERIO</span>
-</div>
+<div class="ni"><div class="nf">🕐 Julio 2026</div><h3>✦ Respuestas inteligentes</h3><p>El bot entiende mejor los mensajes.</p><span class="tg tn">✦ NUEVO</span></div>
+<div class="ni"><div class="nf">🕐 Mayo 2026</div><h3>✦ Rediseño de interfaz</h3><p>Menús más elegantes con estilo Kurumi.</p><span class="tg tm">↑ MEJORA</span></div>
+<div class="ni"><div class="nf">🕐 Enero 2026</div><h3>✦ Juegos y trivia</h3><p>Nuevos juegos interactivos.</p><span class="tg tn">✦ NUEVO</span></div>
+<div class="ni"><div class="nf">⏳ Próximamente</div><h3>✦ Modo IA conversacional</h3><p>Conversaciones más avanzadas con IA.</p><span class="tg tp">⏳ PRÓXIMAMENTE</span></div>
+<div class="ni"><div class="nf">⏳ Próximamente</div><h3>✦ Comandos de voz</h3><p>Controla el bot con tu voz.</p><span class="tg tp">⏳ PRÓXIMAMENTE</span></div>
+<div class="ni"><div class="nf">🤍 Misterio</div><h3>✦ Modo White Queen</h3><p>Un modo secreto. Pista: el reloj tiene un secreto o talvez 3...</p><span class="tg tp">🤍 MISTERIO</span></div>
 </div>
 </section>
 
@@ -318,24 +466,9 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 <a href="#doc" class="btn b2">📖 Documentación</a>
 </div>
 <div class="ctg">
-<div class="ct2">
-<div class="ci">📱</div>
-<h3>WhatsApp / Teléfono</h3>
-<p>+506 7018-3577</p>
-<a href="https://wa.me/50670183577" class="bc" target="_blank">Escribir ahora</a>
-</div>
-<div class="ct2">
-<div class="ci">📧</div>
-<h3>Correo</h3>
-<p>brendi221825@gmail.com</p>
-<a href="mailto:brendi221825@gmail.com" class="bc">Enviar email</a>
-</div>
-<div class="ct2">
-<div class="ci">💬</div>
-<h3>Grupo Oficial</h3>
-<p>Únete al grupo</p>
-<a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3" class="bc" target="_blank">Unirme</a>
-</div>
+<div class="ct2"><div class="ci">📱</div><h3>WhatsApp / Teléfono</h3><p>+506 7018-3577</p><a href="https://wa.me/50670183577" class="bc" target="_blank">Escribir ahora</a></div>
+<div class="ct2"><div class="ci">📧</div><h3>Correo</h3><p>brendi221825@gmail.com</p><a href="mailto:brendi221825@gmail.com" class="bc">Enviar email</a></div>
+<div class="ct2"><div class="ci">💬</div><h3>Grupo Oficial</h3><p>Únete al grupo</p><a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3" class="bc" target="_blank">Unirme</a></div>
 </div>
 </section>
 
@@ -352,7 +485,7 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 <p style="margin-top:1.2rem;font-size:.72rem">© 2025 Kurumi Bot. Hecho con ❤️ y ⏰</p>
 </footer>
 
-<!-- 🎵 REPRODUCTOR CON TU MÚSICA -->
+<!-- 🎵 REPRODUCTOR -->
 <div class="rep">
 <audio id="mu" loop preload="auto" style="display:none">
 <source src="https://files.catbox.moe/yy8oe3.m4a" type="audio/mp4">
@@ -362,39 +495,37 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 </div>
 
 <script>
-// ===== RELOJ ZAFKIEL (adaptable) =====
+// ===== RELOJ ZAFKIEL PRINCIPAL =====
 var R=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
-
 function crearNumeros(){
-var cont=document.getElementById('rn');
-cont.innerHTML='';
-var reloj=document.getElementById('zc');
-var size=reloj.offsetWidth;
-var centro=size/2;
-var radio=size*0.37;
-R.forEach(function(n,i){
-var a=i*30*Math.PI/180;
-var e=document.createElement('div');
-e.className='rn';
-e.textContent=n;
-e.style.fontSize=Math.max(10,size*0.05)+'px';
-e.style.width=Math.max(20,size*0.11)+'px';
-e.style.height=Math.max(20,size*0.11)+'px';
-e.style.left=(centro+radio*Math.sin(a)-size*0.055)+'px';
-e.style.top=(centro-radio*Math.cos(a)-size*0.055)+'px';
-cont.appendChild(e);
-});
-}
-
+var cont=document.getElementById('rn');cont.innerHTML='';
+var reloj=document.getElementById('zc');var size=reloj.offsetWidth;
+var centro=size/2;var radio=size*0.37;
+R.forEach(function(n,i){var a=i*30*Math.PI/180;var e=document.createElement('div');e.className='rn';e.textContent=n;e.style.fontSize=Math.max(10,size*0.05)+'px';e.style.width=Math.max(20,size*0.11)+'px';e.style.height=Math.max(20,size*0.11)+'px';e.style.left=(centro+radio*Math.sin(a)-size*0.055)+'px';e.style.top=(centro-radio*Math.cos(a)-size*0.055)+'px';cont.appendChild(e)})}
 function upR(){var d=new Date();var h=d.getHours()%12;var m=d.getMinutes();var s=d.getSeconds();document.getElementById('mh').style.transform='rotate('+((h*30)+(m*0.5))+'deg)';document.getElementById('mm').style.transform='rotate('+((m*6)+(s*0.1))+'deg)';document.getElementById('ms').style.transform='rotate('+(s*6)+'deg)';var hh=('0'+d.getHours()).slice(-2);var mm=('0'+m).slice(-2);var ss=('0'+s).slice(-2);document.getElementById('hd').textContent=hh+':'+mm+':'+ss}
+crearNumeros();upR();setInterval(upR,1000);
+window.addEventListener('resize',crearNumeros);
 
-crearNumeros();
-upR();
-setInterval(upR,1000);
-
-window.addEventListener('resize',function(){
-crearNumeros();
-});
+// ===== RELOJ WHITE QUEEN (Blanco/Plateado) =====
+function crearNumerosWQ(){
+var cont=document.getElementById('wqNums');
+if(!cont)return;cont.innerHTML='';
+var reloj=document.getElementById('wqClock');
+if(!reloj)return;
+var size=reloj.offsetWidth;
+var centro=size/2;var radio=size*0.37;
+R.forEach(function(n,i){var a=i*30*Math.PI/180;var e=document.createElement('div');e.className='wq-rn';e.textContent=n;e.style.fontSize=Math.max(10,size*0.05)+'px';e.style.width=Math.max(20,size*0.11)+'px';e.style.height=Math.max(20,size*0.11)+'px';e.style.left=(centro+radio*Math.sin(a)-size*0.055)+'px';e.style.top=(centro-radio*Math.cos(a)-size*0.055)+'px';cont.appendChild(e)})}
+function upWQ(){
+var d=new Date();var h=d.getHours()%12;var m=d.getMinutes();var s=d.getSeconds();
+var el1=document.getElementById('wqh');var el2=document.getElementById('wqm');var el3=document.getElementById('wqs');
+if(el1)el1.style.transform='rotate('+((h*30)+(m*0.5))+'deg)';
+if(el2)el2.style.transform='rotate('+((m*6)+(s*0.1))+'deg)';
+if(el3)el3.style.transform='rotate('+(s*6)+'deg)';
+var t=document.getElementById('wqTime');
+if(t){var hh=('0'+d.getHours()).slice(-2);var mm=('0'+m).slice(-2);var ss=('0'+s).slice(-2);t.textContent=hh+':'+mm+':'+ss}
+}
+crearNumerosWQ();upWQ();setInterval(upWQ,1000);
+window.addEventListener('resize',crearNumerosWQ);
 
 // ===== PARTÍCULAS =====
 for(var i=0;i<25;i++){var p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'vw';p.style.animationDuration=(8+Math.random()*15)+'s';p.style.animationDelay=Math.random()*10+'s';var s2=2+Math.random()*4;p.style.width=s2+'px';p.style.height=s2+'px';p.style.background=['rgba(200,50,80,0.4)','rgba(212,168,83,0.35)','rgba(232,180,180,0.3)'][Math.floor(Math.random()*3)];document.body.appendChild(p)}
@@ -406,86 +537,70 @@ setInterval(function(){var a2=document.createElement('div');a2.className='a';var
 var cl=0,tm=null;
 var zc=document.getElementById('zc');
 var wo=document.getElementById('wo');
-zc.addEventListener('click',function(){cl++;clearTimeout(tm);if(cl>=3){wo.classList.add('vis');document.body.classList.add('wq');cl=0}tm=setTimeout(function(){cl=0},1500)});
-document.getElementById('cb').addEventListener('click',function(){wo.classList.remove('vis');document.body.classList.remove('wq')});
+function abrirWQ(){wo.classList.add('vis');document.body.classList.add('wq');wo.scrollTop=0;crearNumerosWQ();upWQ();crearCopos();iniciarCountdown()}
+function cerrarWQ(){wo.classList.remove('vis');document.body.classList.remove('wq');removerCopos();document.getElementById('quizRes').style.display='none'}
+zc.addEventListener('click',function(){cl++;clearTimeout(tm);if(cl>=3){abrirWQ();cl=0}tm=setTimeout(function(){cl=0},1500)});
+document.getElementById('cb').addEventListener('click',cerrarWQ);
 var bf='';
-document.addEventListener('keydown',function(e){bf+=e.key.toLowerCase();if(bf.length>10)bf=bf.slice(-10);if(bf.indexOf('whitequeen')!==-1){wo.classList.add('vis');document.body.classList.add('wq');bf=''}if(e.key==='Escape'){wo.classList.remove('vis');document.body.classList.remove('wq')}});
+document.addEventListener('keydown',function(e){bf+=e.key.toLowerCase();if(bf.length>10)bf=bf.slice(-10);if(bf.indexOf('whitequeen')!==-1){abrirWQ();bf=''}if(e.key==='Escape'){cerrarWQ()}});
 
-// ===== 🎵 MÚSICA DE KURUMI (catbox + fallback) =====
-var bm=document.getElementById('bm');
-var eq=document.getElementById('eq');
-var aud=document.getElementById('mu');
-var pg=false;
-var ac=null;
-var nd=[];
-var ni1=null;
-var ni2=null;
+// ===== COPOS =====
+var copos=[];
+function crearCopos(){removerCopos();for(var i=0;i<20;i++){var c=document.createElement('div');c.className='copo';c.textContent='❄';c.style.left=Math.random()*100+'vw';c.style.animationDuration=(8+Math.random()*12)+'s';c.style.animationDelay=Math.random()*8+'s';c.style.fontSize=(8+Math.random()*10)+'px';document.body.appendChild(c);copos.push(c)}}
+function removerCopos(){copos.forEach(function(c){c.remove()});copos=[]}
 
-function nota(freq,dur,vol,tipo){
-if(!ac)return;
-var o=ac.createOscillator();
-var g=ac.createGain();
-o.type=tipo||'triangle';
-o.frequency.value=freq;
-g.gain.setValueAtTime(vol||.15,ac.currentTime);
-g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
-o.connect(g);g.connect(ac.destination);
-o.start();o.stop(ac.currentTime+dur);
+// ===== CUENTA REGRESIVA (FECHA FIJA) =====
+var fechaLanzamiento=new Date('2026-10-17T20:00:00-06:00');
+var cdInt=null;
+function iniciarCountdown(){
+if(cdInt)clearInterval(cdInt);
+cdInt=setInterval(function(){
+var diff=fechaLanzamiento-new Date();
+if(diff<0)diff=0;
+var d=Math.floor(diff/86400000);
+var h=Math.floor((diff%86400000)/3600000);
+var m=Math.floor((diff%3600000)/60000);
+var s=Math.floor((diff%60000)/1000);
+document.getElementById('cdD').textContent=d;
+document.getElementById('cdH').textContent=('0'+h).slice(-2);
+document.getElementById('cdM').textContent=('0'+m).slice(-2);
+document.getElementById('cdS').textContent=('0'+s).slice(-2);
+},1000);
 }
 
+// ===== QUIZ =====
+function respQuiz(num){
+var ops=document.querySelectorAll('.opcion');
+var res=document.getElementById('quizRes');
+var opc=ops[num-1];var tipo=opc.getAttribute('data-c');
+ops.forEach(function(o){o.style.pointerEvents='none'});
+opc.classList.add(tipo==='k'?'incorrecta':'correcta');
+if(tipo==='k'){res.className='resultado kurumi';res.innerHTML='🖤 ¡Eres KURUMI!<br><span style="font-family:Raleway;font-size:.85rem;font-style:italic">"Ara ara... Te gusta el caos y controlar todo."</span>'}
+else{res.className='resultado queen';res.innerHTML='🤍 ¡Eres WHITE QUEEN!<br><span style="font-family:Raleway;font-size:.85rem;font-style:italic">"¿Crees que puedes detenerme? Buscas la paz y proteger a otros."</span>'}
+res.style.display='block';
+}
+
+// ===== MÚSICA =====
+var bm=document.getElementById('bm');var eq=document.getElementById('eq');var aud=document.getElementById('mu');var pg=false;var ac=null;var nd=[];var ni1=null;var ni2=null;
+function nota(freq,dur,vol,tipo){if(!ac)return;var o=ac.createOscillator();var g=ac.createGain();o.type=tipo||'triangle';o.frequency.value=freq;g.gain.setValueAtTime(vol||.15,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+dur)}
 function crearMusica(){
 ac=new(window.AudioContext||window.webkitAudioContext)();
-var b1=ac.createOscillator(),b1g=ac.createGain();
-b1.type='sine';b1.frequency.value=120;b1g.gain.value=.18;
-b1.connect(b1g);b1g.connect(ac.destination);b1.start();nd.push(b1);
-var b2=ac.createOscillator(),b2g=ac.createGain();
-b2.type='sine';b2.frequency.value=165;b2g.gain.value=.1;
-b2.connect(b2g);b2g.connect(ac.destination);b2.start();nd.push(b2);
-var lf=ac.createOscillator(),lfg=ac.createGain();
-lf.type='sine';lf.frequency.value=.2;lfg.gain.value=.08;
-lf.connect(lfg);lfg.connect(b1g.gain);lf.start();nd.push(lf);
-var bs=ac.sampleRate*2,nb=ac.createBuffer(1,bs,ac.sampleRate),out=nb.getChannelData(0);
-for(var k=0;k<bs;k++)out[k]=Math.random()*2-1;
-var ns=ac.createBufferSource();ns.buffer=nb;ns.loop=true;
-var nfi=ac.createBiquadFilter();nfi.type='lowpass';nfi.frequency.value=400;
-var ng=ac.createGain();ng.gain.value=.04;
-ns.connect(nfi);nfi.connect(ng);ng.connect(ac.destination);ns.start();nd.push(ns);
-var melod=[261.63,293.66,329.63,293.66,261.63,220,261.63,329.63];
-var idx=0;
+var b1=ac.createOscillator(),b1g=ac.createGain();b1.type='sine';b1.frequency.value=120;b1g.gain.value=.18;b1.connect(b1g);b1g.connect(ac.destination);b1.start();nd.push(b1);
+var b2=ac.createOscillator(),b2g=ac.createGain();b2.type='sine';b2.frequency.value=165;b2g.gain.value=.1;b2.connect(b2g);b2g.connect(ac.destination);b2.start();nd.push(b2);
+var lf=ac.createOscillator(),lfg=ac.createGain();lf.type='sine';lf.frequency.value=.2;lfg.gain.value=.08;lf.connect(lfg);lfg.connect(b1g.gain);lf.start();nd.push(lf);
+var bs=ac.sampleRate*2,nb=ac.createBuffer(1,bs,ac.sampleRate),out=nb.getChannelData(0);for(var k=0;k<bs;k++)out[k]=Math.random()*2-1;
+var ns=ac.createBufferSource();ns.buffer=nb;ns.loop=true;var nfi=ac.createBiquadFilter();nfi.type='lowpass';nfi.frequency.value=400;var ng=ac.createGain();ng.gain.value=.04;ns.connect(nfi);nfi.connect(ng);ng.connect(ac.destination);ns.start();nd.push(ns);
+var melod=[261.63,293.66,329.63,293.66,261.63,220,261.63,329.63];var idx=0;
 ni1=setInterval(function(){if(!pg||!ac)return;nota(melod[idx%melod.length],2,.12,'triangle');idx++},3000);
-var campanas=[523.25,440,392,523.25];
-var ci2=0;
-ni2=setInterval(function(){if(!pg||!ac)return;nota(campanas[ci2%campanas.length],3,.08,'sine');ci2++},5000);
+var cam=[523.25,440,392,523.25];var ci2=0;
+ni2=setInterval(function(){if(!pg||!ac)return;nota(cam[ci2%cam.length],3,.08,'sine');ci2++},5000);
 }
-
-function detMusica(){
-clearInterval(ni1);clearInterval(ni2);
-for(var n=0;n<nd.length;n++){try{nd[n].stop()}catch(e){}}
-nd=[];if(ac){ac.close();ac=null}
-}
-
-bm.addEventListener('click',function(){
-if(pg){
-detMusica();
-aud.pause();aud.currentTime=0;
-bm.textContent='🎵';bm.classList.remove('pl2');eq.classList.remove('vis');pg=false;
-}else{
-pg=true;
-aud.volume=0.6;
-aud.play().then(function(){
-bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis');
-}).catch(function(){
-crearMusica();
-bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis');
-});
-}
-});
+function detMusica(){clearInterval(ni1);clearInterval(ni2);for(var n=0;n<nd.length;n++){try{nd[n].stop()}catch(e){}}nd=[];if(ac){ac.close();ac=null}}
+bm.addEventListener('click',function(){if(pg){detMusica();aud.pause();aud.currentTime=0;bm.textContent='🎵';bm.classList.remove('pl2');eq.classList.remove('vis');pg=false}else{pg=true;aud.volume=0.6;aud.play().then(function(){bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis')}).catch(function(){crearMusica();bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis')})}});
 
 // ===== SCROLL =====
 var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.1});
 document.querySelectorAll('.fi2').forEach(function(el){ob.observe(el)});
-
-// ===== SMOOTH SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();var d=document.querySelector(l.getAttribute('href'));if(d)d.scrollIntoView({behavior:'smooth',block:'start'})})});
 </script>
 
