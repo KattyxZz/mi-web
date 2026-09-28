@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🕐 Kurumi Bot - Proyecto WhatsApp</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============ RESET & BASE ============ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            color: #e8d5d5;
+            background: #0a0608;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+        /* ============ FONDO ANIMADO ============ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 50%, rgba(139, 0, 20, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(80, 0, 40, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(60, 0, 10, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        /* Partículas flotantes */
+        .particula {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: rgba(200, 50, 80, 0.4);
+            border-radius: 50%;
+            animation: flotar linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes flotar {
+            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%  { opacity: 1; }
+            90%  { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ============ RELOJ DECORATIVO ============ */
+        .reloj-fondo {
+            position: fixed;
+            font-size: 300px;
+            opacity: 0.03;
+            animation: girar 60s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes girar {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* ============ NAVEGACIÓN ============ */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 6, 8, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(180, 30, 50, 0.2);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #c8324b;
+            text-decoration: none;
+            letter-spacing: 3px;
+        }
+
+        .logo span {
+            color: #d4a853;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #c8a0a0;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+            color: #e8c0c0;
+            border-color: rgba(200, 50, 75, 0.3);
+            background: rgba(200, 50, 75, 0.1);
+        }
+
+        /* ============ HERO SECTION ============ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: pulso 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(200, 50, 75, 0.5));
+        }
+
+        @keyframes pulso {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.1); }
+        }
+
+        .hero h1 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 7vw, 5.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #c8324b, #e8c080, #c8324b);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: brillo 4s ease-in-out infinite;
+            letter-spacing: 5px;
+            line-height: 1.2;
+        }
+
+        @keyframes brillo {
+            0%, 100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
+        }
+
+        .hero .subtitulo {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: #c8a0a0;
+            margin-top: 1.5rem;
+            max-width: 600px;
+            line-height: 1.8;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero .linea-decorativa {
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c8324b, #d4a853, #c8324b, transparent);
+            margin: 2rem auto;
+        }
+
+        .botones-hero {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-principal {
+            background: linear-gradient(135deg, #8b0020, #c8324b);
+            color: #fff;
+            border: 1px solid rgba(200, 50, 75, 0.5);
+            box-shadow: 0 0 30px rgba(200, 50, 75, 0.3);
+        }
+
+        .btn-principal:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(200, 50, 75, 0.5);
+            background: linear-gradient(135deg, #a50028, #e04060);
+        }
+
+        .btn-secundario {
+            background: transparent;
+            color: #d4a853;
+            border: 1px solid rgba(212, 168, 83, 0.4);
+        }
+
+        .btn-secundario:hover {
+            background: rgba(212, 168, 83, 0.1);
+            border-color: #d4a853;
+            transform: translateY(-3px);
+        }
+
+        /* ============ SECCIONES GENERALES ============ */
+        .seccion {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .titulo-seccion {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #c8324b;
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .subtitulo-seccion {
+            text-align: center;
+            color: #a08080;
+            font-size: 1.1rem;
+            margin-bottom: 3.5rem;
+            font-weight: 300;
+        }
+
+        .linea-seccion {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #c8324b, transparent);
+            margin: 1.5rem auto 3.5rem;
+        }
+
+        /* ============ SOBRE EL BOT ============ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-texto h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: #d4a853;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-texto p {
+            color: #c0a0a0;
+            line-height: 2;
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .about-imagen {
+            text-align: center;
+            position: relative;
+        }
+
+        .about-imagen .marco {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 3px solid rgba(200, 50, 75, 0.4);
+            background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 8rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .marco::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 168, 83, 0.3);
+            animation: girar-marco 15s linear infinite;
+            border-top-color: #d4a853;
+            border-right-color: #c8324b;
+        }
+
+        @keyframes girar-marco {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* ============ CARACTERÍSTICAS ============ */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, rgba(20, 10, 15, 0.9), rgba(30, 15, 25, 0.9));
+            border: 1px solid rgba(200, 50, 75, 0.15);
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200, 50, 75, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .feature-card:hover::before {
+            left: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(200, 50, 75, 0.4);
+            box-shadow: 0 20px 60px rgba(139, 0, 20, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            display: block;
+        }
+
+        .feature-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.25rem;
+            color: #d4a853;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .feature-card p {
+            color: #b09090;
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        /* ============ NOVEDADES ============ */
+        .novedades-lista {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .novedad-item {
+            background: linear-gradient(135deg, rgba(20, 10, 15, 0.9), rgba(30, 15, 25, 0.9));
+            border: 1px solid rgba(200, 50, 75, 0.12);
+            border-left: 4px solid #c8324b;
+            border-radius: 8px;
+            padding: 1.8rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .novedad-item:hover {
+            border-left-color: #d4a853;
+            background: linear-gradient(135deg, rgba(35, 15, 25, 0.95), rgba(45, 20, 35, 0.95));
+            transform: translateX(8px);
+        }
+
+        .novedad-fecha {
+            font-size: 0.85rem;
+            color: #d4a853;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .novedad-item h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #e8d0d0;
+            margin-bottom: 0.8rem;
+        }
+
+        .novedad-item p {
+            color: #b09090;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            margin-top: 0.8rem;
+        }
+
+        .tag-nuevo {
+            background: rgba(200, 50, 75, 0.2);
+            color: #e87090;
+            border: 1px solid rgba(200, 50, 75, 0.3);
+        }
+
+        .tag-mejora {
+            background: rgba(212, 168, 83, 0.15);
+            color: #d4a853;
+            border: 1px solid rgba(212, 168, 83, 0.3);
+        }
+
+        .tag-proximamente {
+            background: rgba(100, 100, 160, 0.15);
+            color: #9090c0;
+            border: 1px solid rgba(100, 100, 160, 0.3);
+        }
+
+        /* ============ ESTADÍSTICAS ============ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2.5rem 1.5rem;
+            background: linear-gradient(135deg, rgba(20, 10, 15, 0.8), rgba(35, 15, 25, 0.8));
+            border: 1px solid rgba(200, 50, 75, 0.12);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 168, 83, 0.3);
+        }
+
+        .stat-numero {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #c8324b;
+            display: block;
+        }
+
+        .stat-texto {
+            color: #b09090;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+            margin-top: 0.5rem;
+        }
+
+        /* ============ CTA / LLAMADA A LA ACCIÓN ============ */
+        .cta-seccion {
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .cta-seccion .linea-seccion {
+            margin: 0 auto 2rem;
+        }
+
+        .cta-seccion h2 {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: #e8d0d0;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-seccion p {
+            color: #b09090;
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        /* ============ CONTACTO ============ */
+.contacto-tarjetas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3.5rem;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contacto-tarjeta {
+    background: linear-gradient(135deg, rgba(20, 10, 15, 0.9), rgba(35, 15, 25, 0.9));
+    border: 1px solid rgba(200, 50, 75, 0.15);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.contacto-tarjeta::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    height: 4px;
+    background: linear-gradient(90deg, #c8324b, #d4a853, #c8324b);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.contacto-tarjeta:hover::before {
+    opacity: 1;
+}
+
+.contacto-tarjeta:hover {
+    transform: translateY(-8px);
+    border-color: rgba(200, 50, 75, 0.4);
+    box-shadow: 0 20px 60px rgba(139, 0, 20, 0.25);
+}
+
+.contacto-icono {
+    font-size: 3rem;
+    margin-bottom: 1.2rem;
+    filter: drop-shadow(0 0 15px rgba(200, 50, 75, 0.4));
+}
+
+.contacto-tarjeta h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.15rem;
+    color: #d4a853;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+}
+
+.contacto-tarjeta p {
+    color: #c0a0a0;
+    font-size: 1.05rem;
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+.btn-contacto {
+    padding: 0.7rem 1.8rem;
+    border: 1px solid rgba(200, 50, 75, 0.4);
+    border-radius: 999px;
+    background: rgba(200, 50, 75, 0.15);
+    color: #e8b0b0;
+    font-family: 'Raleway', sans-serif;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-contacto:hover {
+    background: #c8324b;
+    color: #fff;
+    border-color: #c8324b;
+    box-shadow: 0 5px 25px rgba(200, 50, 75, 0.4);
+}
+
+        /* ============ FOOTER ============ */
+        footer {
+            border-top: 1px solid rgba(200, 50, 75, 0.15);
+            padding: 3rem 2rem;
+            text-align: center;
+            background: rgba(8, 4, 8, 0.8);
+        }
+
+        footer .footer-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #c8324b;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        footer .footer-logo span {
+            color: #d4a853;
+        }
+
+        footer p {
+            color: #706060;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-links a {
+            color: #806060;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #c8324b;
+        }
+
+        /* ============ SCROLL BAR ============ */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0608;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8b0020;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c8324b;
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .hero-icon {
+                font-size: 3.5rem;
+            }
+
+            .seccion {
+                padding: 4rem 1.5rem;
+            }
+
+            .stat-numero {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* ============ EFECTO APARICIÓN ============ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reloj decorativo de fondo -->
+    <div class="reloj-fondo">🕐</div>
+
+    <!-- NAV -->
+    <nav>
+        <a href="#" class="logo">KURUMI <span>BOT</span></a>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#sobre">Sobre el Bot</a></li>
+            <li><a href="#caracteristicas">Características</a></li>
+            <li><a href="#novedades">Novedades</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-icon">🕐</div>
+        <h1>KURUMI BOT</h1>
+        <div class="linea-decorativa"></div>
+        <p class="subtitulo">
+            Tu bot de WhatsApp con estilo gótico y elegante.
+            Automatiza, interactúa y sorprende a todos tus contactos.
+        </p>
+        <div class="botones-hero">
+            <a href="#sobre" class="btn btn-principal">🕐 Descubrir más</a>
+            <a href="#contacto" class="btn btn-secundario">💬 Contactar</a>
+        </div>
+    </section>
+
+    <!-- SOBRE EL BOT -->
+    <section class="seccion fade-in" id="sobre">
+        <h2 class="titulo-seccion">SOBRE EL PROYECTO</h2>
+        <div class="linea-seccion"></div>
+        <p class="subtitulo-seccion">Inspirado en la elegancia de Kurumi Tokisaki</p>
+
+        <div class="about-grid">
+            <div class="about-texto">
+                <h3>🕰️ ¿Qué es Kurumi Bot?</h3>
+                <p>
+                    Kurumi Bot es un proyecto de <strong>bot para WhatsApp</strong>
+                    diseñado para automatizar tareas, responder mensajes,
+                    enviar notificaciones y mucho más.
+                </p>
+                <p>
+                    Con una estética inspirada en <strong>Kurumi Tokisaki</strong>
+                    de Date A Live, este bot combina funcionalidad con estilo
+                    gótico, oscuro y elegante.
+                </p>
+                <p>
+                    Siempre evolucionando, siempre mejorando.
+                    ¡Cada actualización trae algo nuevo!
+                </p>
+            </div>
+            <div class="about-imagen">
+                <div class="marco">⏳</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS -->
+    <section class="seccion fade-in" id="caracteristicas">
+        <h2 class="titulo-seccion">CARACTERÍSTICAS</h2>
+        <div class="linea-seccion"></div>
+        <p class="subtitulo-seccion">Todo lo que Kurumi Bot puede hacer por ti</p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🤖</span>
+                <h3>Respuestas Automáticas</h3>
+                <p>Responde mensajes de forma inteligente y rápida, con personalidad única.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📢</span>
+                <h3>Notificaciones</h3>
+                <p>Envía alertas, recordatorios y avisos automáticamente a tus contactos.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎮</span>
+                <h3>Juegos y Entretenimiento</h3>
+                <p>Comandos divertidos, trivia, juegos de rol y más para entretenerte.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <h3>Estadísticas</h3>
+                <p>Monitorea actividad, mensajes y datos de tus grupos de WhatsApp.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🛡️</span>
+                <h3>Moderación</h3>
+                <p>Protege tus grupos con filtros anti-spam y herramientas de moderación.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Personalización</h3>
+                <p>Configura respuestas, temas y comandos a tu medida.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="seccion fade-in">
+        <h2 class="titulo-seccion">NÚMEROS</h2>
+        <div class="linea-seccion"></div>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-numero">24/7</span>
+                <div class="stat-texto">Siempre activo</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">50+</span>
+                <div class="stat-texto">Comandos disponibles</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">∞</span>
+                <div class="stat-texto">Posibilidades</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">1</span>
+                <div class="stat-texto">Proyecto único</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOVEDADES -->
+    <section class="seccion fade-in" id="novedades">
+        <h2 class="titulo-seccion">NOVEDADES</h2>
+        <div class="linea-seccion"></div>
+        <p class="subtitulo-seccion">Últimas actualizaciones del proyecto</p>
+
+        <div class="novedades-lista">
+            <div class="novedad-item">
+                <div class="novedad-fecha">🕐 Enero 2025</div>
+                <h3>✦ Nuevo sistema de respuestas inteligentes</h3>
+                <p>
+                    El bot ahora puede entender mejor los mensajes y dar
+                    respuestas más naturales y personalizadas.
+                </p>
+                <span class="tag tag-nuevo">✦ NUEVO</span>
+            </div>
+
+            <div class="novedad-item">
+                <div class="novedad-fecha">🕐 Diciembre 2024</div>
+                <h3>✦ Rediseño de la interfaz de comandos</h3>
+                <p>
+                    Menús más elegantes y fáciles de usar, con el estilo
+                    gótico característico de Kurumi.
+                </p>
+                <span class="tag tag-mejora">↑ MEJORA</span>
+            </div>
+
+            <div class="novedad-item">
+                <div class="novedad-fecha">🕐 Noviembre 2024</div>
+                <h3>✦ Sistema de juegos y trivia</h3>
+                <p>
+                    Agregamos nuevos juegos interactivos para que los grupos
+                    se diviertan más con el bot.
+                </p>
+                <span class="tag tag-nuevo">✦ NUEVO</span>
+            </div>
+
+            <div class="novedad-item">
+                <div class="novedad-fecha">🕐 Próximamente</div>
+                <h3>✦ Modo IA conversacional</h3>
+                <p>
+                    Estamos trabajando en integrar inteligencia artificial
+                    para conversaciones más avanzadas. ¡Muy pronto!
+                </p>
+                <span class="tag tag-proximamente">⏳ PRÓXIMAMENTE</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- DOCUMENTACIÓN -->
+<section class="seccion fade-in" id="documentacion">
+    <h2 class="titulo-seccion">📖 DOCUMENTACIÓN</h2>
+    <div class="linea-seccion"></div>
+    <p class="subtitulo-seccion">Guía rápida de comandos de Kurumi Bot</p>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <span class="feature-icon">📋</span>
+            <h3>.help</h3>
+            <p>Muestra la lista completa de comandos disponibles del bot.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🖼️</span>
+            <h3>.sticker</h3>
+            <p>Convierte una imagen en sticker para WhatsApp.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🎵</span>
+            <h3>.play</h3>
+            <p>Busca y envía música directamente al chat.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">📊</span>
+            <h3>.stats</h3>
+            <p>Ve las estadísticas de actividad del grupo.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🛡️</span>
+            <h3>.moderar</h3>
+            <p>Activa herramientas de moderación para el grupo.</p>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">⚙️</span>
+            <h3>.config</h3>
+            <p>Configura las opciones del bot a tu medida.</p>
+        </div>
+    </div>
+</section>
+
+<ul class="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#sobre">Sobre el Bot</a></li>
+    <li><a href="#caracteristicas">Características</a></li>
+    <li><a href="#novedades">Novedades</a></li>
+    <li><a href="#documentacion">Documentación</a></li>  <!-- NUEVO -->
+    <li><a href="#contacto">Contacto</a></li>
+</ul>
+
+
+<!-- CONTACTO -->
+<section class="cta-seccion fade-in" id="contacto">
+    <div class="linea-seccion"></div>
+    <h2>¿Listo para conocer a Kurumi Bot?</h2>
+    <p>
+        Únete a esta aventura y descubre todo lo que puede hacer
+        por ti y tu comunidad de WhatsApp.
+    </p>
+    <div class="botones-hero">
+        <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
+           class="btn btn-principal"
+           target="_blank">
+            💬 Unirme al Bot
+        </a>
+        <a href="#documentacion" class="btn btn-secundario">📖 Ver Documentación</a>
+    </div>
+
+    <!-- TARJETAS DE CONTACTO -->
+    <div class="contacto-tarjetas">
+        <div class="contacto-tarjeta">
+            <div class="contacto-icono">📱</div>
+            <h3>WhatsApp / Teléfono</h3>
+            <p>+506 7018-3577</p>
+            <a href="https://wa.me/50670183577"
+               class="btn btn-contacto"
+               target="_blank">
+                Escribir ahora
+            </a>
+        </div>
+
+        <div class="contacto-tarjeta">
+            <div class="contacto-icono">📧</div>
+            <h3>Correo Electrónico</h3>
+            <p>brendi221825@gmail.com</p>
+            <a href="mailto:brendi221825@gmail.com"
+               class="btn btn-contacto">
+                Enviar email
+            </a>
+        </div>
+
+        <div class="contacto-tarjeta">
+            <div class="contacto-icono">💬</div>
+            <h3>Grupo Oficial</h3>
+            <p>Únete al grupo de WhatsApp</p>
+            <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
+               class="btn btn-contacto"
+               target="_blank">
+                Unirme ahora
+            </a>
+        </div>
+    </div>
+</section>
+
+    <!-- FOOTER -->
+   <div class="footer-links">
+    <a href="#">GitHub</a>
+    <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
+       target="_blank">WhatsApp</a>
+    <a href="#">Twitter</a>
+    <a href="#">Discord</a>
+</div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ===== Crear partículas flotantes =====
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particula');
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (8 + Math.random() * 15) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+            document.body.appendChild(p);
+        }
+
+        // ===== Animación al hacer scroll =====
+        const observer = new IntersectionObserver((entradas) => {
+            entradas.forEach(entrada => {
+                if (entrada.isIntersecting) {
+                    entrada.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ===== Smooth scroll para navegación =====
+        document.querySelectorAll('a[href^="#"]').forEach(enlace => {
+            enlace.addEventListener('click', function(e) {
+                e.preventDefault();
+                const destino = document.querySelector(this.getAttribute('href'));
+                if (destino) {
+                    destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // ===== Contador animado para estadísticas =====
+        const numeros = document.querySelectorAll('.stat-numero');
+        const observerNumeros = new IntersectionObserver((entradas) => {
+            entradas.forEach(entrada => {
+                if (entrada.isIntersecting) {
+                    entrada.target.style.animation = 'brillo 2s ease-in-out';
+                    observerNumeros.unobserve(entrada.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        numeros.forEach(n => observerNumeros.observe(n));
+    </script>
+
+</body>
+</html>
