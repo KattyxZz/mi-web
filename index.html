@@ -6,7 +6,6 @@
     <title>🕐 Kurumi Bot - Proyecto WhatsApp</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ===== VARIABLES ===== */
         :root {
             --bg-primary: #0a0608;
             --color-primary: #c8324b;
@@ -19,8 +18,6 @@
             --glow-color: rgba(200, 50, 75, 0.3);
             --clock-glow: rgba(212, 168, 83, 0.4);
         }
-
-        /* ===== WHITE QUEEN MODE ===== */
         body.white-queen {
             --bg-primary: #0c0c20;
             --color-primary: #8888cc;
@@ -33,51 +30,32 @@
             --glow-color: rgba(128, 128, 200, 0.3);
             --clock-glow: rgba(200, 200, 230, 0.5);
         }
-
-        /* ===== RESET ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: 'Raleway', sans-serif;
             color: var(--color-text);
             background: var(--bg-primary);
             overflow-x: hidden;
-            cursor: default;
-            transition: background 1s ease, color 1s ease;
+            transition: background 1s, color 1s;
             line-height: 1.6;
         }
-
-        /* Fondo decorativo */
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background:
-                radial-gradient(ellipse at 20% 50%, rgba(139, 0, 20, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(80, 0, 40, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(60, 0, 10, 0.1) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 50%, rgba(139,0,20,0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(80,0,40,0.12) 0%, transparent 50%);
             z-index: -2;
             pointer-events: none;
         }
-
         body.white-queen::before {
             background:
-                radial-gradient(ellipse at 20% 50%, rgba(100, 100, 180, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(80, 80, 160, 0.1) 0%, transparent 50%);
+                radial-gradient(ellipse at 20% 50%, rgba(100,100,180,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(80,80,160,0.1) 0%, transparent 50%);
         }
-
-        /* ===== PARTÍCULAS ===== */
         .particula {
             position: fixed;
             border-radius: 50%;
@@ -85,14 +63,12 @@
             animation: flotar linear infinite;
             z-index: -1;
         }
-
         @keyframes flotar {
-            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10%  { opacity: 1; }
-            90%  { opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+            0% { transform: translateY(100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
-
         .particula-reloj {
             position: fixed;
             font-size: 12px;
@@ -101,14 +77,12 @@
             animation: flotar-reloj linear infinite;
             z-index: -1;
         }
-
         @keyframes flotar-reloj {
-            0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            15%  { opacity: 0.2; }
-            85%  { opacity: 0.2; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(100vh); opacity: 0; }
+            15% { opacity: 0.2; }
+            85% { opacity: 0.2; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
-
         .anillo-tiempo {
             position: fixed;
             border: 1px solid var(--color-secondary);
@@ -118,17 +92,13 @@
             z-index: -1;
             opacity: 0;
         }
-
         @keyframes expandir {
-            0%   { transform: scale(0); opacity: 0.4; }
+            0% { transform: scale(0); opacity: 0.4; }
             100% { transform: scale(8); opacity: 0; }
         }
-
-        /* ===== NAVEGACIÓN ===== */
         nav {
             position: fixed;
-            top: 0;
-            left: 0;
+            top: 0; left: 0;
             width: 100%;
             padding: 1rem 2rem;
             display: flex;
@@ -136,15 +106,9 @@
             align-items: center;
             background: rgba(10, 6, 8, 0.9);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
         }
-
-        body.white-queen nav {
-            background: rgba(12, 12, 32, 0.9);
-        }
-
         .logo {
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
@@ -153,34 +117,26 @@
             text-decoration: none;
             letter-spacing: 3px;
         }
-
-        .logo span {
-            color: var(--color-secondary);
-        }
-
+        .logo span { color: var(--color-secondary); }
         .nav-links {
             display: flex;
             list-style: none;
             gap: 1.2rem;
         }
-
         .nav-links a {
             color: var(--color-muted);
             text-decoration: none;
             font-size: 0.88rem;
             letter-spacing: 1px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             padding: 0.5rem 0.8rem;
             border-radius: 4px;
             border: 1px solid transparent;
         }
-
         .nav-links a:hover {
             color: var(--color-text);
             border-color: var(--glow-color);
         }
-
-        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -189,9 +145,7 @@
             align-items: center;
             text-align: center;
             padding: 7rem 2rem 3rem;
-            position: relative;
         }
-
         .hero h1 {
             font-family: 'Cinzel', serif;
             font-size: clamp(2.2rem, 6vw, 4.5rem);
@@ -203,29 +157,24 @@
             background-clip: text;
             animation: brillo 4s ease-in-out infinite;
             letter-spacing: 5px;
-            line-height: 1.2;
             margin-top: 1rem;
         }
-
         @keyframes brillo {
             0%, 100% { background-position: 0% 50%; }
-            50%      { background-position: 100% 50%; }
+            50% { background-position: 100% 50%; }
         }
-
         .glitch {
             animation: glitch-efecto 8s ease-in-out infinite;
         }
-
         @keyframes glitch-efecto {
-            0%, 94%, 100% { transform: translate(0); filter: none; }
-            95% { transform: translate(-3px, 1px); filter: hue-rotate(20deg); }
-            96% { transform: translate(3px, -1px); filter: hue-rotate(-20deg); }
-            97% { transform: translate(-1px, 2px); filter: none; }
-            98% { transform: translate(2px, -2px); filter: hue-rotate(10deg); }
-            99% { transform: translate(0); filter: none; }
+            0%, 94%, 100% { transform: translate(0); }
+            95% { transform: translate(-3px, 1px); }
+            96% { transform: translate(3px, -1px); }
+            97% { transform: translate(-1px, 2px); }
+            98% { transform: translate(2px, -2px); }
+            99% { transform: translate(0); }
         }
-
-        .hero .subtitulo {
+        .subtitulo {
             font-size: clamp(1rem, 2.2vw, 1.35rem);
             color: var(--color-muted);
             margin-top: 1.5rem;
@@ -234,14 +183,12 @@
             font-weight: 300;
             letter-spacing: 1px;
         }
-
         .linea-decorativa {
             width: 120px;
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-secondary), var(--color-primary), transparent);
             margin: 1.5rem auto;
         }
-
         .botones-hero {
             display: flex;
             gap: 1.5rem;
@@ -249,7 +196,6 @@
             flex-wrap: wrap;
             justify-content: center;
         }
-
         .btn {
             padding: 1rem 2.5rem;
             border: none;
@@ -258,98 +204,71 @@
             font-family: 'Cinzel', serif;
             letter-spacing: 2px;
             cursor: pointer;
-            transition: all 0.4s ease;
+            transition: all 0.4s;
             text-decoration: none;
             display: inline-block;
         }
-
         .btn-principal {
             background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
             color: #fff;
             border: 1px solid var(--glow-color);
             box-shadow: 0 0 30px var(--glow-color);
         }
-
         .btn-principal:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 40px var(--glow-color);
         }
-
         .btn-secundario {
             background: transparent;
             color: var(--color-secondary);
             border: 1px solid rgba(212, 168, 83, 0.4);
         }
-
         .btn-secundario:hover {
             background: rgba(212, 168, 83, 0.1);
             transform: translateY(-3px);
         }
-
-        /* ===== 🕰️ RELOJ ZAFKIEL ===== */
         .zafkiel-wrap {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-bottom: 1.5rem;
         }
-
         .zafkiel-reloj {
             width: 260px;
             height: 260px;
             border-radius: 50%;
             position: relative;
-            background: radial-gradient(circle, rgba(20, 10, 15, 0.95), rgba(10, 5, 10, 0.98));
+            background: radial-gradient(circle, rgba(20,10,15,0.95), rgba(10,5,10,0.98));
             border: 3px solid var(--color-secondary);
-            box-shadow:
-                0 0 30px var(--clock-glow),
-                0 0 60px rgba(212, 168, 83, 0.15),
-                inset 0 0 40px rgba(139, 0, 20, 0.15);
+            box-shadow: 0 0 30px var(--clock-glow), 0 0 60px rgba(212,168,83,0.15), inset 0 0 40px rgba(139,0,20,0.15);
             cursor: pointer;
-            transition: all 0.5s ease;
+            transition: all 0.5s;
             overflow: hidden;
         }
-
         .zafkiel-reloj:hover {
-            box-shadow:
-                0 0 50px var(--clock-glow),
-                0 0 100px rgba(212, 168, 83, 0.25);
+            box-shadow: 0 0 50px var(--clock-glow), 0 0 100px rgba(212,168,83,0.25);
             transform: scale(1.03);
         }
-
-        body.white-queen .zafkiel-reloj {
-            background: radial-gradient(circle, rgba(20, 20, 40, 0.95), rgba(10, 10, 25, 0.98));
-        }
-
         .reloj-aro {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            right: 8px;
-            bottom: 8px;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
             border-radius: 50%;
-            border: 1px solid rgba(212, 168, 83, 0.2);
+            border: 1px solid rgba(212,168,83,0.2);
             border-top-color: var(--color-secondary);
             border-right-color: transparent;
             animation: girar-aro 20s linear infinite;
         }
-
         .reloj-aro-interno {
             position: absolute;
-            top: 18px;
-            left: 18px;
-            right: 18px;
-            bottom: 18px;
+            top: 18px; left: 18px; right: 18px; bottom: 18px;
             border-radius: 50%;
-            border: 1px dashed rgba(200, 50, 75, 0.15);
+            border: 1px dashed rgba(200,50,75,0.15);
             animation: girar-aro 35s linear infinite reverse;
         }
-
         @keyframes girar-aro {
             from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
-
         .reloj-numeral {
             position: absolute;
             font-family: 'Cinzel', serif;
@@ -363,7 +282,6 @@
             justify-content: center;
             text-shadow: 0 0 10px var(--clock-glow);
         }
-
         .reloj-mano {
             position: absolute;
             bottom: 50%;
@@ -371,31 +289,26 @@
             transform-origin: bottom center;
             border-radius: 4px;
         }
-
         .mano-hora {
             width: 5px;
             height: 58px;
             margin-left: -2.5px;
             background: linear-gradient(to top, var(--color-primary), #e87090);
-            box-shadow: 0 0 10px rgba(200, 50, 75, 0.5);
+            box-shadow: 0 0 10px rgba(200,50,75,0.5);
         }
-
         .mano-minuto {
             width: 3px;
             height: 85px;
             margin-left: -1.5px;
             background: linear-gradient(to top, var(--color-secondary), #f0d890);
-            box-shadow: 0 0 10px rgba(212, 168, 83, 0.5);
+            box-shadow: 0 0 10px rgba(212,168,83,0.5);
         }
-
         .mano-segundo {
             width: 1.5px;
             height: 98px;
             margin-left: -0.75px;
             background: linear-gradient(to top, transparent 20%, var(--color-text));
-            box-shadow: 0 0 8px rgba(232, 213, 213, 0.3);
         }
-
         .reloj-centro {
             position: absolute;
             width: 14px;
@@ -408,12 +321,11 @@
             box-shadow: 0 0 15px var(--clock-glow);
             z-index: 10;
         }
-
         .reloj-brillo {
             position: absolute;
             width: 60px;
             height: 30px;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.08), transparent);
+            background: radial-gradient(ellipse, rgba(255,255,255,0.08), transparent);
             border-radius: 50%;
             top: 25%;
             left: 28%;
@@ -421,7 +333,6 @@
             pointer-events: none;
             z-index: 5;
         }
-
         .zafkiel-texto {
             text-align: center;
             font-family: 'Cinzel', serif;
@@ -432,7 +343,6 @@
             text-shadow: 0 0 15px var(--clock-glow);
             opacity: 0.7;
         }
-
         .hora-digital {
             text-align: center;
             font-family: 'Cinzel', serif;
@@ -442,15 +352,12 @@
             margin-top: 0.4rem;
             text-shadow: 0 0 20px var(--glow-color);
         }
-
-        /* ===== SECCIONES ===== */
         .seccion {
             padding: 5rem 2rem;
             max-width: 1100px;
             margin: 0 auto;
             width: 100%;
         }
-
         .titulo-seccion {
             font-family: 'Cinzel', serif;
             font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -459,7 +366,6 @@
             margin-bottom: 1rem;
             letter-spacing: 3px;
         }
-
         .subtitulo-seccion {
             text-align: center;
             color: var(--color-muted);
@@ -467,47 +373,36 @@
             margin-bottom: 3rem;
             font-weight: 300;
         }
-
         .linea-seccion {
             width: 80px;
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
             margin: 1.2rem auto 2.5rem;
         }
-
-        /* ===== SOBRE EL BOT + IMAGEN ===== */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             align-items: center;
         }
-
         .about-texto h3 {
             font-family: 'Cinzel', serif;
             font-size: 1.6rem;
             color: var(--color-secondary);
             margin-bottom: 1.2rem;
         }
-
         .about-texto p {
             color: var(--color-muted);
             line-height: 1.9;
             font-size: 1.02rem;
             margin-bottom: 1.2rem;
         }
-
-        .about-texto strong {
-            color: var(--color-text);
-        }
-
-        /* Imagen Kurumi */
+        .about-texto strong { color: var(--color-text); }
         .kurumi-img-wrap {
             display: flex;
             justify-content: center;
             align-items: center;
         }
-
         .kurumi-marco {
             width: 280px;
             height: 280px;
@@ -515,107 +410,84 @@
             border: 3px solid var(--color-primary);
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
+            background: linear-gradient(135deg, rgba(139,0,20,0.2), rgba(20,10,15,0.8));
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.5s ease;
+            transition: all 0.5s;
             flex-shrink: 0;
         }
-
         .kurumi-marco:hover {
             border-color: var(--color-secondary);
             box-shadow: 0 0 50px var(--clock-glow);
         }
-
         .kurumi-marco img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-
         .kurumi-placeholder {
             font-size: 7rem;
             opacity: 0.3;
         }
-
         .marco-animado {
             position: absolute;
-            top: -12px;
-            left: -12px;
-            right: -12px;
-            bottom: -12px;
+            top: -12px; left: -12px; right: -12px; bottom: -12px;
             border-radius: 50%;
-            border: 1px dashed rgba(200, 50, 75, 0.15);
+            border: 1px dashed rgba(200,50,75,0.15);
             animation: girar-marco 25s linear infinite reverse;
             pointer-events: none;
         }
-
         .marco-giratorio {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border-radius: 50%;
-            border: 2px solid rgba(212, 168, 83, 0.3);
+            border: 2px solid rgba(212,168,83,0.3);
             border-top-color: var(--color-secondary);
             border-right-color: transparent;
             animation: girar-marco 15s linear infinite;
             pointer-events: none;
             z-index: 2;
         }
-
         @keyframes girar-marco {
             from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
-
-        /* ===== CARACTERÍSTICAS ===== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.8rem;
         }
-
         .feature-card {
-            background: linear-gradient(135deg, var(--glass-bg), rgba(30, 15, 25, 0.9));
+            background: linear-gradient(135deg, var(--glass-bg), rgba(30,15,25,0.9));
             border: 1px solid var(--glass-border);
             border-radius: 12px;
             padding: 2.2rem 1.8rem;
-            transition: all 0.4s ease;
+            transition: all 0.4s;
             position: relative;
             overflow: hidden;
         }
-
         .feature-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(200, 50, 75, 0.05), transparent);
-            transition: left 0.6s ease;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200,50,75,0.05), transparent);
+            transition: left 0.6s;
         }
-
-        .feature-card:hover::before {
-            left: 100%;
-        }
-
+        .feature-card:hover::before { left: 100%; }
         .feature-card:hover {
             transform: translateY(-6px);
             border-color: var(--glow-color);
-            box-shadow: 0 20px 50px rgba(139, 0, 20, 0.2);
+            box-shadow: 0 20px 50px rgba(139,0,20,0.2);
         }
-
         .feature-icon {
             font-size: 2.3rem;
             margin-bottom: 1rem;
             display: block;
         }
-
         .feature-card h3 {
             font-family: 'Cinzel', serif;
             font-size: 1.15rem;
@@ -623,34 +495,28 @@
             margin-bottom: 0.8rem;
             letter-spacing: 1px;
         }
-
         .feature-card p {
             color: var(--color-muted);
             line-height: 1.7;
             font-size: 0.92rem;
         }
-
-        /* ===== ESTADÍSTICAS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem;
             text-align: center;
         }
-
         .stat-item {
             padding: 2.2rem 1.2rem;
-            background: linear-gradient(135deg, var(--glass-bg), rgba(35, 15, 25, 0.8));
+            background: linear-gradient(135deg, var(--glass-bg), rgba(35,15,25,0.8));
             border: 1px solid var(--glass-border);
             border-radius: 12px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-
         .stat-item:hover {
             transform: translateY(-5px);
-            border-color: rgba(212, 168, 83, 0.3);
+            border-color: rgba(212,168,83,0.3);
         }
-
         .stat-numero {
             font-family: 'Cinzel', serif;
             font-size: 2.8rem;
@@ -658,15 +524,12 @@
             color: var(--color-primary);
             display: block;
         }
-
         .stat-texto {
             color: var(--color-muted);
             font-size: 0.9rem;
             letter-spacing: 1px;
             margin-top: 0.5rem;
         }
-
-        /* ===== NOVEDADES ===== */
         .novedades-lista {
             display: flex;
             flex-direction: column;
@@ -674,45 +537,36 @@
             max-width: 750px;
             margin: 0 auto;
         }
-
         .novedad-item {
-            background: linear-gradient(135deg, var(--glass-bg), rgba(30, 15, 25, 0.9));
+            background: linear-gradient(135deg, var(--glass-bg), rgba(30,15,25,0.9));
             border: 1px solid var(--glass-border);
             border-left: 4px solid var(--color-primary);
             border-radius: 8px;
             padding: 1.6rem 1.8rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
-
         .novedad-item:hover {
             border-left-color: var(--color-secondary);
             transform: translateX(6px);
         }
-
         .novedad-fecha {
             font-size: 0.82rem;
             color: var(--color-secondary);
             letter-spacing: 2px;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
-
         .novedad-item h3 {
             font-family: 'Cinzel', serif;
             font-size: 1.12rem;
             color: var(--color-text);
             margin-bottom: 0.6rem;
         }
-
         .novedad-item p {
             color: var(--color-muted);
             line-height: 1.7;
             font-size: 0.92rem;
         }
-
         .tag {
             display: inline-block;
             padding: 0.3rem 1rem;
@@ -721,1070 +575,16 @@
             letter-spacing: 1px;
             margin-top: 0.7rem;
         }
-
         .tag-nuevo {
-            background: rgba(200, 50, 75, 0.2);
+            background: rgba(200,50,75,0.2);
             color: #e87090;
-            border: 1px solid rgba(200, 50, 75, 0.3);
+            border: 1px solid rgba(200,50,75,0.3);
         }
-
         .tag-mejora {
-            background: rgba(212, 168, 83, 0.15);
+            background: rgba(212,168,83,0.15);
             color: var(--color-secondary);
-            border: 1px solid rgba(212, 168, 83, 0.3);
+            border: 1px solid rgba(212,168,83,0.3);
         }
-
         .tag-proximamente {
-            background: rgba(100, 100, 160, 0.15);
-            color: #9090c0;
-            border: 1px solid rgba(100, 100, 160, 0.3);
-        }
-
-        .tag-lanzamiento {
-            background: linear-gradient(135deg, rgba(200, 50, 75, 0.3), rgba(212, 168, 83, 0.3));
-            color: #fff;
-            border: 1px solid rgba(200, 50, 75, 0.5);
-            animation: pulso-tag 2s ease-in-out infinite;
-        }
-
-        @keyframes pulso-tag {
-            0%, 100% { box-shadow: 0 0 5px rgba(200, 50, 75, 0.3); }
-            50%      { box-shadow: 0 0 20px rgba(200, 50, 75, 0.5); }
-        }
-
-        .progreso-barra {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-            margin-top: 1rem;
-            overflow: hidden;
-        }
-
-        .progreso-fill {
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-        }
-
-        .progreso-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.78rem;
-            color: var(--color-muted);
-            margin-top: 0.4rem;
-        }
-
-        /* ===== DOCUMENTACIÓN ===== */
-
-        /* ===== CONTACTO ===== */
-        .cta-seccion {
-            text-align: center;
-            padding: 5rem 2rem;
-        }
-
-        .cta-seccion h2 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: var(--color-text);
-            margin-bottom: 1.2rem;
-        }
-
-        .cta-seccion > p {
-            color: var(--color-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
-        }
-
-        .contacto-tarjetas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.8rem;
-            margin-top: 3rem;
-            max-width: 850px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .contacto-tarjeta {
-            background: linear-gradient(135deg, var(--glass-bg), rgba(35, 15, 25, 0.9));
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2.2rem 1.4rem;
-            text-align: center;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .contacto-tarjeta::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            height: 4px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-primary));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .contacto-tarjeta:hover::before {
-            opacity: 1;
-        }
-
-        .contacto-tarjeta:hover {
-            transform: translateY(-6px);
-            border-color: var(--glow-color);
-        }
-
-        .contacto-icono {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
-        }
-
-        .contacto-tarjeta h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.08rem;
-            color: var(--color-secondary);
-            letter-spacing: 1px;
-            margin-bottom: 0.6rem;
-        }
-
-        .contacto-tarjeta p {
-            color: var(--color-muted);
-            font-size: 1rem;
-            margin-bottom: 1.2rem;
-            word-break: break-all;
-        }
-
-        .btn-contacto {
-            padding: 0.65rem 1.6rem;
-            border: 1px solid var(--glow-color);
-            border-radius: 999px;
-            background: rgba(200, 50, 75, 0.15);
-            color: var(--color-text);
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.88rem;
-            letter-spacing: 1px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .btn-contacto:hover {
-            background: var(--color-primary);
-            color: #fff;
-            box-shadow: 0 5px 25px var(--glow-color);
-        }
-
-        /* ===== 🎵 REPRODUCTOR ===== */
-        .reproductor {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .btn-musica {
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            border: 2px solid var(--color-secondary);
-            background: rgba(10, 6, 8, 0.9);
-            color: var(--color-secondary);
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px var(--clock-glow);
-        }
-
-        .btn-musica:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-musica.playing {
-            animation: pulso-musica 1s ease-in-out infinite;
-            border-color: var(--color-primary);
-        }
-
-        @keyframes pulso-musica {
-            0%, 100% { box-shadow: 0 0 20px var(--clock-glow); }
-            50%      { box-shadow: 0 0 40px var(--clock-glow); }
-        }
-
-        .ecualizador {
-            display: none;
-            gap: 3px;
-            align-items: flex-end;
-            height: 22px;
-        }
-
-        .ecualizador.visible {
-            display: flex;
-        }
-
-        .ecualizador .barra {
-            width: 3px;
-            background: var(--color-secondary);
-            border-radius: 2px;
-            animation: ecualizar 0.8s ease-in-out infinite;
-        }
-
-        .ecualizador .barra:nth-child(1) { height: 60%; animation-delay: 0s; }
-        .ecualizador .barra:nth-child(2) { height: 100%; animation-delay: 0.15s; }
-        .ecualizador .barra:nth-child(3) { height: 40%; animation-delay: 0.3s; }
-        .ecualizador .barra:nth-child(4) { height: 80%; animation-delay: 0.1s; }
-        .ecualizador .barra:nth-child(5) { height: 55%; animation-delay: 0.25s; }
-
-        @keyframes ecualizar {
-            0%, 100% { transform: scaleY(0.5); }
-            50%      { transform: scaleY(1); }
-        }
-
-        /* ===== 🤍 WHITE QUEEN OVERLAY ===== */
-        .wq-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 25, 0.9);
-            z-index: 2000;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 2rem;
-        }
-
-        .wq-overlay.visible {
-            display: flex;
-            animation: aparecer 0.8s ease;
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-
-        .wq-overlay h2 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2.2rem, 5vw, 4.5rem);
-            color: #e0e0ff;
-            letter-spacing: 10px;
-            text-shadow: 0 0 40px rgba(180, 180, 255, 0.5);
-            animation: glow-wq 2s ease-in-out infinite;
-        }
-
-        @keyframes glow-wq {
-            0%, 100% { text-shadow: 0 0 40px rgba(180, 180, 255, 0.5); }
-            50%      { text-shadow: 0 0 80px rgba(180, 180, 255, 0.8); }
-        }
-
-        .wq-overlay .icono-wq {
-            font-size: 5rem;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 0 30px rgba(180, 180, 255, 0.5));
-            animation: pulso 3s ease-in-out infinite;
-        }
-
-        @keyframes pulso {
-            0%, 100% { transform: scale(1); }
-            50%      { transform: scale(1.1); }
-        }
-
-        .wq-overlay p {
-            color: #b0b0d0;
-            font-size: 1.15rem;
-            margin-top: 1.2rem;
-            letter-spacing: 2px;
-            max-width: 500px;
-        }
-
-        .wq-btn-cerrar {
-            margin-top: 2.5rem;
-            padding: 0.9rem 2.2rem;
-            background: transparent;
-            border: 1px solid rgba(180, 180, 255, 0.3);
-            color: #c0c0e0;
-            font-family: 'Cinzel', serif;
-            font-size: 0.95rem;
-            letter-spacing: 3px;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        .wq-btn-cerrar:hover {
-            background: rgba(180, 180, 255, 0.15);
-            border-color: rgba(180, 180, 255, 0.6);
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            border-top: 1px solid var(--glass-border);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            background: rgba(8, 4, 8, 0.9);
-        }
-
-        .footer-logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
-            color: var(--color-primary);
-            letter-spacing: 3px;
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-logo span {
-            color: var(--color-secondary);
-        }
-
-        footer p {
-            color: #706060;
-            font-size: 0.82rem;
-            letter-spacing: 1px;
-            margin-bottom: 0.4rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.2rem;
-        }
-
-        .footer-links a {
-            color: #806060;
-            text-decoration: none;
-            font-size: 0.82rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--color-primary);
-        }
-
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb {
-            background: var(--color-accent);
-            border-radius: 4px;
-        }
-
-        /* ===== APARICIÓN AL SCROLL ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(25px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            nav {
-                padding: 0.8rem 1.2rem;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-                text-align: center;
-            }
-
-            .kurumi-marco {
-                width: 220px;
-                height: 220px;
-            }
-
-            .zafkiel-reloj {
-                width: 220px;
-                height: 220px;
-            }
-
-            .seccion {
-                padding: 3.5rem 1.2rem;
-            }
-
-            .stat-numero {
-                font-size: 2.2rem;
-            }
-
-            .reproductor {
-                bottom: 15px;
-                right: 15px;
-            }
-
-            .hero {
-                padding: 6rem 1.5rem 2.5rem;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- 🤍 WHITE QUEEN OVERLAY -->
-    <div class="wq-overlay" id="wqOverlay">
-        <div class="icono-wq">👑</div>
-        <h2>WHITE QUEEN</h2>
-        <p>"Yo también soy Kurumi Tokisaki. Así que, ¿qué pasa con eso?"</p>
-        <button class="wq-btn-cerrar" id="cerrarWQ">✦ VOLVER ✦</button>
-    </div>
-
-    <!-- 🧭 NAVEGACIÓN -->
-    <nav>
-        <a href="#inicio" class="logo">KURUMI <span>BOT</span></a>
-        <ul class="nav-links">
-            <li><a href="#inicio">Inicio</a></li>
-            <li><a href="#sobre">Sobre el Bot</a></li>
-            <li><a href="#caracteristicas">Características</a></li>
-            <li><a href="#novedades">Novedades</a></li>
-            <li><a href="#documentacion">Documentación</a></li>
-            <li><a href="#contacto">Contacto</a></li>
-        </ul>
-    </nav>
-
-    <!-- 🌟 HERO + RELOJ ZAFKIEL -->
-    <section class="hero" id="inicio">
-
-        <!-- Reloj -->
-        <div class="zafkiel-wrap">
-            <div class="zafkiel-reloj" id="zafkielClock">
-                <div class="reloj-aro"></div>
-                <div class="reloj-aro-interno"></div>
-                <div class="reloj-brillo"></div>
-                <div id="relojNumerales"></div>
-                <div class="reloj-mano mano-hora" id="manoHora"></div>
-                <div class="reloj-mano mano-minuto" id="manoMinuto"></div>
-                <div class="reloj-mano mano-segundo" id="manoSegundo"></div>
-                <div class="reloj-centro"></div>
-            </div>
-            <div class="zafkiel-texto">✦ Z A F K I E L ✦</div>
-            <div class="hora-digital" id="horaDigital">00:00:00</div>
-        </div>
-
-        <h1 class="glitch">KURUMI BOT</h1>
-        <div class="linea-decorativa"></div>
-        <p class="subtitulo">
-            Tu bot de WhatsApp con estilo gótico y elegante.
-            Automatiza, interactúa y sorprende a todos tus contactos.
-        </p>
-        <p class="subtitulo" style="font-size: 0.88rem; opacity: 0.6; margin-top: 0.5rem;">
-            💡 Toca el reloj 3 veces para un secreto...
-        </p>
-        <div class="botones-hero">
-            <a href="#sobre" class="btn btn-principal">🕐 Descubrir más</a>
-            <a href="#contacto" class="btn btn-secundario">💬 Contactar</a>
-        </div>
-    </section>
-
-    <!-- 🖼️ SOBRE EL BOT -->
-    <section class="seccion fade-in" id="sobre">
-        <h2 class="titulo-seccion">SOBRE EL PROYECTO</h2>
-        <div class="linea-seccion"></div>
-        <p class="subtitulo-seccion">Inspirado en la elegancia de Kurumi Tokisaki</p>
-
-        <div class="about-grid">
-            <div class="about-texto">
-                <h3>🕰️ ¿Qué es Kurumi Bot?</h3>
-                <p>
-                    Kurumi Bot es un proyecto de <strong>bot para WhatsApp</strong>
-                    diseñado para automatizar tareas, responder mensajes,
-                    enviar notificaciones y mucho más.
-                </p>
-                <p>
-                    Con una estética inspirada en <strong>Kurumi Tokisaki</strong>
-                    de Date A Live, este bot combina funcionalidad con estilo
-                    gótico, oscuro y elegante.
-                </p>
-                <p>
-                    Su nombre proviene de <strong>Zafkiel</strong>, el ángel
-                    del tiempo, reflejando la capacidad del bot de controlar
-                    y automatizar todo en tu WhatsApp.
-                </p>
-            </div>
-
-            <div class="kurumi-img-wrap">
-                <div class="kurumi-marco">
-                    <div class="marco-animado"></div>
-                    <div class="marco-giratorio"></div>
-                    <img src="kurumi.png"
-                         alt="Kurumi Tokisaki"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <div class="kurumi-placeholder" style="display:none;">⏰</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ⚙️ CARACTERÍSTICAS -->
-    <section class="seccion fade-in" id="caracteristicas">
-        <h2 class="titulo-seccion">CARACTERÍSTICAS</h2>
-        <div class="linea-seccion"></div>
-        <p class="subtitulo-seccion">Todo lo que Kurumi Bot puede hacer por ti</p>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">🤖</span>
-                <h3>Respuestas Automáticas</h3>
-                <p>Responde mensajes de forma inteligente y rápida con personalidad única.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">📢</span>
-                <h3>Notificaciones</h3>
-                <p>Envía alertas, recordatorios y avisos automáticamente a tus contactos.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎮</span>
-                <h3>Juegos y Entretenimiento</h3>
-                <p>Comandos divertidos, trivia, juegos de rol y más para entretenerte.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">📊</span>
-                <h3>Estadísticas</h3>
-                <p>Monitorea actividad, mensajes y datos de tus grupos de WhatsApp.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🛡️</span>
-                <h3>Moderación</h3>
-                <p>Protege tus grupos con filtros anti-spam y herramientas de moderación.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎨</span>
-                <h3>Personalización</h3>
-                <p>Configura respuestas, temas y comandos a tu medida.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 📊 NÚMEROS -->
-    <section class="seccion fade-in">
-        <h2 class="titulo-seccion">NÚMEROS</h2>
-        <div class="linea-seccion"></div>
-        <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-numero">24/7</span>
-                <div class="stat-texto">Siempre activo</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-numero">50+</span>
-                <div class="stat-texto">Comandos disponibles</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-numero">∞</span>
-                <div class="stat-texto">Posibilidades</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-numero">1</span>
-                <div class="stat-texto">Proyecto único</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 📢 NOVEDADES -->
-    <section class="seccion fade-in" id="novedades">
-        <h2 class="titulo-seccion">NOVEDADES</h2>
-        <div class="linea-seccion"></div>
-        <p class="subtitulo-seccion">Últimas actualizaciones y próximos lanzamientos</p>
-
-        <div class="novedades-lista">
-            <div class="novedad-item" style="border-left-color: var(--color-secondary);">
-                <div class="novedad-fecha">🚀 Próximo Lanzamiento Oficial</div>
-                <h3>✦ Kurumi Bot — Lanzamiento Oficial v1.0</h3>
-                <p>
-                    ¡El lanzamiento oficial está a la vuelta de la esquina!
-                    Estamos finalizando los últimos detalles.
-                    Incluye: respuestas automáticas, juegos, moderación,
-                    estadísticas, sistema de stickers y mucho más.
-                </p>
-                <div class="progreso-barra">
-                    <div class="progreso-fill" style="width: 85%;"></div>
-                </div>
-                <div class="progreso-label">
-                    <span>Progreso de desarrollo</span>
-                    <span>85%</span>
-                </div>
-                <span class="tag tag-lanzamiento">🚀 LANZAMIENTO PRÓXIMAMENTE</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Enero 2025</div>
-                <h3>✦ Sistema de respuestas inteligentes</h3>
-                <p>El bot entiende mejor los mensajes y responde de forma más natural.</p>
-                <span class="tag tag-nuevo">✦ NUEVO</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Diciembre 2024</div>
-                <h3>✦ Rediseño de la interfaz de comandos</h3>
-                <p>Menús más elegantes y fáciles de usar con estilo gótico Kurumi.</p>
-                <span class="tag tag-mejora">↑ MEJORA</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Noviembre 2024</div>
-                <h3>✦ Sistema de juegos y trivia</h3>
-                <p>Nuevos juegos interactivos para que los grupos se diviertan más.</p>
-                <span class="tag tag-nuevo">✦ NUEVO</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">⏳ Próximamente</div>
-                <h3>✦ Modo IA conversacional</h3>
-                <p>Integración de inteligencia artificial para conversaciones avanzadas.</p>
-                <span class="tag tag-proximamente">⏳ PRÓXIMAMENTE</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">⏳ Próximamente</div>
-                <h3>✦ Comandos de voz</h3>
-                <p>Controla el bot con tu voz directamente en WhatsApp.</p>
-                <span class="tag tag-proximamente">⏳ PRÓXIMAMENTE</span>
-            </div>
-
-            <div class="novedad-item">
-                <div class="novedad-fecha">🤍 Misterio</div>
-                <h3>✦ Modo White Queen</h3>
-                <p>Un modo secreto inspirado en la versión invertida de Kurumi.
-                   Pista: el reloj tiene un secreto...</p>
-                <span class="tag tag-proximamente">🤍 MISTERIO</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- 📖 DOCUMENTACIÓN -->
-    <section class="seccion fade-in" id="documentacion">
-        <h2 class="titulo-seccion">📖 DOCUMENTACIÓN</h2>
-        <div class="linea-seccion"></div>
-        <p class="subtitulo-seccion">Guía rápida de comandos de Kurumi Bot</p>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <span class="feature-icon">📋</span>
-                <h3>.help</h3>
-                <p>Muestra la lista completa de comandos disponibles.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🖼️</span>
-                <h3>.sticker</h3>
-                <p>Convierte una imagen en sticker para WhatsApp.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎵</span>
-                <h3>.play</h3>
-                <p>Busca y envía música directamente al chat.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">📊</span>
-                <h3>.stats</h3>
-                <p>Estadísticas de actividad del grupo.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🛡️</span>
-                <h3>.moderar</h3>
-                <p>Herramientas de moderación para el grupo.</p>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">⚙️</span>
-                <h3>.config</h3>
-                <p>Configura las opciones del bot a tu medida.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- 💬 CONTACTO -->
-    <section class="cta-seccion fade-in" id="contacto">
-        <h2>¿Listo para conocer a Kurumi Bot?</h2>
-        <p>
-            Únete a esta aventura y descubre todo lo que puede hacer
-            por ti y tu comunidad de WhatsApp.
-        </p>
-        <div class="botones-hero">
-            <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
-               class="btn btn-principal" target="_blank">
-                💬 Unirme al Bot
-            </a>
-            <a href="#documentacion" class="btn btn-secundario">📖 Ver Documentación</a>
-        </div>
-
-        <div class="contacto-tarjetas">
-            <div class="contacto-tarjeta">
-                <div class="contacto-icono">📱</div>
-                <h3>WhatsApp / Teléfono</h3>
-                <p>+506 7018-3577</p>
-                <a href="https://wa.me/50670183577"
-                   class="btn-contacto" target="_blank">
-                    Escribir ahora
-                </a>
-            </div>
-            <div class="contacto-tarjeta">
-                <div class="contacto-icono">📧</div>
-                <h3>Correo Electrónico</h3>
-                <p>brendi221825@gmail.com</p>
-                <a href="mailto:brendi221825@gmail.com"
-                   class="btn-contacto">
-                    Enviar email
-                </a>
-            </div>
-            <div class="contacto-tarjeta">
-                <div class="contacto-icono">💬</div>
-                <h3>Grupo Oficial</h3>
-                <p>Únete al grupo de WhatsApp</p>
-                <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
-                   class="btn-contacto" target="_blank">
-                    Unirme ahora
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 🦶 FOOTER -->
-    <footer>
-        <div class="footer-logo">KURUMI <span>BOT</span></div>
-        <p>🕐 Proyecto personal de Bot de WhatsApp</p>
-        <p>Inspirado en Kurumi Tokisaki ✦ Date A Live</p>
-        <div class="footer-links">
-            <a href="#">GitHub</a>
-            <a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3"
-               target="_blank">WhatsApp</a>
-            <a href="#">Twitter</a>
-            <a href="#">Discord</a>
-        </div>
-        <p style="margin-top: 1.2rem; font-size: 0.72rem;">
-            © 2025 Kurumi Bot. Hecho con ❤️ y ⏰
-        </p>
-    </footer>
-
-    <!-- 🎵 REPRODUCTOR DE MÚSICA AMBIENTE -->
-<div class="reproductor">
-    <div class="ecualizador" id="ecualizador">
-        <div class="barra"></div>
-        <div class="barra"></div>
-        <div class="barra"></div>
-        <div class="barra"></div>
-        <div class="barra"></div>
-    </div>
-    <button class="btn-musica" id="btnMusica" title="Música Ambiente">🎵</button>
-</div>
-
-    <!-- 🧠 JAVASCRIPT -->
-    <script>
-        // ===== RELOJ ZAFKIEL =====
-        const ROMANOS = ['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
-        const contNum = document.getElementById('relojNumerales');
-
-        ROMANOS.forEach((num, i) => {
-            const ang = (i * 30) * (Math.PI / 180);
-            const r = 100;
-            const x = 130 + r * Math.sin(ang) - 14;
-            const y = 130 - r * Math.cos(ang) - 14;
-            const el = document.createElement('div');
-            el.classList.add('reloj-numeral');
-            el.textContent = num;
-            el.style.left = x + 'px';
-            el.style.top = y + 'px';
-            contNum.appendChild(el);
-        });
-
-        function updateReloj() {
-            const now = new Date();
-            const h = now.getHours() % 12;
-            const m = now.getMinutes();
-            const s = now.getSeconds();
-
-            document.getElementById('manoHora').style.transform =
-                `rotate(${(h * 30) + (m * 0.5)}deg)`;
-            document.getElementById('manoMinuto').style.transform =
-                `rotate(${(m * 6) + (s * 0.1)}deg)`;
-            document.getElementById('manoSegundo').style.transform =
-                `rotate(${s * 6}deg)`;
-
-            const hh = String(now.getHours()).padStart(2, '0');
-            const mm = String(m).padStart(2, '0');
-            const ss = String(s).padStart(2, '0');
-            document.getElementById('horaDigital').textContent = `${hh}:${mm}:${ss}`;
-        }
-
-        updateReloj();
-        setInterval(updateReloj, 1000);
-
-        // ===== PARTÍCULAS =====
-        for (let i = 0; i < 30; i++) {
-            const p = document.createElement('div');
-            p.classList.add('particula');
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (8 + Math.random() * 15) + 's';
-            p.style.animationDelay = (Math.random() * 10) + 's';
-            const sz = (2 + Math.random() * 4) + 'px';
-            p.style.width = p.style.height = sz;
-            const cols = [
-                'rgba(200,50,80,0.4)', 'rgba(212,168,83,0.35)',
-                'rgba(232,180,180,0.3)', 'rgba(180,100,120,0.35)'
-            ];
-            p.style.background = cols[Math.floor(Math.random() * cols.length)];
-            document.body.appendChild(p);
-        }
-
-        const relojes = ['🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛','⏳','🕰️'];
-        for (let i = 0; i < 12; i++) {
-            const p = document.createElement('div');
-            p.classList.add('particula-reloj');
-            p.textContent = relojes[Math.floor(Math.random() * relojes.length)];
-            p.style.left = Math.random() * 100 + 'vw';
-            p.style.animationDuration = (15 + Math.random() * 25) + 's';
-            p.style.animationDelay = (Math.random() * 15) + 's';
-            document.body.appendChild(p);
-        }
-
-        setInterval(() => {
-            const a = document.createElement('div');
-            a.classList.add('anillo-tiempo');
-            const sz = (30 + Math.random() * 50) + 'px';
-            a.style.width = a.style.height = sz;
-            a.style.left = (Math.random() * 80 + 10) + 'vw';
-            a.style.top = (Math.random() * 80 + 10) + 'vh';
-            document.body.appendChild(a);
-            setTimeout(() => a.remove(), 3000);
-        }, 3000);
-
-        // ===== WHITE QUEEN EASTER EGG =====
-        let clicks = 0, timer = null;
-        const clock = document.getElementById('zafkielClock');
-        const wq = document.getElementById('wqOverlay');
-
-        clock.addEventListener('click', () => {
-            clicks++;
-            clearTimeout(timer);
-            if (clicks >= 3) {
-                wq.classList.add('visible');
-                document.body.classList.add('white-queen');
-                clicks = 0;
-            }
-            timer = setTimeout(() => clicks = 0, 1500);
-        });
-
-        document.getElementById('cerrarWQ').addEventListener('click', () => {
-            wq.classList.remove('visible');
-            document.body.classList.remove('white-queen');
-        });
-
-        let buf = '';
-        document.addEventListener('keydown', (e) => {
-            buf += e.key.toLowerCase();
-            if (buf.length > 10) buf = buf.slice(-10);
-            if (buf.includes('whitequeen')) {
-                wq.classList.add('visible');
-                document.body.classList.add('white-queen');
-                buf = '';
-            }
-            if (e.key === 'Escape') {
-                wq.classList.remove('visible');
-                document.body.classList.remove('white-queen');
-            }
-        });
-
-// ===== 🎵 MÚSICA AMBIENTE ESTILO KURUMI =====
-const btnM = document.getElementById('btnMusica');
-const ecu = document.getElementById('ecualizador');
-let playing = false;
-let audioCtx = null;
-let nodos = [];
-
-function crearAmbiente() {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    // === DRONE BÁSICO (nota grave sostenida) ===
-    const drone1 = audioCtx.createOscillator();
-    const drone1Gain = audioCtx.createGain();
-    drone1.type = 'sine';
-    drone1.frequency.value = 55; // La grave
-    drone1Gain.gain.value = 0.15;
-    drone1.connect(drone1Gain);
-    drone1Gain.connect(audioCtx.destination);
-    drone1.start();
-    nodos.push(drone1);
-
-    // === ARMÓNICO 1 (octava) ===
-    const harm1 = audioCtx.createOscillator();
-    const harm1Gain = audioCtx.createGain();
-    harm1.type = 'sine';
-    harm1.frequency.value = 110;
-    harm1Gain.gain.value = 0.08;
-    harm1.connect(harm1Gain);
-    harm1Gain.connect(audioCtx.destination);
-    harm1.start();
-    nodos.push(harm1);
-
-    // === ARMÓNICO 2 (quinta) ===
-    const harm2 = audioCtx.createOscillator();
-    const harm2Gain = audioCtx.createGain();
-    harm2.type = 'sine';
-    harm2.frequency.value = 82.5;
-    harm2Gain.gain.value = 0.06;
-    harm2.connect(harm2Gain);
-    harm2Gain.connect(audioCtx.destination);
-    harm2.start();
-    nodos.push(harm2);
-
-    // === OSCILADOR LFO (pulso lento estilo reloj) ===
-    const lfo = audioCtx.createOscillator();
-    const lfoGain = audioCtx.createGain();
-    lfo.type = 'sine';
-    lfo.frequency.value = 0.15; // Muy lento, como un latido
-    lfoGain.gain.value = 0.05;
-    lfo.connect(lfoGain);
-    lfoGain.connect(drone1Gain.gain);
-    lfo.start();
-    nodos.push(lfo);
-
-    // === NOTAS AGUDAS MELÓDICAS (estilo campana) ===
-    function notaCampana(freq, delay) {
-        setTimeout(() => {
-            if (!playing || !audioCtx) return;
-
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
-
-            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 3);
-        }, delay);
-    }
-
-    // Secuencia de notas oscuras (estilo Zafkiel)
-    const notas = [
-        261.63, // C4
-        233.08, // Bb3
-        196.00, // G3
-        174.61, // F3
-        220.00, // A3
-        293.66, // D4
-        261.63, // C4
-        233.08, // Bb3
-    ];
-
-    // Reproduce notas periódicamente
-    setInterval(() => {
-        if (!playing || !audioCtx) return;
-        const nota = notas[Math.floor(Math.random() * notas.length)];
-        notaCampana(nota, 0);
-    }, 4000);
-
-    // Segunda campana más lenta
-    setInterval(() => {
-        if (!playing || !audioCtx) return;
-        const nota = notas[Math.floor(Math.random() * notas.length)];
-        notaCampana(nota * 1.5, 0); // Armónico superior
-    }, 7000);
-
-    // === NOISE SUTIL (viento/ambiente) ===
-    const bufferSize = audioCtx.sampleRate * 2;
-    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-        output[i] = Math.random() * 2 - 1;
-    }
-
-    const noiseSource = audioCtx.createBufferSource();
-    noiseSource.buffer = noiseBuffer;
-    noiseSource.loop = true;
-
-    const noiseFilter = audioCtx.createBiquadFilter();
-    noiseFilter.type = 'lowpass';
-    noiseFilter.frequency.value = 200;
-
-    const noiseGain = audioCtx.createGain();
-    noiseGain.gain.value = 0.03;
-
-    noiseSource.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(audioCtx.destination);
-    noiseSource.start();
-    nodos.push(noiseSource);
-}
-
-function detenerAmbiente() {
-    nodos.forEach(n => {
-        try { n.stop(); } catch(e) {}
-    });
-    nodos = [];
-    if (audioCtx) {
-        audioCtx.close();
-        audioCtx = null;
-    }
-}
-
-btnM.addEventListener('click', () => {
-    if (playing) {
-        detenerAmbiente();
-        btnM.textContent = '🎵';
-        btnM.classList.remove('playing');
-        ecu.classList.remove('visible');
-        playing = false;
-    } else {
-        playing = true;
-        crearAmbiente();
-        btnM.textContent = '🎶';
-        btnM.classList.add('playing');
-        ecu.classList.add('visible');
-    }
-});
-
-// Verificar que el audio carga
-audio.addEventListener('loadeddata', () => {
-    console.log('✅ Audio cargado correctamente');
-});
-
-audio.addEventListener('error', (e) => {
-    console.log('❌ Error cargando audio:', e);
-    btnM.textContent = '🔇';
-});
-
-        // ===== SCROLL ANIMATIONS =====
-        const obs = new IntersectionObserver((entries) => {
-            entries.forEach(en => {
-                if (en.isIntersecting) en.target.classList.add('visible');
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
-
-        // ===== SMOOTH SCROLL =====
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const dest = document.querySelector(link.getAttribute('href'));
-                if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-        });
-    </script>
-
-</body>
-</html>
+            background: rgba(100,100,160,0.15);
+   
