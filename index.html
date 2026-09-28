@@ -1477,20 +1477,22 @@
     </footer>
 
     <!-- 🎵 REPRODUCTOR DE MÚSICA -->
-    <div class="reproductor">
-        <!-- 🔊 Audio online temporal (cambia después por tu archivo) -->
-        <audio id="musicaFondo" loop preload="auto" crossorigin="anonymous">
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-        </audio>
-        <div class="ecualizador" id="ecualizador">
-            <div class="barra"></div>
-            <div class="barra"></div>
-            <div class="barra"></div>
-            <div class="barra"></div>
-            <div class="barra"></div>
-        </div>
-        <button class="btn-musica" id="btnMusica" title="Música">🎵</button>
+<div class="reproductor">
+    <audio id="musicaFondo" loop preload="auto" style="display:none;">
+        <!-- ✅ Audio de prueba que SÍ funciona -->
+        <source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_946b513cf2.mp3?filename=dark-ambient-121337.mp3" type="audio/mpeg">
+        <!-- Si no carga, intenta este segundo -->
+        <source src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_2f32390f2b.mp3?filename=dark-ambient-116349.mp3" type="audio/mpeg">
+    </audio>
+    <div class="ecualizador" id="ecualizador">
+        <div class="barra"></div>
+        <div class="barra"></div>
+        <div class="barra"></div>
+        <div class="barra"></div>
+        <div class="barra"></div>
     </div>
+    <button class="btn-musica" id="btnMusica" title="Música">🎵</button>
+</div>
 
     <!-- 🧠 JAVASCRIPT -->
     <script>
