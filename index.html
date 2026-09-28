@@ -528,71 +528,79 @@
             margin-bottom: 1.5rem;
         }
 
-        /* Marco de imagen con efecto giratorio */
-        .kurumi-imagen-container {
-            text-align: center;
-            position: relative;
-        }
+        /* Marco de imagen corregido */
+.kurumi-imagen-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        .kurumi-marco {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            border: 3px solid var(--color-primary);
-            background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.5s ease;
-        }
+.kurumi-marco {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 3px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
 
-        .kurumi-marco:hover {
-            border-color: var(--color-secondary);
-            box-shadow: 0 0 50px var(--clock-glow);
-        }
+.kurumi-marco:hover {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 50px var(--clock-glow);
+}
 
-        .kurumi-marco img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+.kurumi-marco img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
 
-        .kurumi-marco .placeholder-img {
-            font-size: 8rem;
-            opacity: 0.3;
-            filter: drop-shadow(0 0 20px var(--clock-glow));
-        }
+.kurumi-marco .placeholder-img {
+    font-size: 8rem;
+    opacity: 0.3;
+    filter: drop-shadow(0 0 20px var(--clock-glow));
+    text-align: center;
+    line-height: 300px;
+}
 
-        .kurumi-marco::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 1px solid rgba(212, 168, 83, 0.3);
-            animation: girar-marco 15s linear infinite;
-            border-top-color: var(--color-secondary);
-            border-right-color: var(--color-primary);
-            z-index: 2;
-        }
+.kurumi-marco::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(212, 168, 83, 0.3);
+    border-top-color: var(--color-secondary);
+    border-right-color: transparent;
+    animation: girar-marco 15s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+}
 
-        @keyframes girar-marco {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
+@keyframes girar-marco {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
 
-        .kurumi-marco .marco-exterior {
-            position: absolute;
-            top: -10px; left: -10px; right: -10px; bottom: -10px;
-            border-radius: 50%;
-            border: 1px dashed rgba(200, 50, 75, 0.15);
-            animation: girar-marco 25s linear infinite reverse;
-        }
-
+.kurumi-marco .marco-exterior {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    border-radius: 50%;
+    border: 1px dashed rgba(200, 50, 75, 0.15);
+    animation: girar-marco 25s linear infinite reverse;
+    pointer-events: none;
+}
         /* ============================================================
            ✨ CARACTERÍSTICAS
            ============================================================ */
@@ -911,79 +919,35 @@
             box-shadow: 0 5px 25px var(--glow-color);
         }
 
-        /* ============================================================
-           🎵 REPRODUCTOR DE MÚSICA (PASO 3)
-           ============================================================ */
-        .reproductor {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+// ============================================
+// 🎵 MÚSICA DE FONDO
+// ============================================
+const audio = document.getElementById('musicaFondo');
+const btnMusica = document.getElementById('btnMusica');
+const ecualizador = document.getElementById('ecualizador');
+let musicaActiva = false;
 
-        .btn-musica {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            border: 2px solid var(--color-secondary);
-            background: rgba(10, 6, 8, 0.9);
-            color: var(--color-secondary);
-            font-size: 1.4rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px var(--clock-glow);
-        }
-
-        .btn-musica:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 35px var(--clock-glow);
-        }
-
-        .btn-musica.playing {
-            animation: pulso-musica 1s ease-in-out infinite;
-            border-color: var(--color-primary);
-        }
-
-        @keyframes pulso-musica {
-            0%, 100% { box-shadow: 0 0 20px var(--clock-glow); }
-            50%      { box-shadow: 0 0 40px var(--clock-glow); }
-        }
-
-        /* Ecualizador animado */
-        .ecualizador {
-            display: none;
-            gap: 3px;
-            align-items: flex-end;
-            height: 25px;
-        }
-
-        .ecualizador.visible {
-            display: flex;
-        }
-
-        .ecualizador .barra {
-            width: 3px;
-            background: var(--color-secondary);
-            border-radius: 2px;
-            animation: ecualizar 0.8s ease-in-out infinite;
-        }
-
-        .ecualizador .barra:nth-child(1) { height: 60%; animation-delay: 0s; }
-        .ecualizador .barra:nth-child(2) { height: 100%; animation-delay: 0.15s; }
-        .ecualizador .barra:nth-child(3) { height: 40%; animation-delay: 0.3s; }
-        .ecualizador .barra:nth-child(4) { height: 80%; animation-delay: 0.1s; }
-        .ecualizador .barra:nth-child(5) { height: 55%; animation-delay: 0.25s; }
-
-        @keyframes ecualizar {
-            0%, 100% { transform: scaleY(0.5); }
-            50%      { transform: scaleY(1); }
-        }
+btnMusica.addEventListener('click', () => {
+    if (musicaActiva) {
+        audio.pause();
+        btnMusica.textContent = '🔇';
+        btnMusica.classList.remove('playing');
+        ecualizador.classList.remove('visible');
+        musicaActiva = false;
+        setTimeout(() => btnMusica.textContent = '🎵', 500);
+    } else {
+        audio.play().then(() => {
+            btnMusica.textContent = '🎶';
+            btnMusica.classList.add('playing');
+            ecualizador.classList.add('visible');
+            musicaActiva = true;
+        }).catch(err => {
+            btnMusica.textContent = '⚠️';
+            setTimeout(() => btnMusica.textContent = '🎵', 2000);
+            console.log('Error al reproducir audio:', err);
+        });
+    }
+});
 
         /* ============================================================
            🤍 OVERLAY WHITE QUEEN
@@ -1243,19 +1207,17 @@
                 </p>
             </div>
 
-            <!-- 🖼️ IMAGEN DE KURUMI -->
-            <div class="kurumi-imagen-container">
-                <div class="kurumi-marco">
-                    <div class="marco-exterior"></div>
-                    <!-- ⚠️ REEMPLAZA esta línea con tu imagen -->
-                    <img src="kurumi.png" alt="Kurumi Tokisaki" onerror="this.style.display='none'; this.parentElement.querySelector('.placeholder-img').style.display='block';">
-                    <div class="placeholder-img" style="display:none;">⏳</div>
-                    <!-- Si no tienes imagen, muestra el emoji ⏳ -->
-                    <div class="placeholder-img">⏰</div>
-                </div>
-            </div>
-        </div>
-    </section>
+           <!-- 🖼️ IMAGEN DE KURUMI -->
+<div class="kurumi-imagen-container">
+    <div class="kurumi-marco">
+        <div class="marco-exterior"></div>
+        <img id="kurumiImg"
+             src="kurumi.png"
+             alt="Kurumi Tokisaki"
+             onerror="this.style.display='none'; document.getElementById('placeholderImg').style.display='block';">
+        <div class="placeholder-img" id="placeholderImg" style="display:none;">⏰</div>
+    </div>
+</div>
 
     <!-- ============================================================
          CARACTERÍSTICAS
@@ -1711,33 +1673,35 @@
             }
         });
 
-        // ============================================
-        // 🎵 PASO 3: MÚSICA DE FONDO
-        // ============================================
-        const audio = document.getElementById('musicaFondo');
-        const btnMusica = document.getElementById('btnMusica');
-        const ecualizador = document.getElementById('ecualizador');
-        let musicaActiva = false;
+      // ============================================
+// 🎵 MÚSICA DE FONDO
+// ============================================
+const audio = document.getElementById('musicaFondo');
+const btnMusica = document.getElementById('btnMusica');
+const ecualizador = document.getElementById('ecualizador');
+let musicaActiva = false;
 
-        btnMusica.addEventListener('click', () => {
-            if (musicaActiva) {
-                audio.pause();
-                btnMusica.textContent = '🎵';
-                btnMusica.classList.remove('playing');
-                ecualizador.classList.remove('visible');
-                musicaActiva = false;
-            } else {
-                audio.play().catch(() => {
-                    // Si falla (no hay archivo), mostrar indicador
-                    btnMusica.textContent = '🔇';
-                    setTimeout(() => btnMusica.textContent = '🎵', 2000);
-                });
-                btnMusica.textContent = '🎶';
-                btnMusica.classList.add('playing');
-                ecualizador.classList.add('visible');
-                musicaActiva = true;
-            }
+btnMusica.addEventListener('click', () => {
+    if (musicaActiva) {
+        audio.pause();
+        btnMusica.textContent = '🔇';
+        btnMusica.classList.remove('playing');
+        ecualizador.classList.remove('visible');
+        musicaActiva = false;
+        setTimeout(() => btnMusica.textContent = '🎵', 500);
+    } else {
+        audio.play().then(() => {
+            btnMusica.textContent = '🎶';
+            btnMusica.classList.add('playing');
+            ecualizador.classList.add('visible');
+            musicaActiva = true;
+        }).catch(err => {
+            btnMusica.textContent = '⚠️';
+            setTimeout(() => btnMusica.textContent = '🎵', 2000);
+            console.log('Error al reproducir audio:', err);
         });
+    }
+});
 
         // ============================================
         // 🎨 ANIMACIONES AL SCROLL
