@@ -1476,11 +1476,8 @@
         </p>
     </footer>
 
-    <!-- 🎵 REPRODUCTOR DE MÚSICA -->
+    <!-- 🎵 REPRODUCTOR DE MÚSICA AMBIENTE -->
 <div class="reproductor">
-    <audio id="musicaFondo" loop preload="auto" style="display:none;">
-        <source src="https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3" type="audio/mpeg">
-    </audio>
     <div class="ecualizador" id="ecualizador">
         <div class="barra"></div>
         <div class="barra"></div>
@@ -1488,7 +1485,7 @@
         <div class="barra"></div>
         <div class="barra"></div>
     </div>
-    <button class="btn-musica" id="btnMusica" title="Música">🎵</button>
+    <button class="btn-musica" id="btnMusica" title="Música Ambiente">🎵</button>
 </div>
 
     <!-- 🧠 JAVASCRIPT -->
@@ -1607,36 +1604,156 @@
             }
         });
 
-// ===== 🎵 MÚSICA =====
-const audio = document.getElementById('musicaFondo');
+// ===== 🎵 MÚSICA AMBIENTE ESTILO KURUMI =====
 const btnM = document.getElementById('btnMusica');
 const ecu = document.getElementById('ecualizador');
 let playing = false;
+let audioCtx = null;
+let nodos = [];
+
+function crearAmbiente() {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // === DRONE BÁSICO (nota grave sostenida) ===
+    const drone1 = audioCtx.createOscillator();
+    const drone1Gain = audioCtx.createGain();
+    drone1.type = 'sine';
+    drone1.frequency.value = 55; // La grave
+    drone1Gain.gain.value = 0.15;
+    drone1.connect(drone1Gain);
+    drone1Gain.connect(audioCtx.destination);
+    drone1.start();
+    nodos.push(drone1);
+
+    // === ARMÓNICO 1 (octava) ===
+    const harm1 = audioCtx.createOscillator();
+    const harm1Gain = audioCtx.createGain();
+    harm1.type = 'sine';
+    harm1.frequency.value = 110;
+    harm1Gain.gain.value = 0.08;
+    harm1.connect(harm1Gain);
+    harm1Gain.connect(audioCtx.destination);
+    harm1.start();
+    nodos.push(harm1);
+
+    // === ARMÓNICO 2 (quinta) ===
+    const harm2 = audioCtx.createOscillator();
+    const harm2Gain = audioCtx.createGain();
+    harm2.type = 'sine';
+    harm2.frequency.value = 82.5;
+    harm2Gain.gain.value = 0.06;
+    harm2.connect(harm2Gain);
+    harm2Gain.connect(audioCtx.destination);
+    harm2.start();
+    nodos.push(harm2);
+
+    // === OSCILADOR LFO (pulso lento estilo reloj) ===
+    const lfo = audioCtx.createOscillator();
+    const lfoGain = audioCtx.createGain();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.15; // Muy lento, como un latido
+    lfoGain.gain.value = 0.05;
+    lfo.connect(lfoGain);
+    lfoGain.connect(drone1Gain.gain);
+    lfo.start();
+    nodos.push(lfo);
+
+    // === NOTAS AGUDAS MELÓDICAS (estilo campana) ===
+    function notaCampana(freq, delay) {
+        setTimeout(() => {
+            if (!playing || !audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.value = freq;
+
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 3);
+        }, delay);
+    }
+
+    // Secuencia de notas oscuras (estilo Zafkiel)
+    const notas = [
+        261.63, // C4
+        233.08, // Bb3
+        196.00, // G3
+        174.61, // F3
+        220.00, // A3
+        293.66, // D4
+        261.63, // C4
+        233.08, // Bb3
+    ];
+
+    // Reproduce notas periódicamente
+    setInterval(() => {
+        if (!playing || !audioCtx) return;
+        const nota = notas[Math.floor(Math.random() * notas.length)];
+        notaCampana(nota, 0);
+    }, 4000);
+
+    // Segunda campana más lenta
+    setInterval(() => {
+        if (!playing || !audioCtx) return;
+        const nota = notas[Math.floor(Math.random() * notas.length)];
+        notaCampana(nota * 1.5, 0); // Armónico superior
+    }, 7000);
+
+    // === NOISE SUTIL (viento/ambiente) ===
+    const bufferSize = audioCtx.sampleRate * 2;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+    }
+
+    const noiseSource = audioCtx.createBufferSource();
+    noiseSource.buffer = noiseBuffer;
+    noiseSource.loop = true;
+
+    const noiseFilter = audioCtx.createBiquadFilter();
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.value = 200;
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.value = 0.03;
+
+    noiseSource.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(audioCtx.destination);
+    noiseSource.start();
+    nodos.push(noiseSource);
+}
+
+function detenerAmbiente() {
+    nodos.forEach(n => {
+        try { n.stop(); } catch(e) {}
+    });
+    nodos = [];
+    if (audioCtx) {
+        audioCtx.close();
+        audioCtx = null;
+    }
+}
 
 btnM.addEventListener('click', () => {
     if (playing) {
-        audio.pause();
+        detenerAmbiente();
         btnM.textContent = '🎵';
         btnM.classList.remove('playing');
         ecu.classList.remove('visible');
         playing = false;
-        console.log('🔇 Música pausada');
     } else {
-        audio.volume = 0.5;
-        console.log('🔊 Intentando reproducir...');
-        console.log('📁 Fuente actual:', audio.currentSrc || audio.querySelector('source')?.src);
-
-        audio.play().then(() => {
-            btnM.textContent = '🎶';
-            btnM.classList.add('playing');
-            ecu.classList.add('visible');
-            playing = true;
-            console.log('✅ Música reproduciéndose');
-        }).catch(err => {
-            console.log('❌ Error:', err.message);
-            btnM.textContent = '⚠️';
-            setTimeout(() => btnM.textContent = '🎵', 2000);
-        });
+        playing = true;
+        crearAmbiente();
+        btnM.textContent = '🎶';
+        btnM.classList.add('playing');
+        ecu.classList.add('visible');
     }
 });
 
