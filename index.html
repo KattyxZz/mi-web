@@ -1,590 +1,467 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🕐 Kurumi Bot - Proyecto WhatsApp</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-primary: #0a0608;
-            --color-primary: #c8324b;
-            --color-secondary: #d4a853;
-            --color-text: #e8d5d5;
-            --color-muted: #b09090;
-            --color-accent: #8b0020;
-            --glass-bg: rgba(20, 10, 15, 0.9);
-            --glass-border: rgba(200, 50, 75, 0.15);
-            --glow-color: rgba(200, 50, 75, 0.3);
-            --clock-glow: rgba(212, 168, 83, 0.4);
-        }
-        body.white-queen {
-            --bg-primary: #0c0c20;
-            --color-primary: #8888cc;
-            --color-secondary: #c0c0e8;
-            --color-text: #e0e0f5;
-            --color-muted: #9090c0;
-            --color-accent: #5050a0;
-            --glass-bg: rgba(15, 15, 40, 0.9);
-            --glass-border: rgba(128, 128, 200, 0.15);
-            --glow-color: rgba(128, 128, 200, 0.3);
-            --clock-glow: rgba(200, 200, 230, 0.5);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: 'Raleway', sans-serif;
-            color: var(--color-text);
-            background: var(--bg-primary);
-            overflow-x: hidden;
-            transition: background 1s, color 1s;
-            line-height: 1.6;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(139,0,20,0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(80,0,40,0.12) 0%, transparent 50%);
-            z-index: -2;
-            pointer-events: none;
-        }
-        body.white-queen::before {
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(100,100,180,0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(80,80,160,0.1) 0%, transparent 50%);
-        }
-        .particula {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: flotar linear infinite;
-            z-index: -1;
-        }
-        @keyframes flotar {
-            0% { transform: translateY(100vh); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh); opacity: 0; }
-        }
-        .particula-reloj {
-            position: fixed;
-            font-size: 12px;
-            opacity: 0.15;
-            pointer-events: none;
-            animation: flotar-reloj linear infinite;
-            z-index: -1;
-        }
-        @keyframes flotar-reloj {
-            0% { transform: translateY(100vh); opacity: 0; }
-            15% { opacity: 0.2; }
-            85% { opacity: 0.2; }
-            100% { transform: translateY(-10vh); opacity: 0; }
-        }
-        .anillo-tiempo {
-            position: fixed;
-            border: 1px solid var(--color-secondary);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: expandir 3s ease-out forwards;
-            z-index: -1;
-            opacity: 0;
-        }
-        @keyframes expandir {
-            0% { transform: scale(0); opacity: 0.4; }
-            100% { transform: scale(8); opacity: 0; }
-        }
-        nav {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(10, 6, 8, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            z-index: 1000;
-        }
-        .logo {
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--color-primary);
-            text-decoration: none;
-            letter-spacing: 3px;
-        }
-        .logo span { color: var(--color-secondary); }
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 1.2rem;
-        }
-        .nav-links a {
-            color: var(--color-muted);
-            text-decoration: none;
-            font-size: 0.88rem;
-            letter-spacing: 1px;
-            transition: all 0.3s;
-            padding: 0.5rem 0.8rem;
-            border-radius: 4px;
-            border: 1px solid transparent;
-        }
-        .nav-links a:hover {
-            color: var(--color-text);
-            border-color: var(--glow-color);
-        }
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 7rem 2rem 3rem;
-        }
-        .hero h1 {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(2.2rem, 6vw, 4.5rem);
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-primary));
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: brillo 4s ease-in-out infinite;
-            letter-spacing: 5px;
-            margin-top: 1rem;
-        }
-        @keyframes brillo {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .glitch {
-            animation: glitch-efecto 8s ease-in-out infinite;
-        }
-        @keyframes glitch-efecto {
-            0%, 94%, 100% { transform: translate(0); }
-            95% { transform: translate(-3px, 1px); }
-            96% { transform: translate(3px, -1px); }
-            97% { transform: translate(-1px, 2px); }
-            98% { transform: translate(2px, -2px); }
-            99% { transform: translate(0); }
-        }
-        .subtitulo {
-            font-size: clamp(1rem, 2.2vw, 1.35rem);
-            color: var(--color-muted);
-            margin-top: 1.5rem;
-            max-width: 600px;
-            line-height: 1.8;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-        .linea-decorativa {
-            width: 120px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--color-primary), var(--color-secondary), var(--color-primary), transparent);
-            margin: 1.5rem auto;
-        }
-        .botones-hero {
-            display: flex;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 2px;
-            cursor: pointer;
-            transition: all 0.4s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-principal {
-            background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-            color: #fff;
-            border: 1px solid var(--glow-color);
-            box-shadow: 0 0 30px var(--glow-color);
-        }
-        .btn-principal:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 40px var(--glow-color);
-        }
-        .btn-secundario {
-            background: transparent;
-            color: var(--color-secondary);
-            border: 1px solid rgba(212, 168, 83, 0.4);
-        }
-        .btn-secundario:hover {
-            background: rgba(212, 168, 83, 0.1);
-            transform: translateY(-3px);
-        }
-        .zafkiel-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        .zafkiel-reloj {
-            width: 260px;
-            height: 260px;
-            border-radius: 50%;
-            position: relative;
-            background: radial-gradient(circle, rgba(20,10,15,0.95), rgba(10,5,10,0.98));
-            border: 3px solid var(--color-secondary);
-            box-shadow: 0 0 30px var(--clock-glow), 0 0 60px rgba(212,168,83,0.15), inset 0 0 40px rgba(139,0,20,0.15);
-            cursor: pointer;
-            transition: all 0.5s;
-            overflow: hidden;
-        }
-        .zafkiel-reloj:hover {
-            box-shadow: 0 0 50px var(--clock-glow), 0 0 100px rgba(212,168,83,0.25);
-            transform: scale(1.03);
-        }
-        .reloj-aro {
-            position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border-radius: 50%;
-            border: 1px solid rgba(212,168,83,0.2);
-            border-top-color: var(--color-secondary);
-            border-right-color: transparent;
-            animation: girar-aro 20s linear infinite;
-        }
-        .reloj-aro-interno {
-            position: absolute;
-            top: 18px; left: 18px; right: 18px; bottom: 18px;
-            border-radius: 50%;
-            border: 1px dashed rgba(200,50,75,0.15);
-            animation: girar-aro 35s linear infinite reverse;
-        }
-        @keyframes girar-aro {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .reloj-numeral {
-            position: absolute;
-            font-family: 'Cinzel', serif;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--color-secondary);
-            width: 28px;
-            height: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 0 10px var(--clock-glow);
-        }
-        .reloj-mano {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom center;
-            border-radius: 4px;
-        }
-        .mano-hora {
-            width: 5px;
-            height: 58px;
-            margin-left: -2.5px;
-            background: linear-gradient(to top, var(--color-primary), #e87090);
-            box-shadow: 0 0 10px rgba(200,50,75,0.5);
-        }
-        .mano-minuto {
-            width: 3px;
-            height: 85px;
-            margin-left: -1.5px;
-            background: linear-gradient(to top, var(--color-secondary), #f0d890);
-            box-shadow: 0 0 10px rgba(212,168,83,0.5);
-        }
-        .mano-segundo {
-            width: 1.5px;
-            height: 98px;
-            margin-left: -0.75px;
-            background: linear-gradient(to top, transparent 20%, var(--color-text));
-        }
-        .reloj-centro {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle, var(--color-secondary), var(--color-primary));
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--clock-glow);
-            z-index: 10;
-        }
-        .reloj-brillo {
-            position: absolute;
-            width: 60px;
-            height: 30px;
-            background: radial-gradient(ellipse, rgba(255,255,255,0.08), transparent);
-            border-radius: 50%;
-            top: 25%;
-            left: 28%;
-            transform: rotate(-30deg);
-            pointer-events: none;
-            z-index: 5;
-        }
-        .zafkiel-texto {
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 6px;
-            color: var(--color-secondary);
-            margin-top: 1rem;
-            text-shadow: 0 0 15px var(--clock-glow);
-            opacity: 0.7;
-        }
-        .hora-digital {
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 1.35rem;
-            color: var(--color-primary);
-            letter-spacing: 4px;
-            margin-top: 0.4rem;
-            text-shadow: 0 0 20px var(--glow-color);
-        }
-        .seccion {
-            padding: 5rem 2rem;
-            max-width: 1100px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        .titulo-seccion {
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: var(--color-primary);
-            text-align: center;
-            margin-bottom: 1rem;
-            letter-spacing: 3px;
-        }
-        .subtitulo-seccion {
-            text-align: center;
-            color: var(--color-muted);
-            font-size: 1.05rem;
-            margin-bottom: 3rem;
-            font-weight: 300;
-        }
-        .linea-seccion {
-            width: 80px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-            margin: 1.2rem auto 2.5rem;
-        }
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        .about-texto h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.6rem;
-            color: var(--color-secondary);
-            margin-bottom: 1.2rem;
-        }
-        .about-texto p {
-            color: var(--color-muted);
-            line-height: 1.9;
-            font-size: 1.02rem;
-            margin-bottom: 1.2rem;
-        }
-        .about-texto strong { color: var(--color-text); }
-        .kurumi-img-wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .kurumi-marco {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            border: 3px solid var(--color-primary);
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, rgba(139,0,20,0.2), rgba(20,10,15,0.8));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.5s;
-            flex-shrink: 0;
-        }
-        .kurumi-marco:hover {
-            border-color: var(--color-secondary);
-            box-shadow: 0 0 50px var(--clock-glow);
-        }
-        .kurumi-marco img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        .kurumi-placeholder {
-            font-size: 7rem;
-            opacity: 0.3;
-        }
-        .marco-animado {
-            position: absolute;
-            top: -12px; left: -12px; right: -12px; bottom: -12px;
-            border-radius: 50%;
-            border: 1px dashed rgba(200,50,75,0.15);
-            animation: girar-marco 25s linear infinite reverse;
-            pointer-events: none;
-        }
-        .marco-giratorio {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            border: 2px solid rgba(212,168,83,0.3);
-            border-top-color: var(--color-secondary);
-            border-right-color: transparent;
-            animation: girar-marco 15s linear infinite;
-            pointer-events: none;
-            z-index: 2;
-        }
-        @keyframes girar-marco {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.8rem;
-        }
-        .feature-card {
-            background: linear-gradient(135deg, var(--glass-bg), rgba(30,15,25,0.9));
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 2.2rem 1.8rem;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(200,50,75,0.05), transparent);
-            transition: left 0.6s;
-        }
-        .feature-card:hover::before { left: 100%; }
-        .feature-card:hover {
-            transform: translateY(-6px);
-            border-color: var(--glow-color);
-            box-shadow: 0 20px 50px rgba(139,0,20,0.2);
-        }
-        .feature-icon {
-            font-size: 2.3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-        .feature-card h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
-            color: var(--color-secondary);
-            margin-bottom: 0.8rem;
-            letter-spacing: 1px;
-        }
-        .feature-card p {
-            color: var(--color-muted);
-            line-height: 1.7;
-            font-size: 0.92rem;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.5rem;
-            text-align: center;
-        }
-        .stat-item {
-            padding: 2.2rem 1.2rem;
-            background: linear-gradient(135deg, var(--glass-bg), rgba(35,15,25,0.8));
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            transition: all 0.3s;
-        }
-        .stat-item:hover {
-            transform: translateY(-5px);
-            border-color: rgba(212,168,83,0.3);
-        }
-        .stat-numero {
-            font-family: 'Cinzel', serif;
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: var(--color-primary);
-            display: block;
-        }
-        .stat-texto {
-            color: var(--color-muted);
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            margin-top: 0.5rem;
-        }
-        .novedades-lista {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            max-width: 750px;
-            margin: 0 auto;
-        }
-        .novedad-item {
-            background: linear-gradient(135deg, var(--glass-bg), rgba(30,15,25,0.9));
-            border: 1px solid var(--glass-border);
-            border-left: 4px solid var(--color-primary);
-            border-radius: 8px;
-            padding: 1.6rem 1.8rem;
-            transition: all 0.3s;
-        }
-        .novedad-item:hover {
-            border-left-color: var(--color-secondary);
-            transform: translateX(6px);
-        }
-        .novedad-fecha {
-            font-size: 0.82rem;
-            color: var(--color-secondary);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 0.5rem;
-        }
-        .novedad-item h3 {
-            font-family: 'Cinzel', serif;
-            font-size: 1.12rem;
-            color: var(--color-text);
-            margin-bottom: 0.6rem;
-        }
-        .novedad-item p {
-            color: var(--color-muted);
-            line-height: 1.7;
-            font-size: 0.92rem;
-        }
-        .tag {
-            display: inline-block;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-size: 0.73rem;
-            letter-spacing: 1px;
-            margin-top: 0.7rem;
-        }
-        .tag-nuevo {
-            background: rgba(200,50,75,0.2);
-            color: #e87090;
-            border: 1px solid rgba(200,50,75,0.3);
-        }
-        .tag-mejora {
-            background: rgba(212,168,83,0.15);
-            color: var(--color-secondary);
-            border: 1px solid rgba(212,168,83,0.3);
-        }
-        .tag-proximamente {
-            background: rgba(100,100,160,0.15);
-   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🕐 Kurumi Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Raleway',sans-serif;color:#e8d5d5;background:#0a0608;overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 20% 50%,rgba(139,0,20,0.15) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(80,0,40,0.12) 0%,transparent 50%);z-index:-2;pointer-events:none}
+body.wq{background:#0c0c20;color:#e0e0f5}
+body.wq::before{background:radial-gradient(ellipse at 20% 50%,rgba(100,100,180,0.12) 0%,transparent 50%)}
+.p{position:fixed;border-radius:50%;pointer-events:none;animation:f linear infinite;z-index:-1}
+@keyframes f{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-10vh);opacity:0}}
+.pr{position:fixed;font-size:12px;opacity:.15;pointer-events:none;animation:fr linear infinite;z-index:-1}
+@keyframes fr{0%{transform:translateY(100vh);opacity:0}15%{opacity:.2}85%{opacity:.2}100%{transform:translateY(-10vh);opacity:0}}
+.a{position:fixed;border:1px solid #d4a853;border-radius:50%;pointer-events:none;animation:ex 3s ease-out forwards;z-index:-1;opacity:0}
+@keyframes ex{0%{transform:scale(0);opacity:.4}100%{transform:scale(8);opacity:0}}
+nav{position:fixed;top:0;left:0;width:100%;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(10,6,8,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,50,75,.15);z-index:1000}
+.lg{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:900;color:#c8324b;text-decoration:none;letter-spacing:3px}
+.lg span{color:#d4a853}
+.nl{display:flex;list-style:none;gap:1.2rem}
+.nl a{color:#b09090;text-decoration:none;font-size:.85rem;letter-spacing:1px;padding:.5rem .8rem;border-radius:4px;border:1px solid transparent;transition:.3s}
+.nl a:hover{color:#e8d5d5;border-color:rgba(200,50,75,.3)}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:7rem 2rem 3rem}
+.hero h1{font-family:'Cinzel',serif;font-size:clamp(2.2rem,6vw,4.5rem);font-weight:900;background:linear-gradient(135deg,#c8324b,#d4a853,#c8324b);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:br 4s ease-in-out infinite;letter-spacing:5px;margin-top:1rem}
+@keyframes br{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.gl{animation:gl 8s ease-in-out infinite}
+@keyframes gl{0%,94%,100%{transform:translate(0)}95%{transform:translate(-3px,1px)}96%{transform:translate(3px,-1px)}97%{transform:translate(-1px,2px)}98%{transform:translate(2px,-2px)}99%{transform:translate(0)}}
+.st{font-size:clamp(1rem,2.2vw,1.35rem);color:#b09090;margin-top:1.5rem;max-width:600px;line-height:1.8;font-weight:300;letter-spacing:1px}
+.ld{width:120px;height:2px;background:linear-gradient(90deg,transparent,#c8324b,#d4a853,#c8324b,transparent);margin:1.5rem auto}
+.bh{display:flex;gap:1.5rem;margin-top:1.5rem;flex-wrap:wrap;justify-content:center}
+.btn{padding:1rem 2.5rem;border:none;border-radius:4px;font-size:1rem;font-family:'Cinzel',serif;letter-spacing:2px;cursor:pointer;transition:.4s;text-decoration:none;display:inline-block}
+.b1{background:linear-gradient(135deg,#8b0020,#c8324b);color:#fff;border:1px solid rgba(200,50,75,.3);box-shadow:0 0 30px rgba(200,50,75,.3)}
+.b1:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(200,50,75,.5)}
+.b2{background:transparent;color:#d4a853;border:1px solid rgba(212,168,83,.4)}
+.b2:hover{background:rgba(212,168,83,.1);transform:translateY(-3px)}
+.zw{display:flex;flex-direction:column;align-items:center;margin-bottom:1.5rem}
+.zr{width:260px;height:260px;border-radius:50%;position:relative;background:radial-gradient(circle,rgba(20,10,15,.95),rgba(10,5,10,.98));border:3px solid #d4a853;box-shadow:0 0 30px rgba(212,168,83,.4),0 0 60px rgba(212,168,83,.15),inset 0 0 40px rgba(139,0,20,.15);cursor:pointer;transition:.5s;overflow:hidden}
+.zr:hover{box-shadow:0 0 50px rgba(212,168,83,.5),0 0 100px rgba(212,168,83,.25);transform:scale(1.03)}
+.r1{position:absolute;top:8px;left:8px;right:8px;bottom:8px;border-radius:50%;border:1px solid rgba(212,168,83,.2);border-top-color:#d4a853;border-right-color:transparent;animation:gi 20s linear infinite}
+.r2{position:absolute;top:18px;left:18px;right:18px;bottom:18px;border-radius:50%;border:1px dashed rgba(200,50,75,.15);animation:gi 35s linear infinite reverse}
+@keyframes gi{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.rn{position:absolute;font-family:'Cinzel',serif;font-size:13px;font-weight:700;color:#d4a853;width:28px;height:28px;display:flex;align-items:center;justify-content:center;text-shadow:0 0 10px rgba(212,168,83,.4)}
+.rh{position:absolute;bottom:50%;left:50%;transform-origin:bottom center;border-radius:4px}
+.mh{width:5px;height:58px;margin-left:-2.5px;background:linear-gradient(to top,#c8324b,#e87090);box-shadow:0 0 10px rgba(200,50,75,.5)}
+.mm{width:3px;height:85px;margin-left:-1.5px;background:linear-gradient(to top,#d4a853,#f0d890);box-shadow:0 0 10px rgba(212,168,83,.5)}
+.ms{width:1.5px;height:98px;margin-left:-.75px;background:linear-gradient(to top,transparent 20%,#e8d5d5)}
+.rc{position:absolute;width:14px;height:14px;background:radial-gradient(circle,#d4a853,#c8324b);border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 15px rgba(212,168,83,.4);z-index:10}
+.rb{position:absolute;width:60px;height:30px;background:radial-gradient(ellipse,rgba(255,255,255,.08),transparent);border-radius:50%;top:25%;left:28%;transform:rotate(-30deg);pointer-events:none;z-index:5}
+.zt{text-align:center;font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:6px;color:#d4a853;margin-top:1rem;text-shadow:0 0 15px rgba(212,168,83,.4);opacity:.7}
+.hd{text-align:center;font-family:'Cinzel',serif;font-size:1.35rem;color:#c8324b;letter-spacing:4px;margin-top:.4rem;text-shadow:0 0 20px rgba(200,50,75,.3)}
+.sec{padding:5rem 2rem;max-width:1100px;margin:0 auto;width:100%}
+.ts{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,2.5rem);color:#c8324b;text-align:center;margin-bottom:1rem;letter-spacing:3px}
+.ss{text-align:center;color:#b09090;font-size:1.05rem;margin-bottom:3rem;font-weight:300}
+.ls{width:80px;height:2px;background:linear-gradient(90deg,transparent,#c8324b,transparent);margin:1.2rem auto 2.5rem}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.at h3{font-family:'Cinzel',serif;font-size:1.6rem;color:#d4a853;margin-bottom:1.2rem}
+.at p{color:#b09090;line-height:1.9;font-size:1.02rem;margin-bottom:1.2rem}
+.at strong{color:#e8d5d5}
+.ki{display:flex;justify-content:center;align-items:center}
+.km{width:280px;height:280px;border-radius:50%;border:3px solid #c8324b;position:relative;overflow:hidden;background:linear-gradient(135deg,rgba(139,0,20,.2),rgba(20,10,15,.8));display:flex;align-items:center;justify-content:center;transition:.5s;flex-shrink:0}
+.km:hover{border-color:#d4a853;box-shadow:0 0 50px rgba(212,168,83,.4)}
+.km img{width:100%;height:100%;object-fit:cover;display:block}
+.kp{font-size:7rem;opacity:.3}
+.ma{position:absolute;top:-12px;left:-12px;right:-12px;bottom:-12px;border-radius:50%;border:1px dashed rgba(200,50,75,.15);animation:gi 25s linear infinite reverse;pointer-events:none}
+.mg{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;border:2px solid rgba(212,168,83,.3);border-top-color:#d4a853;border-right-color:transparent;animation:gi 15s linear infinite;pointer-events:none;z-index:2}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.8rem}
+.fc{background:linear-gradient(135deg,rgba(20,10,15,.9),rgba(30,15,25,.9));border:1px solid rgba(200,50,75,.15);border-radius:12px;padding:2.2rem 1.8rem;transition:.4s;position:relative;overflow:hidden}
+.fc:hover{transform:translateY(-6px);border-color:rgba(200,50,75,.3);box-shadow:0 20px 50px rgba(139,0,20,.2)}
+.fi{font-size:2.3rem;margin-bottom:1rem;display:block}
+.fc h3{font-family:'Cinzel',serif;font-size:1.15rem;color:#d4a853;margin-bottom:.8rem;letter-spacing:1px}
+.fc p{color:#b09090;line-height:1.7;font-size:.92rem}
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem;text-align:center}
+.si{padding:2.2rem 1.2rem;background:linear-gradient(135deg,rgba(20,10,15,.9),rgba(35,15,25,.8));border:1px solid rgba(200,50,75,.15);border-radius:12px;transition:.3s}
+.si:hover{transform:translateY(-5px);border-color:rgba(212,168,83,.3)}
+.sn{font-family:'Cinzel',serif;font-size:2.8rem;font-weight:900;color:#c8324b;display:block}
+.sl{color:#b09090;font-size:.9rem;letter-spacing:1px;margin-top:.5rem}
+.nl2{display:flex;flex-direction:column;gap:1.5rem;max-width:750px;margin:0 auto}
+.ni{background:linear-gradient(135deg,rgba(20,10,15,.9),rgba(30,15,25,.9));border:1px solid rgba(200,50,75,.15);border-left:4px solid #c8324b;border-radius:8px;padding:1.6rem 1.8rem;transition:.3s}
+.ni:hover{border-left-color:#d4a853;transform:translateX(6px)}
+.nf{font-size:.82rem;color:#d4a853;letter-spacing:2px;text-transform:uppercase;margin-bottom:.5rem}
+.ni h3{font-family:'Cinzel',serif;font-size:1.12rem;color:#e8d5d5;margin-bottom:.6rem}
+.ni p{color:#b09090;line-height:1.7;font-size:.92rem}
+.tg{display:inline-block;padding:.3rem 1rem;border-radius:20px;font-size:.73rem;letter-spacing:1px;margin-top:.7rem}
+.tn{background:rgba(200,50,75,.2);color:#e87090;border:1px solid rgba(200,50,75,.3)}
+.tm{background:rgba(212,168,83,.15);color:#d4a853;border:1px solid rgba(212,168,83,.3)}
+.tp{background:rgba(100,100,160,.15);color:#9090c0;border:1px solid rgba(100,100,160,.3)}
+.tl{background:linear-gradient(135deg,rgba(200,50,75,.3),rgba(212,168,83,.3));color:#fff;border:1px solid rgba(200,50,75,.5);animation:pt 2s ease-in-out infinite}
+@keyframes pt{0%,100%{box-shadow:0 0 5px rgba(200,50,75,.3)}50%{box-shadow:0 0 20px rgba(200,50,75,.5)}}
+.pb{width:100%;height:6px;background:rgba(255,255,255,.1);border-radius:3px;margin-top:1rem;overflow:hidden}
+.pf{height:100%;border-radius:3px;background:linear-gradient(90deg,#c8324b,#d4a853)}
+.pl{display:flex;justify-content:space-between;font-size:.78rem;color:#b09090;margin-top:.4rem}
+.cta{text-align:center;padding:5rem 2rem}
+.cta h2{font-family:'Cinzel',serif;font-size:clamp(1.8rem,4vw,2.5rem);color:#e8d5d5;margin-bottom:1.2rem}
+.cta > p{color:#b09090;font-size:1.1rem;max-width:600px;margin:0 auto 2rem;line-height:1.8}
+.ctg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.8rem;margin-top:3rem;max-width:850px;margin-left:auto;margin-right:auto}
+.ct2{background:linear-gradient(135deg,rgba(20,10,15,.9),rgba(35,15,25,.9));border:1px solid rgba(200,50,75,.15);border-radius:16px;padding:2.2rem 1.4rem;text-align:center;transition:.4s;position:relative;overflow:hidden}
+.ct2:hover{transform:translateY(-6px);border-color:rgba(200,50,75,.3)}
+.ci{font-size:2.8rem;margin-bottom:1rem}
+.ct2 h3{font-family:'Cinzel',serif;font-size:1.08rem;color:#d4a853;letter-spacing:1px;margin-bottom:.6rem}
+.ct2 p{color:#b09090;font-size:1rem;margin-bottom:1.2rem;word-break:break-all}
+.bc{padding:.65rem 1.6rem;border:1px solid rgba(200,50,75,.3);border-radius:999px;background:rgba(200,50,75,.15);color:#e8d5d5;font-family:'Raleway',sans-serif;font-size:.88rem;letter-spacing:1px;text-decoration:none;transition:.3s;display:inline-block}
+.bc:hover{background:#c8324b;color:#fff}
+footer{border-top:1px solid rgba(200,50,75,.15);padding:2.5rem 2rem;text-align:center;background:rgba(8,4,8,.9)}
+.fl{font-family:'Cinzel',serif;font-size:1.25rem;color:#c8324b;letter-spacing:3px;margin-bottom:.8rem}
+.fl span{color:#d4a853}
+footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
+.fk{display:flex;justify-content:center;gap:1.5rem;margin-top:1.2rem}
+.fk a{color:#806060;text-decoration:none;font-size:.82rem;transition:.3s}
+.fk a:hover{color:#c8324b}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:#0a0608}
+::-webkit-scrollbar-thumb{background:#8b0020;border-radius:4px}
+.fi2{opacity:0;transform:translateY(25px);transition:opacity .8s,transform .8s}
+.fi2.vis{opacity:1;transform:translateY(0)}
+.wo{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,25,.9);z-index:2000;flex-direction:column;justify-content:center;align-items:center;text-align:center;backdrop-filter:blur(12px);padding:2rem}
+.wo.vis{display:flex;animation:ap .8s ease}
+@keyframes ap{from{opacity:0}to{opacity:1}}
+.wo h2{font-family:'Cinzel',serif;font-size:clamp(2.2rem,5vw,4.5rem);color:#e0e0ff;letter-spacing:10px;text-shadow:0 0 40px rgba(180,180,255,.5);animation:gw 2s ease-in-out infinite}
+@keyframes gw{0%,100%{text-shadow:0 0 40px rgba(180,180,255,.5)}50%{text-shadow:0 0 80px rgba(180,180,255,.8)}}
+.wo .wi{font-size:5rem;margin-bottom:1.5rem;filter:drop-shadow(0 0 30px rgba(180,180,255,.5))}
+.wo p{color:#b0b0d0;font-size:1.15rem;margin-top:1.2rem;letter-spacing:2px;max-width:500px}
+.wb{margin-top:2.5rem;padding:.9rem 2.2rem;background:transparent;border:1px solid rgba(180,180,255,.3);color:#c0c0e0;font-family:'Cinzel',serif;font-size:.95rem;letter-spacing:3px;cursor:pointer;border-radius:4px;transition:.3s}
+.wb:hover{background:rgba(180,180,255,.15)}
+.rep{position:fixed;bottom:25px;right:25px;z-index:999;display:flex;align-items:center;gap:10px}
+.bm{width:52px;height:52px;border-radius:50%;border:2px solid #d4a853;background:rgba(10,6,8,.9);color:#d4a853;font-size:1.3rem;cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(212,168,83,.4)}
+.bm:hover{transform:scale(1.1)}
+.bm.pl2{animation:pm 1s ease-in-out infinite;border-color:#c8324b}
+@keyframes pm{0%,100%{box-shadow:0 0 20px rgba(212,168,83,.4)}50%{box-shadow:0 0 40px rgba(212,168,83,.5)}}
+.eq{display:none;gap:3px;align-items:flex-end;height:22px}
+.eq.vis{display:flex}
+.eq .ba{width:3px;background:#d4a853;border-radius:2px;animation:eq 0.8s ease-in-out infinite}
+.eq .ba:nth-child(1){height:60%;animation-delay:0s}
+.eq .ba:nth-child(2){height:100%;animation-delay:.15s}
+.eq .ba:nth-child(3){height:40%;animation-delay:.3s}
+.eq .ba:nth-child(4){height:80%;animation-delay:.1s}
+.eq .ba:nth-child(5){height:55%;animation-delay:.25s}
+@keyframes eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
+@media(max-width:768px){nav{padding:.8rem 1.2rem}.nl{display:none}.ag{grid-template-columns:1fr;gap:2.5rem;text-align:center}.km{width:220px;height:220px}.zr{width:220px;height:220px}.sec{padding:3.5rem 1.2rem}.sn{font-size:2.2rem}.rep{bottom:15px;right:15px}.hero{padding:6rem 1.5rem 2.5rem}}
+</style>
+</head>
+<body>
+
+<!-- WHITE QUEEN -->
+<div class="wo" id="wo">
+<div class="wi">👑</div>
+<h2>WHITE QUEEN</h2>
+<p>"Yo también soy Kurumi Tokisaki. Así que, ¿qué pasa con eso?"</p>
+<button class="wb" id="cb">✦ VOLVER ✦</button>
+</div>
+
+<!-- NAV -->
+<nav>
+<a href="#inicio" class="lg">KURUMI <span>BOT</span></a>
+<ul class="nl">
+<li><a href="#inicio">Inicio</a></li>
+<li><a href="#sobre">Sobre</a></li>
+<li><a href="#caract">Características</a></li>
+<li><a href="#nov">Novedades</a></li>
+<li><a href="#doc">Documentación</a></li>
+<li><a href="#contacto">Contacto</a></li>
+</ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+<div class="zw">
+<div class="zr" id="zc">
+<div class="r1"></div>
+<div class="r2"></div>
+<div class="rb"></div>
+<div id="rn"></div>
+<div class="rh mh" id="mh"></div>
+<div class="rh mm" id="mm"></div>
+<div class="rh ms" id="ms"></div>
+<div class="rc"></div>
+</div>
+<div class="zt">✦ Z A F K I E L ✦</div>
+<div class="hd" id="hd">00:00:00</div>
+</div>
+<h1 class="gl">KURUMI BOT</h1>
+<div class="ld"></div>
+<p class="st">Tu bot de WhatsApp con estilo gótico y elegante. Automatiza, interactúa y sorprende.</p>
+<p class="st" style="font-size:.88rem;opacity:.6;margin-top:.5rem">💡 Toca el reloj 3 veces para un secreto...</p>
+<div class="bh">
+<a href="#sobre" class="btn b1">🕐 Descubrir más</a>
+<a href="#contacto" class="btn b2">💬 Contactar</a>
+</div>
+</section>
+
+<!-- SOBRE -->
+<section class="sec fi2" id="sobre">
+<h2 class="ts">SOBRE EL PROYECTO</h2>
+<div class="ls"></div>
+<p class="ss">Inspirado en la elegancia de Kurumi Tokisaki</p>
+<div class="ag">
+<div class="at">
+<h3>🕰️ ¿Qué es Kurumi Bot?</h3>
+<p>Kurumi Bot es un proyecto de <strong>bot para WhatsApp</strong> diseñado para automatizar tareas, responder mensajes y mucho más.</p>
+<p>Con una estética inspirada en <strong>Kurumi Tokisaki</strong> de Date A Live, combina funcionalidad con estilo gótico.</p>
+<p>Su nombre proviene de <strong>Zafkiel</strong>, el ángel del tiempo.</p>
+</div>
+<div class="ki">
+<div class="km">
+<div class="ma"></div>
+<div class="mg"></div>
+<img src="kurumi.png" alt="Kurumi" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+<div class="kp" style="display:none">⏰</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CARACTERÍSTICAS -->
+<section class="sec fi2" id="caract">
+<h2 class="ts">CARACTERÍSTICAS</h2>
+<div class="ls"></div>
+<p class="ss">Todo lo que Kurumi Bot puede hacer</p>
+<div class="fg">
+<div class="fc"><span class="fi">🤖</span><h3>Respuestas Automáticas</h3><p>Responde mensajes inteligentemente.</p></div>
+<div class="fc"><span class="fi">📢</span><h3>Notificaciones</h3><p>Envía alertas automáticamente.</p></div>
+<div class="fc"><span class="fi">🎮</span><h3>Juegos</h3><p>Trivia, juegos de rol y más.</p></div>
+<div class="fc"><span class="fi">📊</span><h3>Estadísticas</h3><p>Monitorea actividad del grupo.</p></div>
+<div class="fc"><span class="fi">🛡️</span><h3>Moderación</h3><p>Filtros anti-spam y más.</p></div>
+<div class="fc"><span class="fi">🎨</span><h3>Personalización</h3><p>Configura a tu medida.</p></div>
+</div>
+</section>
+
+<!-- NÚMEROS -->
+<section class="sec fi2">
+<h2 class="ts">NÚMEROS</h2>
+<div class="ls"></div>
+<div class="sg">
+<div class="si"><span class="sn">24/7</span><div class="sl">Siempre activo</div></div>
+<div class="si"><span class="sn">50+</span><div class="sl">Comandos</div></div>
+<div class="si"><span class="sn">∞</span><div class="sl">Posibilidades</div></div>
+<div class="si"><span class="sn">1</span><div class="sl">Proyecto único</div></div>
+</div>
+</section>
+
+<!-- NOVEDADES -->
+<section class="sec fi2" id="nov">
+<h2 class="ts">NOVEDADES</h2>
+<div class="ls"></div>
+<p class="ss">Últimas actualizaciones</p>
+<div class="nl2">
+<div class="ni" style="border-left-color:#d4a853">
+<div class="nf">🚀 Lanzamiento Oficial</div>
+<h3>✦ Kurumi Bot v1.0</h3>
+<p>¡Estamos finalizando los últimos detalles! Incluye respuestas automáticas, juegos, moderación y más.</p>
+<div class="pb"><div class="pf" style="width:85%"></div></div>
+<div class="pl"><span>Progreso</span><span>85%</span></div>
+<span class="tg tl">🚀 PRÓXIMAMENTE</span>
+</div>
+<div class="ni">
+<div class="nf">🕐 Enero 2025</div>
+<h3>✦ Respuestas inteligentes</h3>
+<p>El bot entiende mejor los mensajes.</p>
+<span class="tg tn">✦ NUEVO</span>
+</div>
+<div class="ni">
+<div class="nf">🕐 Diciembre 2024</div>
+<h3>✦ Rediseño de interfaz</h3>
+<p>Menús más elegantes con estilo Kurumi.</p>
+<span class="tg tm">↑ MEJORA</span>
+</div>
+<div class="ni">
+<div class="nf">🕐 Noviembre 2024</div>
+<h3>✦ Juegos y trivia</h3>
+<p>Nuevos juegos interactivos.</p>
+<span class="tg tn">✦ NUEVO</span>
+</div>
+<div class="ni">
+<div class="nf">⏳ Próximamente</div>
+<h3>✦ Modo IA conversacional</h3>
+<p>Conversaciones más avanzadas con IA.</p>
+<span class="tg tp">⏳ PRÓXIMAMENTE</span>
+</div>
+<div class="ni">
+<div class="nf">⏳ Próximamente</div>
+<h3>✦ Comandos de voz</h3>
+<p>Controla el bot con tu voz.</p>
+<span class="tg tp">⏳ PRÓXIMAMENTE</span>
+</div>
+<div class="ni">
+<div class="nf">🤍 Misterio</div>
+<h3>✦ Modo White Queen</h3>
+<p>Un modo secreto. Pista: el reloj tiene un secreto...</p>
+<span class="tg tp">🤍 MISTERIO</span>
+</div>
+</div>
+</section>
+
+<!-- DOCUMENTACIÓN -->
+<section class="sec fi2" id="doc">
+<h2 class="ts">📖 DOCUMENTACIÓN</h2>
+<div class="ls"></div>
+<p class="ss">Guía de comandos de Kurumi Bot</p>
+<div class="fg">
+<div class="fc"><span class="fi">📋</span><h3>.help</h3><p>Lista completa de comandos.</p></div>
+<div class="fc"><span class="fi">🖼️</span><h3>.sticker</h3><p>Convierte imagen en sticker.</p></div>
+<div class="fc"><span class="fi">🎵</span><h3>.play</h3><p>Busca y envía música.</p></div>
+<div class="fc"><span class="fi">📊</span><h3>.stats</h3><p>Estadísticas del grupo.</p></div>
+<div class="fc"><span class="fi">🛡️</span><h3>.moderar</h3><p>Moderación del grupo.</p></div>
+<div class="fc"><span class="fi">⚙️</span><h3>.config</h3><p>Configura opciones.</p></div>
+</div>
+</section>
+
+<!-- CONTACTO -->
+<section class="cta fi2" id="contacto">
+<h2>¿Listo para conocer a Kurumi Bot?</h2>
+<p>Únete y descubre todo lo que puede hacer por ti.</p>
+<div class="bh">
+<a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3" class="btn b1" target="_blank">💬 Unirme al Bot</a>
+<a href="#doc" class="btn b2">📖 Documentación</a>
+</div>
+<div class="ctg">
+<div class="ct2">
+<div class="ci">📱</div>
+<h3>WhatsApp / Teléfono</h3>
+<p>+506 7018-3577</p>
+<a href="https://wa.me/50670183577" class="bc" target="_blank">Escribir ahora</a>
+</div>
+<div class="ct2">
+<div class="ci">📧</div>
+<h3>Correo</h3>
+<p>brendi221825@gmail.com</p>
+<a href="mailto:brendi221825@gmail.com" class="bc">Enviar email</a>
+</div>
+<div class="ct2">
+<div class="ci">💬</div>
+<h3>Grupo Oficial</h3>
+<p>Únete al grupo</p>
+<a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3" class="bc" target="_blank">Unirme</a>
+</div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+<div class="fl">KURUMI <span>BOT</span></div>
+<p>🕐 Proyecto personal de Bot de WhatsApp</p>
+<p>Inspirado en Kurumi Tokisaki ✦ Date A Live</p>
+<div class="fk">
+<a href="#">GitHub</a>
+<a href="https://chat.whatsapp.com/IPXf4BfR0gm4uUuECLJgS3" target="_blank">WhatsApp</a>
+<a href="#">Twitter</a>
+</div>
+<p style="margin-top:1.2rem;font-size:.72rem">© 2025 Kurumi Bot. Hecho con ❤️ y ⏰</p>
+</footer>
+
+<!-- 🎵 REPRODUCTOR CON TU MÚSICA -->
+<div class="rep">
+<audio id="mu" loop preload="auto" style="display:none">
+<source src="https://files.catbox.moe/yy8oe3.m4a" type="audio/mp4">
+</audio>
+<div class="eq" id="eq"><div class="ba"></div><div class="ba"></div><div class="ba"></div><div class="ba"></div><div class="ba"></div></div>
+<button class="bm" id="bm" title="Música Kurumi">🎵</button>
+</div>
+
+<script>
+// ===== RELOJ ZAFKIEL =====
+var R=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+var rn=document.getElementById('rn');
+R.forEach(function(n,i){var a=i*30*Math.PI/180;var r=100;var e=document.createElement('div');e.className='rn';e.textContent=n;e.style.left=(130+r*Math.sin(a)-14)+'px';e.style.top=(130-r*Math.cos(a)-14)+'px';rn.appendChild(e)});
+
+function upR(){var d=new Date();var h=d.getHours()%12;var m=d.getMinutes();var s=d.getSeconds();document.getElementById('mh').style.transform='rotate('+((h*30)+(m*0.5))+'deg)';document.getElementById('mm').style.transform='rotate('+((m*6)+(s*0.1))+'deg)';document.getElementById('ms').style.transform='rotate('+(s*6)+'deg)';var hh=('0'+d.getHours()).slice(-2);var mm=('0'+m).slice(-2);var ss=('0'+s).slice(-2);document.getElementById('hd').textContent=hh+':'+mm+':'+ss}
+upR();setInterval(upR,1000);
+
+// ===== PARTÍCULAS =====
+for(var i=0;i<25;i++){var p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'vw';p.style.animationDuration=(8+Math.random()*15)+'s';p.style.animationDelay=Math.random()*10+'s';var s2=2+Math.random()*4;p.style.width=s2+'px';p.style.height=s2+'px';p.style.background=['rgba(200,50,80,0.4)','rgba(212,168,83,0.35)','rgba(232,180,180,0.3)'][Math.floor(Math.random()*3)];document.body.appendChild(p)}
+var rl=['🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛','⏳','🕰️'];
+for(var j=0;j<10;j++){var pr=document.createElement('div');pr.className='pr';pr.textContent=rl[Math.floor(Math.random()*rl.length)];pr.style.left=Math.random()*100+'vw';pr.style.animationDuration=(15+Math.random()*25)+'s';pr.style.animationDelay=Math.random()*15+'s';document.body.appendChild(pr)}
+setInterval(function(){var a2=document.createElement('div');a2.className='a';var z=30+Math.random()*50;a2.style.width=z+'px';a2.style.height=z+'px';a2.style.left=(Math.random()*80+10)+'vw';a2.style.top=(Math.random()*80+10)+'vh';document.body.appendChild(a2);setTimeout(function(){a2.remove()},3000)},3000);
+
+// ===== WHITE QUEEN =====
+var cl=0,tm=null;
+var zc=document.getElementById('zc');
+var wo=document.getElementById('wo');
+zc.addEventListener('click',function(){cl++;clearTimeout(tm);if(cl>=3){wo.classList.add('vis');document.body.classList.add('wq');cl=0}tm=setTimeout(function(){cl=0},1500)});
+document.getElementById('cb').addEventListener('click',function(){wo.classList.remove('vis');document.body.classList.remove('wq')});
+var bf='';
+document.addEventListener('keydown',function(e){bf+=e.key.toLowerCase();if(bf.length>10)bf=bf.slice(-10);if(bf.indexOf('whitequeen')!==-1){wo.classList.add('vis');document.body.classList.add('wq');bf=''}if(e.key==='Escape'){wo.classList.remove('vis');document.body.classList.remove('wq')}});
+
+// ===== 🎵 MÚSICA DE KURUMI (catbox + fallback) =====
+var bm=document.getElementById('bm');
+var eq=document.getElementById('eq');
+var aud=document.getElementById('mu');
+var pg=false;
+var ac=null;
+var nd=[];
+var ni1=null;
+var ni2=null;
+
+function nota(freq,dur,vol,tipo){
+if(!ac)return;
+var o=ac.createOscillator();
+var g=ac.createGain();
+o.type=tipo||'triangle';
+o.frequency.value=freq;
+g.gain.setValueAtTime(vol||.15,ac.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+dur);
+o.connect(g);g.connect(ac.destination);
+o.start();o.stop(ac.currentTime+dur);
+}
+
+function crearMusica(){
+ac=new(window.AudioContext||window.webkitAudioContext)();
+var b1=ac.createOscillator(),b1g=ac.createGain();
+b1.type='sine';b1.frequency.value=120;b1g.gain.value=.18;
+b1.connect(b1g);b1g.connect(ac.destination);b1.start();nd.push(b1);
+var b2=ac.createOscillator(),b2g=ac.createGain();
+b2.type='sine';b2.frequency.value=165;b2g.gain.value=.1;
+b2.connect(b2g);b2g.connect(ac.destination);b2.start();nd.push(b2);
+var lf=ac.createOscillator(),lfg=ac.createGain();
+lf.type='sine';lf.frequency.value=.2;lfg.gain.value=.08;
+lf.connect(lfg);lfg.connect(b1g.gain);lf.start();nd.push(lf);
+var bs=ac.sampleRate*2,nb=ac.createBuffer(1,bs,ac.sampleRate),out=nb.getChannelData(0);
+for(var k=0;k<bs;k++)out[k]=Math.random()*2-1;
+var ns=ac.createBufferSource();ns.buffer=nb;ns.loop=true;
+var nfi=ac.createBiquadFilter();nfi.type='lowpass';nfi.frequency.value=400;
+var ng=ac.createGain();ng.gain.value=.04;
+ns.connect(nfi);nfi.connect(ng);ng.connect(ac.destination);ns.start();nd.push(ns);
+var melod=[261.63,293.66,329.63,293.66,261.63,220,261.63,329.63];
+var idx=0;
+ni1=setInterval(function(){if(!pg||!ac)return;nota(melod[idx%melod.length],2,.12,'triangle');idx++},3000);
+var campanas=[523.25,440,392,523.25];
+var ci2=0;
+ni2=setInterval(function(){if(!pg||!ac)return;nota(campanas[ci2%campanas.length],3,.08,'sine');ci2++},5000);
+}
+
+function detMusica(){
+clearInterval(ni1);clearInterval(ni2);
+for(var n=0;n<nd.length;n++){try{nd[n].stop()}catch(e){}}
+nd=[];if(ac){ac.close();ac=null}
+}
+
+bm.addEventListener('click',function(){
+if(pg){
+detMusica();
+aud.pause();aud.currentTime=0;
+bm.textContent='🎵';bm.classList.remove('pl2');eq.classList.remove('vis');pg=false;
+}else{
+pg=true;
+aud.volume=0.6;
+aud.play().then(function(){
+bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis');
+}).catch(function(){
+crearMusica();
+bm.textContent='🎶';bm.classList.add('pl2');eq.classList.add('vis');
+});
+}
+});
+
+// ===== SCROLL =====
+var ob=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:.1});
+document.querySelectorAll('.fi2').forEach(function(el){ob.observe(el)});
+
+// ===== SMOOTH SCROLL =====
+document.querySelectorAll('a[href^="#"]').forEach(function(l){l.addEventListener('click',function(e){e.preventDefault();var d=document.querySelector(l.getAttribute('href'));if(d)d.scrollIntoView({behavior:'smooth',block:'start'})})});
+</script>
+
+</body>
+</html>
