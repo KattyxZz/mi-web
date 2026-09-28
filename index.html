@@ -362,13 +362,39 @@ footer p{color:#706060;font-size:.82rem;letter-spacing:1px;margin-bottom:.4rem}
 </div>
 
 <script>
-// ===== RELOJ ZAFKIEL =====
+// ===== RELOJ ZAFKIEL (adaptable) =====
 var R=['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
-var rn=document.getElementById('rn');
-R.forEach(function(n,i){var a=i*30*Math.PI/180;var r=100;var e=document.createElement('div');e.className='rn';e.textContent=n;e.style.left=(130+r*Math.sin(a)-14)+'px';e.style.top=(130-r*Math.cos(a)-14)+'px';rn.appendChild(e)});
+
+function crearNumeros(){
+var cont=document.getElementById('rn');
+cont.innerHTML='';
+var reloj=document.getElementById('zc');
+var size=reloj.offsetWidth;
+var centro=size/2;
+var radio=size*0.37;
+R.forEach(function(n,i){
+var a=i*30*Math.PI/180;
+var e=document.createElement('div');
+e.className='rn';
+e.textContent=n;
+e.style.fontSize=Math.max(10,size*0.05)+'px';
+e.style.width=Math.max(20,size*0.11)+'px';
+e.style.height=Math.max(20,size*0.11)+'px';
+e.style.left=(centro+radio*Math.sin(a)-size*0.055)+'px';
+e.style.top=(centro-radio*Math.cos(a)-size*0.055)+'px';
+cont.appendChild(e);
+});
+}
 
 function upR(){var d=new Date();var h=d.getHours()%12;var m=d.getMinutes();var s=d.getSeconds();document.getElementById('mh').style.transform='rotate('+((h*30)+(m*0.5))+'deg)';document.getElementById('mm').style.transform='rotate('+((m*6)+(s*0.1))+'deg)';document.getElementById('ms').style.transform='rotate('+(s*6)+'deg)';var hh=('0'+d.getHours()).slice(-2);var mm=('0'+m).slice(-2);var ss=('0'+s).slice(-2);document.getElementById('hd').textContent=hh+':'+mm+':'+ss}
-upR();setInterval(upR,1000);
+
+crearNumeros();
+upR();
+setInterval(upR,1000);
+
+window.addEventListener('resize',function(){
+crearNumeros();
+});
 
 // ===== PARTÍCULAS =====
 for(var i=0;i<25;i++){var p=document.createElement('div');p.className='p';p.style.left=Math.random()*100+'vw';p.style.animationDuration=(8+Math.random()*15)+'s';p.style.animationDelay=Math.random()*10+'s';var s2=2+Math.random()*4;p.style.width=s2+'px';p.style.height=s2+'px';p.style.background=['rgba(200,50,80,0.4)','rgba(212,168,83,0.35)','rgba(232,180,180,0.3)'][Math.floor(Math.random()*3)];document.body.appendChild(p)}
