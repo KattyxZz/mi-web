@@ -1610,32 +1610,48 @@
             }
         });
 
-        // ===== MÚSICA =====
-        const audio = document.getElementById('musicaFondo');
-        const btnM = document.getElementById('btnMusica');
-        const ecu = document.getElementById('ecualizador');
-        let playing = false;
+// ===== 🎵 MÚSICA =====
+const audio = document.getElementById('musicaFondo');
+const btnM = document.getElementById('btnMusica');
+const ecu = document.getElementById('ecualizador');
+let playing = false;
 
-        btnM.addEventListener('click', () => {
-            if (playing) {
-                audio.pause();
-                btnM.textContent = '🎵';
-                btnM.classList.remove('playing');
-                ecu.classList.remove('visible');
-                playing = false;
-            } else {
-                audio.volume = 0.5;
-                audio.play().then(() => {
-                    btnM.textContent = '🎶';
-                    btnM.classList.add('playing');
-                    ecu.classList.add('visible');
-                    playing = true;
-                }).catch(() => {
-                    btnM.textContent = '⚠️';
-                    setTimeout(() => btnM.textContent = '🎵', 2000);
-                });
-            }
+btnM.addEventListener('click', () => {
+    if (playing) {
+        audio.pause();
+        btnM.textContent = '🎵';
+        btnM.classList.remove('playing');
+        ecu.classList.remove('visible');
+        playing = false;
+        console.log('🔇 Música pausada');
+    } else {
+        audio.volume = 0.5;
+        console.log('🔊 Intentando reproducir...');
+        console.log('📁 Fuente actual:', audio.currentSrc || audio.querySelector('source')?.src);
+
+        audio.play().then(() => {
+            btnM.textContent = '🎶';
+            btnM.classList.add('playing');
+            ecu.classList.add('visible');
+            playing = true;
+            console.log('✅ Música reproduciéndose');
+        }).catch(err => {
+            console.log('❌ Error:', err.message);
+            btnM.textContent = '⚠️';
+            setTimeout(() => btnM.textContent = '🎵', 2000);
         });
+    }
+});
+
+// Verificar que el audio carga
+audio.addEventListener('loadeddata', () => {
+    console.log('✅ Audio cargado correctamente');
+});
+
+audio.addEventListener('error', (e) => {
+    console.log('❌ Error cargando audio:', e);
+    btnM.textContent = '🔇';
+});
 
         // ===== SCROLL ANIMATIONS =====
         const obs = new IntersectionObserver((entries) => {
