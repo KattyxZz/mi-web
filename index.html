@@ -6,12 +6,9 @@
     <title>🕐 Kurumi Bot - Proyecto WhatsApp</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ============================================================
-           VARIABLES DE COLOR (cambiar aquí cambia toda la página)
-           ============================================================ */
+        /* ===== VARIABLES ===== */
         :root {
             --bg-primary: #0a0608;
-            --bg-secondary: #1a0a10;
             --color-primary: #c8324b;
             --color-secondary: #d4a853;
             --color-text: #e8d5d5;
@@ -23,12 +20,9 @@
             --clock-glow: rgba(212, 168, 83, 0.4);
         }
 
-        /* ============================================================
-           🤍 MODO WHITE QUEEN (easter egg)
-           ============================================================ */
+        /* ===== WHITE QUEEN MODE ===== */
         body.white-queen {
             --bg-primary: #0c0c20;
-            --bg-secondary: #1a1a3a;
             --color-primary: #8888cc;
             --color-secondary: #c0c0e8;
             --color-text: #e0e0f5;
@@ -40,10 +34,16 @@
             --clock-glow: rgba(200, 200, 230, 0.5);
         }
 
-        /* ============================================================
-           RESET & BASE
-           ============================================================ */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Raleway', sans-serif;
@@ -52,31 +52,32 @@
             overflow-x: hidden;
             cursor: default;
             transition: background 1s ease, color 1s ease;
+            line-height: 1.6;
         }
 
+        /* Fondo decorativo */
         body::before {
             content: '';
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background:
                 radial-gradient(ellipse at 20% 50%, rgba(139, 0, 20, 0.15) 0%, transparent 50%),
                 radial-gradient(ellipse at 80% 20%, rgba(80, 0, 40, 0.12) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 80%, rgba(60, 0, 10, 0.1) 0%, transparent 50%);
-            z-index: -1;
-            transition: background 1s ease;
+            z-index: -2;
+            pointer-events: none;
         }
 
         body.white-queen::before {
             background:
                 radial-gradient(ellipse at 20% 50%, rgba(100, 100, 180, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(80, 80, 160, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(60, 60, 140, 0.08) 0%, transparent 50%);
+                radial-gradient(ellipse at 80% 20%, rgba(80, 80, 160, 0.1) 0%, transparent 50%);
         }
 
-        /* ============================================================
-           ✨ PARTÍCULAS FLOTANTES
-           ============================================================ */
+        /* ===== PARTÍCULAS ===== */
         .particula {
             position: fixed;
             border-radius: 50%;
@@ -92,7 +93,6 @@
             100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
         }
 
-        /* Partícula tipo reloj */
         .particula-reloj {
             position: fixed;
             font-size: 12px;
@@ -109,7 +109,6 @@
             100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
         }
 
-        /* Anillos de tiempo (se expanden periódicamente) */
         .anillo-tiempo {
             position: fixed;
             border: 1px solid var(--color-secondary);
@@ -125,26 +124,25 @@
             100% { transform: scale(8); opacity: 0; }
         }
 
-        /* ============================================================
-           NAVEGACIÓN
-           ============================================================ */
+        /* ===== NAVEGACIÓN ===== */
         nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 6, 8, 0.85);
+            background: rgba(10, 6, 8, 0.9);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
-            transition: background 0.5s ease;
         }
 
         body.white-queen nav {
-            background: rgba(12, 12, 32, 0.85);
+            background: rgba(12, 12, 32, 0.9);
         }
 
         .logo {
@@ -156,21 +154,23 @@
             letter-spacing: 3px;
         }
 
-        .logo span { color: var(--color-secondary); }
+        .logo span {
+            color: var(--color-secondary);
+        }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 1.5rem;
+            gap: 1.2rem;
         }
 
         .nav-links a {
             color: var(--color-muted);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             letter-spacing: 1px;
             transition: all 0.3s ease;
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.8rem;
             border-radius: 4px;
             border: 1px solid transparent;
         }
@@ -178,194 +178,9 @@
         .nav-links a:hover {
             color: var(--color-text);
             border-color: var(--glow-color);
-            background: rgba(200, 50, 75, 0.1);
         }
 
-        body.white-queen .nav-links a:hover {
-            background: rgba(128, 128, 200, 0.1);
-        }
-
-        /* ============================================================
-           🕰️ RELOJ ZAFKIEL (PASO 1)
-           ============================================================ */
-        .zafkiel-contenedor {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-        }
-
-        .zafkiel-reloj {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            position: relative;
-            background: radial-gradient(circle, rgba(20, 10, 15, 0.95), rgba(10, 5, 10, 0.98));
-            border: 3px solid var(--color-secondary);
-            box-shadow:
-                0 0 30px var(--clock-glow),
-                0 0 60px rgba(212, 168, 83, 0.15),
-                inset 0 0 40px rgba(139, 0, 20, 0.15);
-            cursor: pointer;
-            transition: all 0.5s ease;
-            overflow: hidden;
-        }
-
-        .zafkiel-reloj:hover {
-            box-shadow:
-                0 0 50px var(--clock-glow),
-                0 0 100px rgba(212, 168, 83, 0.25),
-                inset 0 0 60px rgba(139, 0, 20, 0.2);
-            transform: scale(1.02);
-        }
-
-        body.white-queen .zafkiel-reloj {
-            background: radial-gradient(circle, rgba(20, 20, 40, 0.95), rgba(10, 10, 25, 0.98));
-            border-color: var(--color-secondary);
-        }
-
-        /* Aro decorativo giratorio */
-        .reloj-aro {
-            position: absolute;
-            top: 8px; left: 8px; right: 8px; bottom: 8px;
-            border-radius: 50%;
-            border: 1px solid rgba(212, 168, 83, 0.2);
-            border-top-color: var(--color-secondary);
-            border-right-color: transparent;
-            animation: girar-aro 20s linear infinite;
-        }
-
-        .reloj-aro-interno {
-            position: absolute;
-            top: 20px; left: 20px; right: 20px; bottom: 20px;
-            border-radius: 50%;
-            border: 1px dashed rgba(200, 50, 75, 0.15);
-            animation: girar-aro 35s linear infinite reverse;
-        }
-
-        @keyframes girar-aro {
-            from { transform: rotate(0deg); }
-            to   { transform: rotate(360deg); }
-        }
-
-        /* Números romanos */
-        .reloj-numeral {
-            position: absolute;
-            font-family: 'Cinzel', serif;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--color-secondary);
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 0 10px var(--clock-glow);
-            transition: color 0.5s ease;
-        }
-
-        /* Marcas de los minutos */
-        .reloj-marca {
-            position: absolute;
-            width: 1px;
-            height: 8px;
-            background: rgba(212, 168, 83, 0.3);
-            top: 50%;
-            left: 50%;
-            transform-origin: center;
-        }
-
-        .reloj-marca.grande {
-            width: 2px;
-            height: 14px;
-            background: rgba(212, 168, 83, 0.5);
-        }
-
-        /* Manecillas */
-        .reloj-mano {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom center;
-            border-radius: 4px;
-        }
-
-        .mano-hora {
-            width: 5px;
-            height: 65px;
-            margin-left: -2.5px;
-            background: linear-gradient(to top, var(--color-primary), #e87090);
-            box-shadow: 0 0 10px rgba(200, 50, 75, 0.5);
-        }
-
-        .mano-minuto {
-            width: 3px;
-            height: 95px;
-            margin-left: -1.5px;
-            background: linear-gradient(to top, var(--color-secondary), #f0d890);
-            box-shadow: 0 0 10px rgba(212, 168, 83, 0.5);
-        }
-
-        .mano-segundo {
-            width: 1.5px;
-            height: 110px;
-            margin-left: -0.75px;
-            background: linear-gradient(to top, transparent 20%, var(--color-text));
-            box-shadow: 0 0 8px rgba(232, 213, 213, 0.3);
-        }
-
-        /* Centro del reloj */
-        .reloj-centro {
-            position: absolute;
-            width: 14px;
-            height: 14px;
-            background: radial-gradient(circle, var(--color-secondary), var(--color-primary));
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px var(--clock-glow);
-            z-index: 10;
-        }
-
-        /* Brillo del ojo */
-        .reloj-brillo {
-            position: absolute;
-            width: 60px;
-            height: 30px;
-            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.08), transparent);
-            border-radius: 50%;
-            top: 25%;
-            left: 30%;
-            transform: rotate(-30deg);
-            pointer-events: none;
-        }
-
-        /* Texto ZAFKIEL */
-        .zafkiel-texto {
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 6px;
-            color: var(--color-secondary);
-            margin-top: 1.2rem;
-            text-shadow: 0 0 15px var(--clock-glow);
-            opacity: 0.7;
-        }
-
-        /* Hora digital debajo */
-        .hora-digital {
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            font-size: 1.5rem;
-            color: var(--color-primary);
-            letter-spacing: 4px;
-            margin-top: 0.5rem;
-            text-shadow: 0 0 20px var(--glow-color);
-        }
-
-        /* ============================================================
-           HERO SECTION
-           ============================================================ */
+        /* ===== HERO ===== */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -373,13 +188,13 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 6rem 2rem 3rem;
+            padding: 7rem 2rem 3rem;
             position: relative;
         }
 
         .hero h1 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-size: clamp(2.2rem, 6vw, 4.5rem);
             font-weight: 900;
             background: linear-gradient(135deg, var(--color-primary), var(--color-secondary), var(--color-primary));
             background-size: 200% 200%;
@@ -389,6 +204,7 @@
             animation: brillo 4s ease-in-out infinite;
             letter-spacing: 5px;
             line-height: 1.2;
+            margin-top: 1rem;
         }
 
         @keyframes brillo {
@@ -396,7 +212,6 @@
             50%      { background-position: 100% 50%; }
         }
 
-        /* Efecto glitch ocasional */
         .glitch {
             animation: glitch-efecto 8s ease-in-out infinite;
         }
@@ -411,7 +226,7 @@
         }
 
         .hero .subtitulo {
-            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-size: clamp(1rem, 2.2vw, 1.35rem);
             color: var(--color-muted);
             margin-top: 1.5rem;
             max-width: 600px;
@@ -471,18 +286,174 @@
             transform: translateY(-3px);
         }
 
-        /* ============================================================
-           SECCIONES
-           ============================================================ */
+        /* ===== 🕰️ RELOJ ZAFKIEL ===== */
+        .zafkiel-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .zafkiel-reloj {
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            position: relative;
+            background: radial-gradient(circle, rgba(20, 10, 15, 0.95), rgba(10, 5, 10, 0.98));
+            border: 3px solid var(--color-secondary);
+            box-shadow:
+                0 0 30px var(--clock-glow),
+                0 0 60px rgba(212, 168, 83, 0.15),
+                inset 0 0 40px rgba(139, 0, 20, 0.15);
+            cursor: pointer;
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        .zafkiel-reloj:hover {
+            box-shadow:
+                0 0 50px var(--clock-glow),
+                0 0 100px rgba(212, 168, 83, 0.25);
+            transform: scale(1.03);
+        }
+
+        body.white-queen .zafkiel-reloj {
+            background: radial-gradient(circle, rgba(20, 20, 40, 0.95), rgba(10, 10, 25, 0.98));
+        }
+
+        .reloj-aro {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border-radius: 50%;
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            border-top-color: var(--color-secondary);
+            border-right-color: transparent;
+            animation: girar-aro 20s linear infinite;
+        }
+
+        .reloj-aro-interno {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            bottom: 18px;
+            border-radius: 50%;
+            border: 1px dashed rgba(200, 50, 75, 0.15);
+            animation: girar-aro 35s linear infinite reverse;
+        }
+
+        @keyframes girar-aro {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        .reloj-numeral {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--color-secondary);
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 10px var(--clock-glow);
+        }
+
+        .reloj-mano {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: bottom center;
+            border-radius: 4px;
+        }
+
+        .mano-hora {
+            width: 5px;
+            height: 58px;
+            margin-left: -2.5px;
+            background: linear-gradient(to top, var(--color-primary), #e87090);
+            box-shadow: 0 0 10px rgba(200, 50, 75, 0.5);
+        }
+
+        .mano-minuto {
+            width: 3px;
+            height: 85px;
+            margin-left: -1.5px;
+            background: linear-gradient(to top, var(--color-secondary), #f0d890);
+            box-shadow: 0 0 10px rgba(212, 168, 83, 0.5);
+        }
+
+        .mano-segundo {
+            width: 1.5px;
+            height: 98px;
+            margin-left: -0.75px;
+            background: linear-gradient(to top, transparent 20%, var(--color-text));
+            box-shadow: 0 0 8px rgba(232, 213, 213, 0.3);
+        }
+
+        .reloj-centro {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle, var(--color-secondary), var(--color-primary));
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 15px var(--clock-glow);
+            z-index: 10;
+        }
+
+        .reloj-brillo {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background: radial-gradient(ellipse, rgba(255, 255, 255, 0.08), transparent);
+            border-radius: 50%;
+            top: 25%;
+            left: 28%;
+            transform: rotate(-30deg);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .zafkiel-texto {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 6px;
+            color: var(--color-secondary);
+            margin-top: 1rem;
+            text-shadow: 0 0 15px var(--clock-glow);
+            opacity: 0.7;
+        }
+
+        .hora-digital {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            color: var(--color-primary);
+            letter-spacing: 4px;
+            margin-top: 0.4rem;
+            text-shadow: 0 0 20px var(--glow-color);
+        }
+
+        /* ===== SECCIONES ===== */
         .seccion {
-            padding: 6rem 2rem;
-            max-width: 1200px;
+            padding: 5rem 2rem;
+            max-width: 1100px;
             margin: 0 auto;
+            width: 100%;
         }
 
         .titulo-seccion {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             color: var(--color-primary);
             text-align: center;
             margin-bottom: 1rem;
@@ -492,8 +463,8 @@
         .subtitulo-seccion {
             text-align: center;
             color: var(--color-muted);
-            font-size: 1.1rem;
-            margin-bottom: 3.5rem;
+            font-size: 1.05rem;
+            margin-bottom: 3rem;
             font-weight: 300;
         }
 
@@ -501,12 +472,10 @@
             width: 80px;
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-            margin: 1.5rem auto 3.5rem;
+            margin: 1.2rem auto 2.5rem;
         }
 
-        /* ============================================================
-           🖼️ SOBRE EL BOT + IMAGEN KURUMI (PASO 2)
-           ============================================================ */
+        /* ===== SOBRE EL BOT + IMAGEN ===== */
         .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -516,105 +485,105 @@
 
         .about-texto h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             color: var(--color-secondary);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
         .about-texto p {
             color: var(--color-muted);
-            line-height: 2;
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
+            line-height: 1.9;
+            font-size: 1.02rem;
+            margin-bottom: 1.2rem;
         }
 
-        /* Marco de imagen corregido */
-.kurumi-imagen-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+        .about-texto strong {
+            color: var(--color-text);
+        }
 
-.kurumi-marco {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    border: 3px solid var(--color-primary);
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.5s ease;
-}
+        /* Imagen Kurumi */
+        .kurumi-img-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.kurumi-marco:hover {
-    border-color: var(--color-secondary);
-    box-shadow: 0 0 50px var(--clock-glow);
-}
+        .kurumi-marco {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            border: 3px solid var(--color-primary);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, rgba(139, 0, 20, 0.2), rgba(20, 10, 15, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease;
+            flex-shrink: 0;
+        }
 
-.kurumi-marco img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    display: block;
-}
+        .kurumi-marco:hover {
+            border-color: var(--color-secondary);
+            box-shadow: 0 0 50px var(--clock-glow);
+        }
 
-.kurumi-marco .placeholder-img {
-    font-size: 8rem;
-    opacity: 0.3;
-    filter: drop-shadow(0 0 20px var(--clock-glow));
-    text-align: center;
-    line-height: 300px;
-}
+        .kurumi-marco img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
 
-.kurumi-marco::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid rgba(212, 168, 83, 0.3);
-    border-top-color: var(--color-secondary);
-    border-right-color: transparent;
-    animation: girar-marco 15s linear infinite;
-    z-index: 2;
-    pointer-events: none;
-}
+        .kurumi-placeholder {
+            font-size: 7rem;
+            opacity: 0.3;
+        }
 
-@keyframes girar-marco {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-}
+        .marco-animado {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border-radius: 50%;
+            border: 1px dashed rgba(200, 50, 75, 0.15);
+            animation: girar-marco 25s linear infinite reverse;
+            pointer-events: none;
+        }
 
-.kurumi-marco .marco-exterior {
-    position: absolute;
-    top: -12px;
-    left: -12px;
-    right: -12px;
-    bottom: -12px;
-    border-radius: 50%;
-    border: 1px dashed rgba(200, 50, 75, 0.15);
-    animation: girar-marco 25s linear infinite reverse;
-    pointer-events: none;
-}
-        /* ============================================================
-           ✨ CARACTERÍSTICAS
-           ============================================================ */
+        .marco-giratorio {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 168, 83, 0.3);
+            border-top-color: var(--color-secondary);
+            border-right-color: transparent;
+            animation: girar-marco 15s linear infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes girar-marco {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* ===== CARACTERÍSTICAS ===== */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
+            gap: 1.8rem;
         }
 
         .feature-card {
             background: linear-gradient(135deg, var(--glass-bg), rgba(30, 15, 25, 0.9));
             border: 1px solid var(--glass-border);
             border-radius: 12px;
-            padding: 2.5rem 2rem;
+            padding: 2.2rem 1.8rem;
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
@@ -631,46 +600,46 @@
             transition: left 0.6s ease;
         }
 
-        .feature-card:hover::before { left: 100%; }
+        .feature-card:hover::before {
+            left: 100%;
+        }
 
         .feature-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             border-color: var(--glow-color);
-            box-shadow: 0 20px 60px rgba(139, 0, 20, 0.2);
+            box-shadow: 0 20px 50px rgba(139, 0, 20, 0.2);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.2rem;
+            font-size: 2.3rem;
+            margin-bottom: 1rem;
             display: block;
         }
 
         .feature-card h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: var(--color-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             letter-spacing: 1px;
         }
 
         .feature-card p {
             color: var(--color-muted);
-            line-height: 1.8;
-            font-size: 0.95rem;
+            line-height: 1.7;
+            font-size: 0.92rem;
         }
 
-        /* ============================================================
-           📊 ESTADÍSTICAS
-           ============================================================ */
+        /* ===== ESTADÍSTICAS ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
             text-align: center;
         }
 
         .stat-item {
-            padding: 2.5rem 1.5rem;
+            padding: 2.2rem 1.2rem;
             background: linear-gradient(135deg, var(--glass-bg), rgba(35, 15, 25, 0.8));
             border: 1px solid var(--glass-border);
             border-radius: 12px;
@@ -684,7 +653,7 @@
 
         .stat-numero {
             font-family: 'Cinzel', serif;
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 900;
             color: var(--color-primary);
             display: block;
@@ -692,19 +661,17 @@
 
         .stat-texto {
             color: var(--color-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
             margin-top: 0.5rem;
         }
 
-        /* ============================================================
-           📢 NOVEDADES ACTUALIZADAS (PASO 5)
-           ============================================================ */
+        /* ===== NOVEDADES ===== */
         .novedades-lista {
             display: flex;
             flex-direction: column;
             gap: 1.5rem;
-            max-width: 800px;
+            max-width: 750px;
             margin: 0 auto;
         }
 
@@ -713,21 +680,21 @@
             border: 1px solid var(--glass-border);
             border-left: 4px solid var(--color-primary);
             border-radius: 8px;
-            padding: 1.8rem 2rem;
+            padding: 1.6rem 1.8rem;
             transition: all 0.3s ease;
         }
 
         .novedad-item:hover {
             border-left-color: var(--color-secondary);
-            transform: translateX(8px);
+            transform: translateX(6px);
         }
 
         .novedad-fecha {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--color-secondary);
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -735,24 +702,24 @@
 
         .novedad-item h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.2rem;
+            font-size: 1.12rem;
             color: var(--color-text);
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
         .novedad-item p {
             color: var(--color-muted);
             line-height: 1.7;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
 
         .tag {
             display: inline-block;
             padding: 0.3rem 1rem;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.73rem;
             letter-spacing: 1px;
-            margin-top: 0.8rem;
+            margin-top: 0.7rem;
         }
 
         .tag-nuevo {
@@ -785,11 +752,10 @@
             50%      { box-shadow: 0 0 20px rgba(200, 50, 75, 0.5); }
         }
 
-        /* Barra de progreso */
         .progreso-barra {
             width: 100%;
             height: 6px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 3px;
             margin-top: 1rem;
             overflow: hidden;
@@ -799,51 +765,45 @@
             height: 100%;
             border-radius: 3px;
             background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-            transition: width 1s ease;
         }
 
         .progreso-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--color-muted);
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
         }
 
-        /* ============================================================
-           📖 DOCUMENTACIÓN
-           ============================================================ */
+        /* ===== DOCUMENTACIÓN ===== */
 
-        /* ============================================================
-           💬 CONTACTO
-           ============================================================ */
+        /* ===== CONTACTO ===== */
         .cta-seccion {
             text-align: center;
             padding: 5rem 2rem;
-            position: relative;
         }
 
         .cta-seccion h2 {
             font-family: 'Cinzel', serif;
             font-size: clamp(1.8rem, 4vw, 2.5rem);
             color: var(--color-text);
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
         }
 
-        .cta-seccion p {
+        .cta-seccion > p {
             color: var(--color-muted);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             max-width: 600px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 2rem;
             line-height: 1.8;
         }
 
         .contacto-tarjetas {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 3.5rem;
-            max-width: 900px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.8rem;
+            margin-top: 3rem;
+            max-width: 850px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -852,7 +812,7 @@
             background: linear-gradient(135deg, var(--glass-bg), rgba(35, 15, 25, 0.9));
             border: 1px solid var(--glass-border);
             border-radius: 16px;
-            padding: 2.5rem 1.5rem;
+            padding: 2.2rem 1.4rem;
             text-align: center;
             transition: all 0.4s ease;
             position: relative;
@@ -871,46 +831,47 @@
             transition: opacity 0.4s ease;
         }
 
-        .contacto-tarjeta:hover::before { opacity: 1; }
+        .contacto-tarjeta:hover::before {
+            opacity: 1;
+        }
 
         .contacto-tarjeta:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             border-color: var(--glow-color);
-            box-shadow: 0 20px 60px rgba(139, 0, 20, 0.25);
         }
 
         .contacto-icono {
-            font-size: 3rem;
-            margin-bottom: 1.2rem;
-            filter: drop-shadow(0 0 15px var(--clock-glow));
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
         }
 
         .contacto-tarjeta h3 {
             font-family: 'Cinzel', serif;
-            font-size: 1.15rem;
+            font-size: 1.08rem;
             color: var(--color-secondary);
             letter-spacing: 1px;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
         }
 
         .contacto-tarjeta p {
             color: var(--color-muted);
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
+            font-size: 1rem;
+            margin-bottom: 1.2rem;
+            word-break: break-all;
         }
 
         .btn-contacto {
-            padding: 0.7rem 1.8rem;
+            padding: 0.65rem 1.6rem;
             border: 1px solid var(--glow-color);
             border-radius: 999px;
             background: rgba(200, 50, 75, 0.15);
             color: var(--color-text);
             font-family: 'Raleway', sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             letter-spacing: 1px;
             text-decoration: none;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .btn-contacto:hover {
@@ -919,56 +880,98 @@
             box-shadow: 0 5px 25px var(--glow-color);
         }
 
-// ============================================
-// 🎵 MÚSICA DE FONDO
-// ============================================
-const audio = document.getElementById('musicaFondo');
-const btnMusica = document.getElementById('btnMusica');
-const ecualizador = document.getElementById('ecualizador');
-let musicaActiva = false;
+        /* ===== 🎵 REPRODUCTOR ===== */
+        .reproductor {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-btnMusica.addEventListener('click', () => {
-    if (musicaActiva) {
-        audio.pause();
-        btnMusica.textContent = '🔇';
-        btnMusica.classList.remove('playing');
-        ecualizador.classList.remove('visible');
-        musicaActiva = false;
-        setTimeout(() => btnMusica.textContent = '🎵', 500);
-    } else {
-        audio.play().then(() => {
-            btnMusica.textContent = '🎶';
-            btnMusica.classList.add('playing');
-            ecualizador.classList.add('visible');
-            musicaActiva = true;
-        }).catch(err => {
-            btnMusica.textContent = '⚠️';
-            setTimeout(() => btnMusica.textContent = '🎵', 2000);
-            console.log('Error al reproducir audio:', err);
-        });
-    }
-});
+        .btn-musica {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid var(--color-secondary);
+            background: rgba(10, 6, 8, 0.9);
+            color: var(--color-secondary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px var(--clock-glow);
+        }
 
-        /* ============================================================
-           🤍 OVERLAY WHITE QUEEN
-           ============================================================ */
-        .white-queen-overlay {
+        .btn-musica:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-musica.playing {
+            animation: pulso-musica 1s ease-in-out infinite;
+            border-color: var(--color-primary);
+        }
+
+        @keyframes pulso-musica {
+            0%, 100% { box-shadow: 0 0 20px var(--clock-glow); }
+            50%      { box-shadow: 0 0 40px var(--clock-glow); }
+        }
+
+        .ecualizador {
+            display: none;
+            gap: 3px;
+            align-items: flex-end;
+            height: 22px;
+        }
+
+        .ecualizador.visible {
+            display: flex;
+        }
+
+        .ecualizador .barra {
+            width: 3px;
+            background: var(--color-secondary);
+            border-radius: 2px;
+            animation: ecualizar 0.8s ease-in-out infinite;
+        }
+
+        .ecualizador .barra:nth-child(1) { height: 60%; animation-delay: 0s; }
+        .ecualizador .barra:nth-child(2) { height: 100%; animation-delay: 0.15s; }
+        .ecualizador .barra:nth-child(3) { height: 40%; animation-delay: 0.3s; }
+        .ecualizador .barra:nth-child(4) { height: 80%; animation-delay: 0.1s; }
+        .ecualizador .barra:nth-child(5) { height: 55%; animation-delay: 0.25s; }
+
+        @keyframes ecualizar {
+            0%, 100% { transform: scaleY(0.5); }
+            50%      { transform: scaleY(1); }
+        }
+
+        /* ===== 🤍 WHITE QUEEN OVERLAY ===== */
+        .wq-overlay {
             display: none;
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(10, 10, 25, 0.85);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 25, 0.9);
             z-index: 2000;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            backdrop-filter: blur(10px);
-            animation: aparecer 1s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 2rem;
         }
 
-        .white-queen-overlay.visible {
+        .wq-overlay.visible {
             display: flex;
+            animation: aparecer 0.8s ease;
         }
 
         @keyframes aparecer {
@@ -976,9 +979,9 @@ btnMusica.addEventListener('click', () => {
             to   { opacity: 1; }
         }
 
-        .white-queen-overlay h2 {
+        .wq-overlay h2 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-size: clamp(2.2rem, 5vw, 4.5rem);
             color: #e0e0ff;
             letter-spacing: 10px;
             text-shadow: 0 0 40px rgba(180, 180, 255, 0.5);
@@ -987,107 +990,105 @@ btnMusica.addEventListener('click', () => {
 
         @keyframes glow-wq {
             0%, 100% { text-shadow: 0 0 40px rgba(180, 180, 255, 0.5); }
-            50%      { text-shadow: 0 0 80px rgba(180, 180, 255, 0.8), 0 0 120px rgba(180, 180, 255, 0.3); }
+            50%      { text-shadow: 0 0 80px rgba(180, 180, 255, 0.8); }
         }
 
-        .white-queen-overlay .icono-wq {
-            font-size: 6rem;
-            margin-bottom: 2rem;
+        .wq-overlay .icono-wq {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
             filter: drop-shadow(0 0 30px rgba(180, 180, 255, 0.5));
             animation: pulso 3s ease-in-out infinite;
         }
 
-        .white-queen-overlay p {
-            color: #b0b0d0;
-            font-size: 1.2rem;
-            margin-top: 1.5rem;
-            letter-spacing: 2px;
+        @keyframes pulso {
+            0%, 100% { transform: scale(1); }
+            50%      { transform: scale(1.1); }
         }
 
-        .white-queen-overlay .btn-cerrar-wq {
-            margin-top: 3rem;
-            padding: 1rem 2.5rem;
+        .wq-overlay p {
+            color: #b0b0d0;
+            font-size: 1.15rem;
+            margin-top: 1.2rem;
+            letter-spacing: 2px;
+            max-width: 500px;
+        }
+
+        .wq-btn-cerrar {
+            margin-top: 2.5rem;
+            padding: 0.9rem 2.2rem;
             background: transparent;
             border: 1px solid rgba(180, 180, 255, 0.3);
             color: #c0c0e0;
             font-family: 'Cinzel', serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
             letter-spacing: 3px;
             cursor: pointer;
             border-radius: 4px;
             transition: all 0.3s ease;
         }
 
-        .white-queen-overlay .btn-cerrar-wq:hover {
+        .wq-btn-cerrar:hover {
             background: rgba(180, 180, 255, 0.15);
             border-color: rgba(180, 180, 255, 0.6);
         }
 
-        /* ============================================================
-           🦶 FOOTER
-           ============================================================ */
+        /* ===== FOOTER ===== */
         footer {
             border-top: 1px solid var(--glass-border);
-            padding: 3rem 2rem;
+            padding: 2.5rem 2rem;
             text-align: center;
-            background: rgba(8, 4, 8, 0.8);
-            transition: background 0.5s ease;
-        }
-
-        body.white-queen footer {
-            background: rgba(8, 8, 20, 0.8);
+            background: rgba(8, 4, 8, 0.9);
         }
 
         .footer-logo {
             font-family: 'Cinzel', serif;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: var(--color-primary);
             letter-spacing: 3px;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
 
-        .footer-logo span { color: var(--color-secondary); }
+        .footer-logo span {
+            color: var(--color-secondary);
+        }
 
         footer p {
             color: #706060;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             letter-spacing: 1px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
         .footer-links {
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            margin-top: 1.5rem;
+            margin-top: 1.2rem;
         }
 
         .footer-links a {
             color: #806060;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover { color: var(--color-primary); }
+        .footer-links a:hover {
+            color: var(--color-primary);
+        }
 
-        /* ============================================================
-           SCROLL BAR
-           ============================================================ */
+        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb {
             background: var(--color-accent);
             border-radius: 4px;
         }
-        ::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
 
-        /* ============================================================
-           APARICIÓN AL SCROLL
-           ============================================================ */
+        /* ===== APARICIÓN AL SCROLL ===== */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(25px);
             transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
@@ -1096,38 +1097,64 @@ btnMusica.addEventListener('click', () => {
             transform: translateY(0);
         }
 
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            nav { padding: 1rem; }
-            .nav-links { display: none; }
-            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
-            .seccion { padding: 4rem 1.5rem; }
-            .stat-numero { font-size: 2.2rem; }
-            .zafkiel-reloj { width: 220px; height: 220px; }
-            .kurumi-marco { width: 220px; height: 220px; }
-            .reproductor { bottom: 15px; right: 15px; }
+            nav {
+                padding: 0.8rem 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+                text-align: center;
+            }
+
+            .kurumi-marco {
+                width: 220px;
+                height: 220px;
+            }
+
+            .zafkiel-reloj {
+                width: 220px;
+                height: 220px;
+            }
+
+            .seccion {
+                padding: 3.5rem 1.2rem;
+            }
+
+            .stat-numero {
+                font-size: 2.2rem;
+            }
+
+            .reproductor {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 2.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-         🤍 OVERLAY WHITE QUEEN (EASTER EGG - PASO 2)
-         ============================================================ -->
-    <div class="white-queen-overlay" id="whiteQueenOverlay">
+    <!-- 🤍 WHITE QUEEN OVERLAY -->
+    <div class="wq-overlay" id="wqOverlay">
         <div class="icono-wq">👑</div>
         <h2>WHITE QUEEN</h2>
-        <p>—"Yo también soy Kurumi Tokisaki. Así que, ¿qué pasa con eso?"</p>
-        <button class="btn-cerrar-wq" id="cerrarWhiteQueen">✦ VOLVER ✦</button>
+        <p>"Yo también soy Kurumi Tokisaki. Así que, ¿qué pasa con eso?"</p>
+        <button class="wq-btn-cerrar" id="cerrarWQ">✦ VOLVER ✦</button>
     </div>
 
-    <!-- ============================================================
-         NAVEGACIÓN
-         ============================================================ -->
+    <!-- 🧭 NAVEGACIÓN -->
     <nav>
-        <a href="#" class="logo">KURUMI <span>BOT</span></a>
+        <a href="#inicio" class="logo">KURUMI <span>BOT</span></a>
         <ul class="nav-links">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#sobre">Sobre el Bot</a></li>
@@ -1138,40 +1165,33 @@ btnMusica.addEventListener('click', () => {
         </ul>
     </nav>
 
-    <!-- ============================================================
-         HERO + RELOJ ZAFKIEL (PASO 1)
-         ============================================================ -->
+    <!-- 🌟 HERO + RELOJ ZAFKIEL -->
     <section class="hero" id="inicio">
 
-        <!-- 🕰️ RELOJ ZAFKIEL -->
-        <div class="zafkiel-contenedor">
-            <div>
-                <div class="zafkiel-reloj" id="zafkielClock">
-                    <div class="reloj-aro"></div>
-                    <div class="reloj-aro-interno"></div>
-                    <div class="reloj-brillo"></div>
-                    <!-- Números y marcas se generan con JS -->
-                    <div id="numerosContainer"></div>
-                    <div class="reloj-mano mano-hora" id="manoHora"></div>
-                    <div class="reloj-mano mano-minuto" id="manoMinuto"></div>
-                    <div class="reloj-mano mano-segundo" id="manoSegundo"></div>
-                    <div class="reloj-centro"></div>
-                </div>
-                <div class="zafkiel-texto">✦ Z A F K I E L ✦</div>
-                <div class="hora-digital" id="horaDigital">00:00:00</div>
+        <!-- Reloj -->
+        <div class="zafkiel-wrap">
+            <div class="zafkiel-reloj" id="zafkielClock">
+                <div class="reloj-aro"></div>
+                <div class="reloj-aro-interno"></div>
+                <div class="reloj-brillo"></div>
+                <div id="relojNumerales"></div>
+                <div class="reloj-mano mano-hora" id="manoHora"></div>
+                <div class="reloj-mano mano-minuto" id="manoMinuto"></div>
+                <div class="reloj-mano mano-segundo" id="manoSegundo"></div>
+                <div class="reloj-centro"></div>
             </div>
+            <div class="zafkiel-texto">✦ Z A F K I E L ✦</div>
+            <div class="hora-digital" id="horaDigital">00:00:00</div>
         </div>
 
-        <!-- Título principal -->
         <h1 class="glitch">KURUMI BOT</h1>
         <div class="linea-decorativa"></div>
         <p class="subtitulo">
             Tu bot de WhatsApp con estilo gótico y elegante.
             Automatiza, interactúa y sorprende a todos tus contactos.
-            <br>
-            <em style="font-size: 0.9rem; opacity: 0.7; margin-top: 0.8rem; display: inline-block;">
-                💡 Toca el reloj 3 veces para un secreto...
-            </em>
+        </p>
+        <p class="subtitulo" style="font-size: 0.88rem; opacity: 0.6; margin-top: 0.5rem;">
+            💡 Toca el reloj 3 veces para un secreto...
         </p>
         <div class="botones-hero">
             <a href="#sobre" class="btn btn-principal">🕐 Descubrir más</a>
@@ -1179,9 +1199,7 @@ btnMusica.addEventListener('click', () => {
         </div>
     </section>
 
-    <!-- ============================================================
-         SOBRE EL BOT + IMAGEN KURUMI (PASO 2)
-         ============================================================ -->
+    <!-- 🖼️ SOBRE EL BOT -->
     <section class="seccion fade-in" id="sobre">
         <h2 class="titulo-seccion">SOBRE EL PROYECTO</h2>
         <div class="linea-seccion"></div>
@@ -1207,21 +1225,20 @@ btnMusica.addEventListener('click', () => {
                 </p>
             </div>
 
-           <!-- 🖼️ IMAGEN DE KURUMI -->
-<div class="kurumi-imagen-container">
-    <div class="kurumi-marco">
-        <div class="marco-exterior"></div>
-        <img id="kurumiImg"
-             src="kurumi.png"
-             alt="Kurumi Tokisaki"
-             onerror="this.style.display='none'; document.getElementById('placeholderImg').style.display='block';">
-        <div class="placeholder-img" id="placeholderImg" style="display:none;">⏰</div>
-    </div>
-</div>
+            <div class="kurumi-img-wrap">
+                <div class="kurumi-marco">
+                    <div class="marco-animado"></div>
+                    <div class="marco-giratorio"></div>
+                    <img src="kurumi.png"
+                         alt="Kurumi Tokisaki"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="kurumi-placeholder" style="display:none;">⏰</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- ============================================================
-         CARACTERÍSTICAS
-         ============================================================ -->
+    <!-- ⚙️ CARACTERÍSTICAS -->
     <section class="seccion fade-in" id="caracteristicas">
         <h2 class="titulo-seccion">CARACTERÍSTICAS</h2>
         <div class="linea-seccion"></div>
@@ -1231,7 +1248,7 @@ btnMusica.addEventListener('click', () => {
             <div class="feature-card">
                 <span class="feature-icon">🤖</span>
                 <h3>Respuestas Automáticas</h3>
-                <p>Responde mensajes de forma inteligente y rápida, con personalidad única.</p>
+                <p>Responde mensajes de forma inteligente y rápida con personalidad única.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">📢</span>
@@ -1261,9 +1278,7 @@ btnMusica.addEventListener('click', () => {
         </div>
     </section>
 
-    <!-- ============================================================
-         ESTADÍSTICAS
-         ============================================================ -->
+    <!-- 📊 NÚMEROS -->
     <section class="seccion fade-in">
         <h2 class="titulo-seccion">NÚMEROS</h2>
         <div class="linea-seccion"></div>
@@ -1287,26 +1302,21 @@ btnMusica.addEventListener('click', () => {
         </div>
     </section>
 
-    <!-- ============================================================
-         📢 NOVEDADES ACTUALIZADAS (PASO 5)
-         ============================================================ -->
+    <!-- 📢 NOVEDADES -->
     <section class="seccion fade-in" id="novedades">
         <h2 class="titulo-seccion">NOVEDADES</h2>
         <div class="linea-seccion"></div>
         <p class="subtitulo-seccion">Últimas actualizaciones y próximos lanzamientos</p>
 
         <div class="novedades-lista">
-
-            <!-- Lanzamiento principal -->
-            <div class="novedad-item" style="border-left-color: #d4a853;">
+            <div class="novedad-item" style="border-left-color: var(--color-secondary);">
                 <div class="novedad-fecha">🚀 Próximo Lanzamiento Oficial</div>
-                <h3>✦ Kurumi Bot - Lanzamiento Oficial v2.0</h3>
+                <h3>✦ Kurumi Bot — Lanzamiento Oficial v1.0</h3>
                 <p>
-                    ¡El lanzamiento oficial de Kurumi Bot está a la vuelta de la esquina!
-                    Estamos finalizando los últimos detalles para darte la mejor experiencia.
-                    <br><br>
-                    Incluye: respuestas automáticas, juegos, moderación, estadísticas,
-                    sistema de stickers y mucho más.
+                    ¡El lanzamiento oficial está a la vuelta de la esquina!
+                    Estamos finalizando los últimos detalles.
+                    Incluye: respuestas automáticas, juegos, moderación,
+                    estadísticas, sistema de stickers y mucho más.
                 </p>
                 <div class="progreso-barra">
                     <div class="progreso-fill" style="width: 85%;"></div>
@@ -1318,73 +1328,52 @@ btnMusica.addEventListener('click', () => {
                 <span class="tag tag-lanzamiento">🚀 LANZAMIENTO PRÓXIMAMENTE</span>
             </div>
 
-            <!-- Novedades recientes -->
             <div class="novedad-item">
                 <div class="novedad-fecha">🕐 Enero 2025</div>
-                <h3>✦ Nuevo sistema de respuestas inteligentes</h3>
-                <p>
-                    El bot ahora puede entender mejor los mensajes y dar
-                    respuestas más naturales y personalizadas.
-                </p>
+                <h3>✦ Sistema de respuestas inteligentes</h3>
+                <p>El bot entiende mejor los mensajes y responde de forma más natural.</p>
                 <span class="tag tag-nuevo">✦ NUEVO</span>
             </div>
 
             <div class="novedad-item">
                 <div class="novedad-fecha">🕐 Diciembre 2024</div>
                 <h3>✦ Rediseño de la interfaz de comandos</h3>
-                <p>
-                    Menús más elegantes y fáciles de usar, con el estilo
-                    gótico característico de Kurumi.
-                </p>
+                <p>Menús más elegantes y fáciles de usar con estilo gótico Kurumi.</p>
                 <span class="tag tag-mejora">↑ MEJORA</span>
             </div>
 
             <div class="novedad-item">
                 <div class="novedad-fecha">🕐 Noviembre 2024</div>
                 <h3>✦ Sistema de juegos y trivia</h3>
-                <p>
-                    Agregamos nuevos juegos interactivos para que los grupos
-                    se diviertan más con el bot.
-                </p>
+                <p>Nuevos juegos interactivos para que los grupos se diviertan más.</p>
                 <span class="tag tag-nuevo">✦ NUEVO</span>
             </div>
 
             <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Próximamente</div>
+                <div class="novedad-fecha">⏳ Próximamente</div>
                 <h3>✦ Modo IA conversacional</h3>
-                <p>
-                    Estamos trabajando en integrar inteligencia artificial
-                    para conversaciones más avanzadas. ¡Muy pronto!
-                </p>
+                <p>Integración de inteligencia artificial para conversaciones avanzadas.</p>
                 <span class="tag tag-proximamente">⏳ PRÓXIMAMENTE</span>
             </div>
 
             <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Próximamente</div>
-                <h3>✦ Sistema de comandos de voz</h3>
-                <p>
-                    Controla el bot con tu voz. Un nuevo nivel de interacción
-                    directamente en WhatsApp.
-                </p>
+                <div class="novedad-fecha">⏳ Próximamente</div>
+                <h3>✦ Comandos de voz</h3>
+                <p>Controla el bot con tu voz directamente en WhatsApp.</p>
                 <span class="tag tag-proximamente">⏳ PRÓXIMAMENTE</span>
             </div>
 
             <div class="novedad-item">
-                <div class="novedad-fecha">🕐 Próximamente</div>
-                <h3>✦ Modo White Queen (Sorpresa)</h3>
-                <p>
-                    Un modo secreto inspirado en la versión invertida de Kurumi.
-                    ¿Puedes encontrarlo? Pista: el reloj tiene un secreto...
-                </p>
+                <div class="novedad-fecha">🤍 Misterio</div>
+                <h3>✦ Modo White Queen</h3>
+                <p>Un modo secreto inspirado en la versión invertida de Kurumi.
+                   Pista: el reloj tiene un secreto...</p>
                 <span class="tag tag-proximamente">🤍 MISTERIO</span>
             </div>
-
         </div>
     </section>
 
-    <!-- ============================================================
-         📖 DOCUMENTACIÓN
-         ============================================================ -->
+    <!-- 📖 DOCUMENTACIÓN -->
     <section class="seccion fade-in" id="documentacion">
         <h2 class="titulo-seccion">📖 DOCUMENTACIÓN</h2>
         <div class="linea-seccion"></div>
@@ -1394,7 +1383,7 @@ btnMusica.addEventListener('click', () => {
             <div class="feature-card">
                 <span class="feature-icon">📋</span>
                 <h3>.help</h3>
-                <p>Muestra la lista completa de comandos disponibles del bot.</p>
+                <p>Muestra la lista completa de comandos disponibles.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">🖼️</span>
@@ -1409,12 +1398,12 @@ btnMusica.addEventListener('click', () => {
             <div class="feature-card">
                 <span class="feature-icon">📊</span>
                 <h3>.stats</h3>
-                <p>Ve las estadísticas de actividad del grupo.</p>
+                <p>Estadísticas de actividad del grupo.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">🛡️</span>
                 <h3>.moderar</h3>
-                <p>Activa herramientas de moderación para el grupo.</p>
+                <p>Herramientas de moderación para el grupo.</p>
             </div>
             <div class="feature-card">
                 <span class="feature-icon">⚙️</span>
@@ -1424,11 +1413,8 @@ btnMusica.addEventListener('click', () => {
         </div>
     </section>
 
-    <!-- ============================================================
-         💬 CONTACTO
-         ============================================================ -->
+    <!-- 💬 CONTACTO -->
     <section class="cta-seccion fade-in" id="contacto">
-        <div class="linea-seccion"></div>
         <h2>¿Listo para conocer a Kurumi Bot?</h2>
         <p>
             Únete a esta aventura y descubre todo lo que puede hacer
@@ -1442,7 +1428,6 @@ btnMusica.addEventListener('click', () => {
             <a href="#documentacion" class="btn btn-secundario">📖 Ver Documentación</a>
         </div>
 
-        <!-- Tarjetas de contacto -->
         <div class="contacto-tarjetas">
             <div class="contacto-tarjeta">
                 <div class="contacto-icono">📱</div>
@@ -1453,7 +1438,6 @@ btnMusica.addEventListener('click', () => {
                     Escribir ahora
                 </a>
             </div>
-
             <div class="contacto-tarjeta">
                 <div class="contacto-icono">📧</div>
                 <h3>Correo Electrónico</h3>
@@ -1463,7 +1447,6 @@ btnMusica.addEventListener('click', () => {
                     Enviar email
                 </a>
             </div>
-
             <div class="contacto-tarjeta">
                 <div class="contacto-icono">💬</div>
                 <h3>Grupo Oficial</h3>
@@ -1476,9 +1459,7 @@ btnMusica.addEventListener('click', () => {
         </div>
     </section>
 
-    <!-- ============================================================
-         🦶 FOOTER
-         ============================================================ -->
+    <!-- 🦶 FOOTER -->
     <footer>
         <div class="footer-logo">KURUMI <span>BOT</span></div>
         <p>🕐 Proyecto personal de Bot de WhatsApp</p>
@@ -1490,18 +1471,16 @@ btnMusica.addEventListener('click', () => {
             <a href="#">Twitter</a>
             <a href="#">Discord</a>
         </div>
-        <p style="margin-top: 1.5rem; font-size: 0.75rem;">
+        <p style="margin-top: 1.2rem; font-size: 0.72rem;">
             © 2025 Kurumi Bot. Hecho con ❤️ y ⏰
         </p>
     </footer>
 
-    <!-- ============================================================
-         🎵 REPRODUCTOR DE MÚSICA (PASO 3)
-         ============================================================ -->
+    <!-- 🎵 REPRODUCTOR DE MÚSICA -->
     <div class="reproductor">
-        <!-- ⚠️ REEMPLAZA "kurumi-music.mp3" con tu archivo de audio -->
-        <audio id="musicaFondo" loop preload="auto">
-            <source src="kurumi-music.mp3" type="audio/mpeg">
+        <!-- 🔊 Audio online temporal (cambia después por tu archivo) -->
+        <audio id="musicaFondo" loop preload="auto" crossorigin="anonymous">
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         </audio>
         <div class="ecualizador" id="ecualizador">
             <div class="barra"></div>
@@ -1510,98 +1489,69 @@ btnMusica.addEventListener('click', () => {
             <div class="barra"></div>
             <div class="barra"></div>
         </div>
-        <button class="btn-musica" id="btnMusica" title="Activar/Desactivar música">🎵</button>
+        <button class="btn-musica" id="btnMusica" title="Música">🎵</button>
     </div>
 
-    <!-- ============================================================
-         JAVASCRIPT
-         ============================================================ -->
+    <!-- 🧠 JAVASCRIPT -->
     <script>
-        // ============================================
-        // ⏰ PASO 1: RELOJ ZAFKIEL EN TIEMPO REAL
-        // ============================================
-        const NUMEROS_ROMANOS = ['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
-        const container = document.getElementById('numerosContainer');
+        // ===== RELOJ ZAFKIEL =====
+        const ROMANOS = ['XII','I','II','III','IV','V','VI','VII','VIII','IX','X','XI'];
+        const contNum = document.getElementById('relojNumerales');
 
-        // Crear números romanos
-        NUMEROS_ROMANOS.forEach((num, i) => {
-            const angle = (i * 30) * (Math.PI / 180);
-            const radio = 112;
-            const x = 140 + radio * Math.sin(angle) - 15;
-            const y = 140 - radio * Math.cos(angle) - 15;
-
+        ROMANOS.forEach((num, i) => {
+            const ang = (i * 30) * (Math.PI / 180);
+            const r = 100;
+            const x = 130 + r * Math.sin(ang) - 14;
+            const y = 130 - r * Math.cos(ang) - 14;
             const el = document.createElement('div');
             el.classList.add('reloj-numeral');
             el.textContent = num;
             el.style.left = x + 'px';
             el.style.top = y + 'px';
-            container.appendChild(el);
+            contNum.appendChild(el);
         });
 
-        // Crear marcas de minutos
-        for (let i = 0; i < 60; i++) {
-            const marca = document.createElement('div');
-            marca.classList.add('reloj-marca');
-            if (i % 5 === 0) marca.classList.add('grande');
+        function updateReloj() {
+            const now = new Date();
+            const h = now.getHours() % 12;
+            const m = now.getMinutes();
+            const s = now.getSeconds();
 
-            const angulo = i * 6;
-            marca.style.transform = `translate(-50%, -100%) rotate(${angulo}deg)`;
-            marca.style.left = '50%';
-            marca.style.top = '25px';
-            container.appendChild(marca);
+            document.getElementById('manoHora').style.transform =
+                `rotate(${(h * 30) + (m * 0.5)}deg)`;
+            document.getElementById('manoMinuto').style.transform =
+                `rotate(${(m * 6) + (s * 0.1)}deg)`;
+            document.getElementById('manoSegundo').style.transform =
+                `rotate(${s * 6}deg)`;
+
+            const hh = String(now.getHours()).padStart(2, '0');
+            const mm = String(m).padStart(2, '0');
+            const ss = String(s).padStart(2, '0');
+            document.getElementById('horaDigital').textContent = `${hh}:${mm}:${ss}`;
         }
 
-        // Función para actualizar el reloj
-        function actualizarReloj() {
-            const ahora = new Date();
-            const horas = ahora.getHours() % 12;
-            const minutos = ahora.getMinutes();
-            const segundos = ahora.getSeconds();
+        updateReloj();
+        setInterval(updateReloj, 1000);
 
-            const gradosHora = (horas * 30) + (minutos * 0.5);
-            const gradosMinuto = (minutos * 6) + (segundos * 0.1);
-            const gradosSegundo = segundos * 6;
-
-            document.getElementById('manoHora').style.transform = `rotate(${gradosHora}deg)`;
-            document.getElementById('manoMinuto').style.transform = `rotate(${gradosMinuto}deg)`;
-            document.getElementById('manoSegundo').style.transform = `rotate(${gradosSegundo}deg)`;
-
-            // Hora digital
-            const h = ahora.getHours().toString().padStart(2, '0');
-            const m = ahora.getMinutes().toString().padStart(2, '0');
-            const s = ahora.getSeconds().toString().padStart(2, '0');
-            document.getElementById('horaDigital').textContent = `${h}:${m}:${s}`;
-        }
-
-        actualizarReloj();
-        setInterval(actualizarReloj, 1000);
-
-        // ============================================
-        // ✨ PASO 4: EFECTOS DE TIEMPO
-        // ============================================
-
-        // Partículas doradas flotantes
-        for (let i = 0; i < 35; i++) {
+        // ===== PARTÍCULAS =====
+        for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
             p.classList.add('particula');
             p.style.left = Math.random() * 100 + 'vw';
             p.style.animationDuration = (8 + Math.random() * 15) + 's';
             p.style.animationDelay = (Math.random() * 10) + 's';
-            const size = (2 + Math.random() * 4) + 'px';
-            p.style.width = p.style.height = size;
-            const colores = [
-                'rgba(200, 50, 80, 0.4)',
-                'rgba(212, 168, 83, 0.35)',
-                'rgba(232, 180, 180, 0.3)',
-                'rgba(180, 100, 120, 0.35)'
+            const sz = (2 + Math.random() * 4) + 'px';
+            p.style.width = p.style.height = sz;
+            const cols = [
+                'rgba(200,50,80,0.4)', 'rgba(212,168,83,0.35)',
+                'rgba(232,180,180,0.3)', 'rgba(180,100,120,0.35)'
             ];
-            p.style.background = colores[Math.floor(Math.random() * colores.length)];
+            p.style.background = cols[Math.floor(Math.random() * cols.length)];
             document.body.appendChild(p);
         }
 
-        // Partículas tipo reloj 🕐
         const relojes = ['🕐','🕑','🕒','🕓','🕔','🕕','🕖','🕗','🕘','🕙','🕚','🕛','⏳','🕰️'];
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 12; i++) {
             const p = document.createElement('div');
             p.classList.add('particula-reloj');
             p.textContent = relojes[Math.floor(Math.random() * relojes.length)];
@@ -1611,137 +1561,97 @@ btnMusica.addEventListener('click', () => {
             document.body.appendChild(p);
         }
 
-        // Anillos de tiempo periódicos
-        function crearAnillo() {
-            const anillo = document.createElement('div');
-            anillo.classList.add('anillo-tiempo');
-            const size = (30 + Math.random() * 50) + 'px';
-            anillo.style.width = size;
-            anillo.style.height = size;
-            anillo.style.left = (Math.random() * 80 + 10) + 'vw';
-            anillo.style.top = (Math.random() * 80 + 10) + 'vh';
-            document.body.appendChild(anillo);
-            setTimeout(() => anillo.remove(), 3000);
-        }
+        setInterval(() => {
+            const a = document.createElement('div');
+            a.classList.add('anillo-tiempo');
+            const sz = (30 + Math.random() * 50) + 'px';
+            a.style.width = a.style.height = sz;
+            a.style.left = (Math.random() * 80 + 10) + 'vw';
+            a.style.top = (Math.random() * 80 + 10) + 'vh';
+            document.body.appendChild(a);
+            setTimeout(() => a.remove(), 3000);
+        }, 3000);
 
-        setInterval(crearAnillo, 2500);
+        // ===== WHITE QUEEN EASTER EGG =====
+        let clicks = 0, timer = null;
+        const clock = document.getElementById('zafkielClock');
+        const wq = document.getElementById('wqOverlay');
 
-        // ============================================
-        // 🖼️ PASO 2: WHITE QUEEN EASTER EGG
-        // ============================================
-        let clickCount = 0;
-        let clickTimer = null;
-        const zafkielClock = document.getElementById('zafkielClock');
-        const wqOverlay = document.getElementById('whiteQueenOverlay');
-
-        zafkielClock.addEventListener('click', () => {
-            clickCount++;
-            clearTimeout(clickTimer);
-
-            if (clickCount >= 3) {
-                // Activar White Queen
-                wqOverlay.classList.add('visible');
+        clock.addEventListener('click', () => {
+            clicks++;
+            clearTimeout(timer);
+            if (clicks >= 3) {
+                wq.classList.add('visible');
                 document.body.classList.add('white-queen');
-                clickCount = 0;
+                clicks = 0;
             }
-
-            clickTimer = setTimeout(() => { clickCount = 0; }, 1500);
+            timer = setTimeout(() => clicks = 0, 1500);
         });
 
-        // Cerrar White Queen
-        document.getElementById('cerrarWhiteQueen').addEventListener('click', () => {
-            wqOverlay.classList.remove('visible');
+        document.getElementById('cerrarWQ').addEventListener('click', () => {
+            wq.classList.remove('visible');
             document.body.classList.remove('white-queen');
         });
 
-        // Easter egg alternativo: escribir "whitequeen"
-        let buffer = '';
+        let buf = '';
         document.addEventListener('keydown', (e) => {
-            buffer += e.key.toLowerCase();
-            if (buffer.length > 10) buffer = buffer.slice(-10);
-
-            if (buffer.includes('whitequeen')) {
-                wqOverlay.classList.add('visible');
+            buf += e.key.toLowerCase();
+            if (buf.length > 10) buf = buf.slice(-10);
+            if (buf.includes('whitequeen')) {
+                wq.classList.add('visible');
                 document.body.classList.add('white-queen');
-                buffer = '';
+                buf = '';
             }
-
-            // Escape para cerrar
             if (e.key === 'Escape') {
-                wqOverlay.classList.remove('visible');
+                wq.classList.remove('visible');
                 document.body.classList.remove('white-queen');
             }
         });
 
-      // ============================================
-// 🎵 MÚSICA DE FONDO
-// ============================================
-const audio = document.getElementById('musicaFondo');
-const btnMusica = document.getElementById('btnMusica');
-const ecualizador = document.getElementById('ecualizador');
-let musicaActiva = false;
+        // ===== MÚSICA =====
+        const audio = document.getElementById('musicaFondo');
+        const btnM = document.getElementById('btnMusica');
+        const ecu = document.getElementById('ecualizador');
+        let playing = false;
 
-btnMusica.addEventListener('click', () => {
-    if (musicaActiva) {
-        audio.pause();
-        btnMusica.textContent = '🔇';
-        btnMusica.classList.remove('playing');
-        ecualizador.classList.remove('visible');
-        musicaActiva = false;
-        setTimeout(() => btnMusica.textContent = '🎵', 500);
-    } else {
-        audio.play().then(() => {
-            btnMusica.textContent = '🎶';
-            btnMusica.classList.add('playing');
-            ecualizador.classList.add('visible');
-            musicaActiva = true;
-        }).catch(err => {
-            btnMusica.textContent = '⚠️';
-            setTimeout(() => btnMusica.textContent = '🎵', 2000);
-            console.log('Error al reproducir audio:', err);
+        btnM.addEventListener('click', () => {
+            if (playing) {
+                audio.pause();
+                btnM.textContent = '🎵';
+                btnM.classList.remove('playing');
+                ecu.classList.remove('visible');
+                playing = false;
+            } else {
+                audio.volume = 0.5;
+                audio.play().then(() => {
+                    btnM.textContent = '🎶';
+                    btnM.classList.add('playing');
+                    ecu.classList.add('visible');
+                    playing = true;
+                }).catch(() => {
+                    btnM.textContent = '⚠️';
+                    setTimeout(() => btnM.textContent = '🎵', 2000);
+                });
+            }
         });
-    }
-});
 
-        // ============================================
-        // 🎨 ANIMACIONES AL SCROLL
-        // ============================================
-        const observer = new IntersectionObserver((entradas) => {
-            entradas.forEach(entrada => {
-                if (entrada.isIntersecting) {
-                    entrada.target.classList.add('visible');
-                }
+        // ===== SCROLL ANIMATIONS =====
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(en => {
+                if (en.isIntersecting) en.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
 
-        // ============================================
-        // 🔄 SCROLL SUAVE
-        // ============================================
-        document.querySelectorAll('a[href^="#"]').forEach(enlace => {
-            enlace.addEventListener('click', function(e) {
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(link => {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                const destino = document.querySelector(this.getAttribute('href'));
-                if (destino) {
-                    destino.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                const dest = document.querySelector(link.getAttribute('href'));
+                if (dest) dest.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
-
-        // ============================================
-        // 📊 EFECTO EN ESTADÍSTICAS
-        // ============================================
-        const numeros = document.querySelectorAll('.stat-numero');
-        const obsNumeros = new IntersectionObserver((entradas) => {
-            entradas.forEach(entrada => {
-                if (entrada.isIntersecting) {
-                    entrada.target.style.animation = 'brillo 2s ease-in-out';
-                    obsNumeros.unobserve(entrada.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        numeros.forEach(n => obsNumeros.observe(n));
     </script>
 
 </body>
