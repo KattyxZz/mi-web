@@ -498,7 +498,6 @@ tick('mh','mm','ms','hd');
 setInterval(function(){tick('mh','mm','ms','hd')},1000);
 
 /* Reloj WQ */
-mkNums('wqClock','wqNums','wq-rn');
 tick('wqh','wqm','wqs','wqTime');
 setInterval(function(){tick('wqh','wqm','wqs','wqTime')},1000);
 
@@ -520,7 +519,7 @@ setInterval(function(){var a=document.createElement('div');a.className='a';var z
 
 /* ===== WQ ===== */
 var cl=0,tmc=null;
-function abrirWQ(){document.getElementById('wo').classList.add('vis');document.body.classList.add('wq');document.getElementById('wo').scrollTop=0;crearCopos();iniciarCountdown()}
+function abrirWQ(){document.getElementById('wo').classList.add('vis');document.body.classList.add('wq');document.getElementById('wo').scrollTop=0;mkNums('wqClock','wqNums','wq-rn');crearCopos();iniciarCountdown()}
 function cerrarWQ(){document.getElementById('wo').classList.remove('vis');document.body.classList.remove('wq');removerCopos();document.getElementById('quizRes').style.display='none'}
 document.getElementById('zc').addEventListener('click',function(){cl++;clearTimeout(tmc);if(cl>=3){abrirWQ();cl=0}tmc=setTimeout(function(){cl=0},1500)});
 
@@ -529,7 +528,7 @@ function abrirTohka(){document.getElementById('tkOv').classList.add('vis');docum
 function cerrarTohka(){document.getElementById('tkOv').classList.remove('vis');document.body.classList.remove('tohka-mode')}
 
 /* ===== SPIRITS ===== */
-var spirits=[{n:'Tohka Yatogami',i:'🗡️',a:'Sandalphon',p:'"¡Déjame pelear también!"'},{n:'Kurumi Tokisaki',i:'🔫',a:'Zafkiel',p:'"Ara ara~"'},{n:'Kotori Itsuka',i:'🔥',a:'Camael',p:'"¡No soy una niña!"'},{n:'Yoshino',i:'🧊',a:'Zadkiel',p:'"Yoshinon... ¿estás ahí?"'},{n:'Yamai Kaguya',i:'💨',a:'Raphael',p:'"¡Bailemos juntas!"'},{n:'Yamai Yuzuru',i:'🌪️',a:'Raphael',p:'"Movimiento confirmado."'},{n:'Miku Izayoi',i:'🎤',a:'Gabriel',p:'"La la la~ ♪"'},{n:'Natsumi',i:'🎭',a:'Haniel',p:'"¡Todo es mentira!"'},{n:'Nia Honjō',i:'📖',a:'Rasiel',p:'"El manga es lo mejor."'},{n:'Mukuro Hoshimiya',i:'🌌',a:'Michael',p:'"Mi corazón ha sido sellado."'}];
+var spirits=[{n:'Tohka Yatogami',i:'🗡️',a:'Sandalphon',p:'"¡Déjame pelear también!"'},{n:'Kurumi Tokisaki',i:'⏳',a:'Zafkiel',p:'"Ara ara~"'},{n:'Kotori Itsuka',i:'🔥',a:'Camael',p:'"¡No soy una niña!"'},{n:'Yoshino',i:'🧊',a:'Zadkiel',p:'"Yoshinon... ¿estás ahí?"'},{n:'Yamai Kaguya',i:'💨',a:'Raphael',p:'"¡Bailemos juntas!"'},{n:'Yamai Yuzuru',i:'🌪️',a:'Raphael',p:'"Movimiento confirmado."'},{n:'Miku Izayoi',i:'🎤',a:'Gabriel',p:'"La la la~ ♪"'},{n:'Natsumi',i:'🎭',a:'Haniel',p:'"¡Todo es mentira!"'},{n:'Nia Honjō',i:'📖',a:'Rasiel',p:'"El manga es lo mejor."'},{n:'Mukuro Hoshimiya',i:'🌌',a:'Michael',p:'"Mi corazón ha sido sellado."'}];
 var mio={n:'Mio Takamiya',i:'✨',a:'Ain Soph Aur',p:'"Yo soy la Primera Espíritu."'};
 function crearSpirits(){var g=document.getElementById('spiritGrid');g.innerHTML='';spirits.forEach(function(s){var d=document.createElement('div');d.className='spirit-card';d.innerHTML='<div class="sp-icon">'+s.i+'</div><div class="sp-name">'+s.n+'</div><div class="sp-angel">'+s.a+'</div><div class="sp-phrase">'+s.p+'</div>';g.appendChild(d)});var m=document.getElementById('mioGrid');m.innerHTML='<div class="spirit-card mio"><div class="sp-icon">'+mio.i+'</div><div class="sp-name">'+mio.n+'</div><div class="sp-angel">'+mio.a+'</div><div class="sp-phrase">'+mio.p+'</div></div>'}
 function abrirSpirit(){crearSpirits();document.getElementById('spOv').classList.add('vis');document.getElementById('spOv').scrollTop=0}
